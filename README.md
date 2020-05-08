@@ -22,4 +22,6 @@ This is a repository for visualizing transcribed sessions from Slovenian Parliam
 
 Basic functions for working with `xml` in `javascript`: <https://p5js.org/reference/#/p5.XML>  
 
+Basic functions for conversion to `instance mode` for working with more canvases: https://github.com/processing/p5.js/wiki/p5.js-overview#instantiation--namespace
+
 `Markdown` cheatsheet: <https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet>

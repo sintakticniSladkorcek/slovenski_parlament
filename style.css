@@ -4,6 +4,10 @@
     font-family: 'Courier','Times New Roman', Times, serif;
 }
 
+div {
+    padding-bottom: 50px;
+}
+
 h2 {
     font-weight: bold;
     margin: 50pt;
