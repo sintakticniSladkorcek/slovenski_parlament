@@ -53,7 +53,6 @@ const s2 = ( sketch ) => {
             }
         }
         average = Math.round(average/countSentences);
-        console.log(countSentences, average);
         sentence = "";
         for(let i = 0; i < longestSentence.length; i++) {
             sentence += longestSentence[i].getContent();

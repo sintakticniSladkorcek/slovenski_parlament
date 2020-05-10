@@ -29,7 +29,6 @@ const s4 = ( sketch ) => {
                 let heads = children[i].getChildren("head");
                 seja = heads[0].getContent().toString() + ": ";
                 seja += heads[1].getContent().toString();
-                console.log(seja);
             }
             let incidents = children[i].getChildren("incident");
 
@@ -39,7 +38,6 @@ const s4 = ( sketch ) => {
                 }
             }
         }
-        console.log(countApplauses);
 
 
         sketch.textFont("Courier");
