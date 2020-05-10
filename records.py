@@ -68,7 +68,7 @@ class GetRecords():
                     self.second_longest_sentence_of_them_all = self.longest_sentence_of_them_all
                     self.second_longest_sentence_session = self.longest_sentence_session
 
-                    self.longest_sentence_of_them_all = sentence[0]
+                    self.longest_sentence_of_them_all = sentence
                     self.longest_sentence_session = session
                     self.longest_sentence_length = sentence_length
 
