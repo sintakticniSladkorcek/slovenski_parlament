@@ -18,7 +18,7 @@ const s4 = ( sketch ) => {
         imgH = imgW;
 
         canvas = sketch.createCanvas(sketch.windowWidth, 150);
-        canvas.parent('canvas4');
+        canvas.parent('most_applauses');
 
         countApplauses = 0;
         seja = "";

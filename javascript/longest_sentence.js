@@ -1,22 +1,24 @@
 const s2 = ( sketch ) => {
 
-    var xml;
+    var longestSentences;
+    var averageSentences;
     var canvas;
     var sentence;
     var len;
     var average;
-    var countSentences;
     var averageSentence;
+    var countSentences;
 
     sketch.preload = function() {
-        xml = sketch.loadXML("data/seja.xml");
+        longestSentences = sketch.loadTable("parsed_data/longest_sentences.csv");
+        averageSentences = sketch.loadTable("parsed_data/average_sentences.csv");
     }
 
     sketch.setup = function() {
-        canvas = sketch.createCanvas(sketch.windowWidth, 400);
-        canvas.parent('canvas2');
+        canvas = sketch.createCanvas(sketch.windowWidth, 600);
+        canvas.parent('longest_sentence');
 
-        var children = xml.getChild("text").getChild("body").getChildren("div");
+        //var children = xml.getChild("text").getChild("body").getChildren("div");
         var longestSentence = "test";
         len = 0;
 
@@ -24,25 +26,20 @@ const s2 = ( sketch ) => {
         countSentences = 0;
         average = 0;
 
-        for(var i = 0; i < children.length; i++) {
+        /*for(var i = 0; i < children.length; i++) {
             var type = children[i].getString("type");
-
             if (type == "sp") {
                 var speaker = children[i];
                 var utterance = speaker.getChildren("u");
-
                 for (var j = 0; j < utterance.length; j++) {
                     var sentences = utterance[j].getChildren("s");
                     countSentences += sentences.length;
-
                     for(var k = 0; k < sentences.length; k++) {
                         var words = sentences[k].getChildren("w");
                         average += words.length;
-
                         for(var l = 0; l < words.length; l++) {
                             actual_words[l] = words[l].getContent();
                         }
-
                         if (words.length > len) {
                             longestSentence = sentences[k].getChildren();
                             //longestSentence = actual_words;
@@ -51,17 +48,16 @@ const s2 = ( sketch ) => {
                     }
                 }
             }
-        }
-        average = Math.round(average/countSentences);
+        }*/
+
+        //average = Math.round(average/countSentences);
         sentence = "";
-        for(let i = 0; i < longestSentence.length; i++) {
+        /*for(let i = 0; i < longestSentence.length; i++) {
             sentence += longestSentence[i].getContent();
             //sentence += " "
-            //console.log(longestSentence[i]);
         }
-        //console.log(sentence);
-        //console.log("len: " + len);
-        averageSentence = sketch.findAverageSentence();
+        averageSentence = sketch.findAverageSentence();*/
+        sketch.findAverageAndLongestSentence();
         sketch.writeText();
     }
 
@@ -94,14 +90,34 @@ const s2 = ( sketch ) => {
             sketch.text("Dolžina najdaljšega stavka: " + len + " besed", 0, 120, sketch.windowWidth, 20);
             sketch.textStyle(sketch.ITALIC);
             sketch.fill("#555555");
-            sketch.text("\" " + sentence + " \"", 10, 150, sketch.windowWidth - 20, 250);
+            sketch.text("\" " + sentence + " \"", 10, 150, sketch.windowWidth - 20, 450);
 
         }
         else {
             sketch.text("Dolžina najdaljšega stavka: " + len + " besed", 0, 55, sketch.windowWidth, 20);
             sketch.textStyle(sketch.ITALIC);
             sketch.fill("#555555");
-            sketch.text("\" " + sentence + " \"", 10, 85, sketch.windowWidth - 20, 315);
+            sketch.text("\" " + sentence + " \"", 10, 85, sketch.windowWidth - 20, 515);
+        }
+    }
+
+    sketch.findAverageAndLongestSentence = function() {
+        average = 0;
+        len = 0;
+        for(let i = 0; i < longestSentences.getRowCount(); i++) {
+            average += parseFloat(averageSentences.getString(i, 1));
+            let l = parseInt(longestSentences.getString(i, 1));
+            if(len < l && l < 500) {
+                len = l;
+                sentence = longestSentences.getString(i, 2);
+            }
+        }
+        average = Math.round(average/longestSentences.getRowCount());
+        for(let i = 0; i < averageSentences.getRowCount(); i++) {
+            if(average == Math.round(averageSentences.getString(i, 1))) {
+                averageSentence = averageSentences.getString(i, 2);
+                return;
+            }
         }
     }
 

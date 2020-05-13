@@ -6,6 +6,7 @@ const s5 = ( sketch ) => {
     var zamik;
     var topWords;
     var position;
+    var speaker;
 
     sketch.preload = function() {
         xml = sketch.loadXML("data/seja.xml");
@@ -13,7 +14,7 @@ const s5 = ( sketch ) => {
 
     sketch.setup = function() {
         let canvas = sketch.createCanvas(sketch.windowWidth, 550);
-        canvas.parent("canvas5");
+        canvas.parent("session_timeline");
 
         sketch.fill("#000000");
         sketch.textFont("Courier");
@@ -103,6 +104,7 @@ const s5 = ( sketch ) => {
         sketch.fill(255);
         sketch.noStroke();
         sketch.rect(sketch.windowWidth*3/4, 50,sketch.windowWidth/4, 500);
+        sketch.rect(0, 30, sketch.windowWidth*3/4, 80);
         sketch.fill(0);
         sketch.stroke(0);
         sketch.textStyle(sketch.NORMAL);
@@ -110,6 +112,7 @@ const s5 = ( sketch ) => {
         for(let i = 0; i < 10; i++) {
             sketch.text(topWords[i], sketch.windowWidth*3/4, i*30+150, sketch.windowWidth/4, 20);
         }
+        sketch.text(speaker.substring(0, speaker.length-1), 0, 30, sketch.windowWidth*3/4, 80);
     }
 
     sketch.countWords = function(time) {
@@ -124,8 +127,9 @@ const s5 = ( sketch ) => {
             var type = children[i].getString("type");
 
             if (type == "sp") {
-                var speaker = children[i];
-                var utterance = speaker.getChildren("u");
+                var sp = children[i];
+                speaker = sp.getChildren()[0].getContent();
+                var utterance = sp.getChildren("u");
 
                 for (var j = 0; j < utterance.length; j++) {
                     var sentences = utterance[j].getChildren("s");
@@ -151,7 +155,6 @@ const s5 = ( sketch ) => {
                 }
             }
         }
-        console.log(time, words);
         for (let i = 0; i < words.length; i++) {
             if(countTop[9] < countWords[i]) {
                 topWords[9] = words[i];
@@ -167,7 +170,6 @@ const s5 = ( sketch ) => {
                 }
             }
         }
-        console.log(topWords);
     }
 
     sketch.sessionName = function() {
@@ -191,10 +193,12 @@ const s5 = ( sketch ) => {
     }
 
     sketch.colorSeats = function(x) {
+        sketch.noStroke();
         if(x > 0) {
             sketch.fill("#888888");
             return x-1;
         }
+        sketch.stroke("#888888");
         sketch.fill("#FFFFFF");
         return x;
     }

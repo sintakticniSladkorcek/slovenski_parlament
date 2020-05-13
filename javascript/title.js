@@ -14,7 +14,7 @@ const s1 = ( sketch ) => {
         h = (w*1332)/3000;
 
         canvas = sketch.createCanvas(w, h);
-        canvas.parent('canvas1');
+        canvas.parent('title');
 
         sketch.textFont("Courier");
         //sketch.fill("#FF0000");

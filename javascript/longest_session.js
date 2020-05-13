@@ -34,7 +34,7 @@ const s3 = ( sketch ) => {
         lastRow = Math.ceil((time/3600)%10);
 
         canvas = sketch.createCanvas(sketch.windowWidth, rows*hourglassH+30);
-        canvas.parent("canvas3");
+        canvas.parent("longest_session");
 
         for(let i = 0; i < rows; i++) {
             for(let j = 0; j < 10; j++) {
