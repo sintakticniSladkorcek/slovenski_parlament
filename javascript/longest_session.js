@@ -19,8 +19,8 @@ const s3 = ( sketch ) => {
     }
 
     sketch.setup = function() {
-        hourglassW = sketch.windowWidth/20;
-        hourglassH = hourglassW*164/116;
+        /*hourglassW = sketch.windowWidth/20;
+        hourglassH = hourglassW*164/116;*/
 
         time = 0;
         let when = xml.getChild("text").getChild("body").getChild("timeline").getChildren("when");
@@ -33,7 +33,7 @@ const s3 = ( sketch ) => {
         rows = Math.ceil(time/36000);
         lastRow = Math.ceil((time/3600)%10);
 
-        canvas = sketch.createCanvas(sketch.windowWidth, rows*hourglassH+30);
+        /*canvas = sketch.createCanvas(sketch.windowWidth, rows*hourglassH+30);
         canvas.parent("longest_session");
 
         for(let i = 0; i < rows; i++) {
@@ -46,7 +46,9 @@ const s3 = ( sketch ) => {
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(24);
         sketch.textAlign(sketch.CENTER, sketch.CENTER);
-        sketch.text("Najdaljša seja", 0, 0, sketch.windowWidth, 30);
+        sketch.text("Najdaljša seja", 0, 0, sketch.windowWidth, 30);*/
+
+        sketch.createCanvasAndDrawHourglasses();
 
         counter = 0;
         mouse = 0;
@@ -62,6 +64,35 @@ const s3 = ( sketch ) => {
         if (counter < Math.min(mouse, (rows-1)*10+lastRow)) {
             sketch.image(full, sketch.windowWidth/4+hourglassW*(counter%10), 30+hourglassH*Math.floor(counter/10), hourglassW, hourglassH);
             counter++;
+        }
+    }
+
+    sketch.createCanvasAndDrawHourglasses = function() {
+        hourglassW = sketch.windowWidth/20;
+        hourglassH = hourglassW*164/116;
+
+        canvas = sketch.createCanvas(sketch.windowWidth, rows*hourglassH+30);
+        canvas.parent("longest_session");
+
+        for(let i = 0; i < rows; i++) {
+            for(let j = 0; j < 10; j++) {
+                sketch.image(empty, sketch.windowWidth/4+hourglassW*j, 30+hourglassH*i, hourglassW, hourglassH);
+            }
+        }
+
+        sketch.textFont("Courier");
+        sketch.textStyle(sketch.BOLD);
+        sketch.textSize(24);
+        sketch.textAlign(sketch.CENTER, sketch.CENTER);
+        sketch.text("Najdaljša seja", 0, 0, sketch.windowWidth, 30);
+    }
+
+    sketch.windowResized = function() {
+        sketch.createCanvasAndDrawHourglasses();
+        if(counter == (rows-1)*10+lastRow) {
+            for(let i = 0; i < (rows-1)*10+lastRow; i++) {
+                sketch.image(full, sketch.windowWidth/4+hourglassW*(i%10), 30+hourglassH*Math.floor(i/10), hourglassW, hourglassH);
+            }
         }
     }
 

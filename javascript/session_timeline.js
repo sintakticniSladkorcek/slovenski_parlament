@@ -7,13 +7,16 @@ const s5 = ( sketch ) => {
     var topWords;
     var position;
     var speaker;
+    var width;
 
     sketch.preload = function() {
         xml = sketch.loadXML("data/seja.xml");
     }
 
     sketch.setup = function() {
-        let canvas = sketch.createCanvas(sketch.windowWidth, 550);
+        width = sketch.windowWidth;
+        if(width > 1000) width /= 2;
+        let canvas = sketch.createCanvas(width, 550);
         canvas.parent("session_timeline");
 
         sketch.fill("#000000");
@@ -21,7 +24,7 @@ const s5 = ( sketch ) => {
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(18);
         sketch.textAlign(sketch.CENTER, sketch.CENTER);
-        sketch.text(sketch.sessionName(), 0, 0, sketch.windowWidth-30, 50);
+        sketch.text(sketch.sessionName(), 0, 0, width-30, 50);
 
         /*let seja = sketch.sessionName();
         selectMenu = sketch.createSelect();
@@ -30,14 +33,14 @@ const s5 = ( sketch ) => {
         selectMenu.selected(seja);
         selectMenu.changed(sketch.mySelectEvent);*/
 
-        let c = sketch.windowWidth*3/8;
+        let c = width*3/8;
         center = [c, 300];
         zamik = [10, -10, -10, 10, 10, 10, -10, -10];
 
         sketch.drawSeats(80);
 
         sketch.fill(0);
-        sketch.line(30, 530, sketch.windowWidth*3/4-30, 530);
+        sketch.line(30, 530, width*3/4-30, 530);
         sketch.ellipse(30, 530, 10, 10);
         sketch.noLoop();
         topWords = ["", "", "", "", "", "", "", "", "", ""];
@@ -49,20 +52,20 @@ const s5 = ( sketch ) => {
         sketch.frameRate(10);
         sketch.fill(255);
         sketch.noStroke();
-        sketch.rect(0, 500,sketch.windowWidth*3/4, 50);
+        sketch.rect(0, 500,width*3/4, 50);
         sketch.fill(0);
         sketch.stroke(0);
-        sketch.line(30, 530, sketch.windowWidth*3/4-30, 530);
-        if(sketch.mouseX > 30 && sketch.mouseX < sketch.windowWidth*3/4-30) {
+        sketch.line(30, 530, width*3/4-30, 530);
+        if(sketch.mouseX > 30 && sketch.mouseX <width*3/4-30) {
             sketch.ellipse(sketch.mouseX, 530, 10, 10);
-            position = (sketch.mouseX-30)/(sketch.windowWidth*3/4-60);
+            position = (sketch.mouseX-30)/(width*3/4-60);
         }
         else if (sketch.mouseX < 30){
             sketch.ellipse(30, 530, 10, 10);
             position = 0;
         }
         else {
-            sketch.ellipse(sketch.windowWidth*3/4-30, 530, 10, 10);
+            sketch.ellipse(width*3/4-30, 530, 10, 10);
             position = 1;
         }
     }
@@ -103,16 +106,16 @@ const s5 = ( sketch ) => {
     sketch.drawWords = function() {
         sketch.fill(255);
         sketch.noStroke();
-        sketch.rect(sketch.windowWidth*3/4, 50,sketch.windowWidth/4, 500);
-        sketch.rect(0, 30, sketch.windowWidth*3/4, 80);
+        sketch.rect(width*3/4, 50,width/4, 500);
+        sketch.rect(0, 30, width*3/4, 80);
         sketch.fill(0);
         sketch.stroke(0);
         sketch.textStyle(sketch.NORMAL);
         sketch.textSize(16);
         for(let i = 0; i < 10; i++) {
-            sketch.text(topWords[i], sketch.windowWidth*3/4, i*30+150, sketch.windowWidth/4, 20);
+            sketch.text(topWords[i], width*3/4, i*30+150, width/4, 20);
         }
-        sketch.text(speaker.substring(0, speaker.length-1), 0, 30, sketch.windowWidth*3/4, 80);
+        sketch.text(speaker.substring(0, speaker.length-1), 0, 30, width*3/4, 80);
     }
 
     sketch.countWords = function(time) {
@@ -201,6 +204,10 @@ const s5 = ( sketch ) => {
         sketch.stroke("#888888");
         sketch.fill("#FFFFFF");
         return x;
+    }
+
+    sketch.windowResized = function() {
+
     }
 }
 

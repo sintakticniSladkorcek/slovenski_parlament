@@ -14,11 +14,11 @@ const s4 = ( sketch ) => {
     }
 
     sketch.setup = function() {
-        imgW = sketch.windowWidth/20;
+        /*imgW = sketch.windowWidth/20;
         imgH = imgW;
 
-        canvas = sketch.createCanvas(sketch.windowWidth, 150);
-        canvas.parent('most_applauses');
+        canvas = sketch.createCanvas(sketch.windowWidth, imgH+30);
+        canvas.parent('most_applauses');*/
 
         countApplauses = 0;
         seja = "";
@@ -40,7 +40,7 @@ const s4 = ( sketch ) => {
         }
 
 
-        sketch.textFont("Courier");
+        /*sketch.textFont("Courier");
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(24);
         sketch.textAlign(sketch.CENTER, sketch.CENTER);
@@ -48,8 +48,9 @@ const s4 = ( sketch ) => {
 
         sketch.textStyle(sketch.NORMAL);
         sketch.textSize(16);
-        sketch.text(seja, 0, 30, sketch.windowWidth, 20);
+        sketch.text(seja, 0, 30, sketch.windowWidth, 20);*/
 
+        sketch.createCanvasAndTitle();
         mouse = 0;
         shown = 0;
     }
@@ -67,8 +68,35 @@ const s4 = ( sketch ) => {
         }
     }
 
-    sketch.windowResized = function() {
+    sketch.drawHands = function() {
+        if(shown === countApplauses) {
+            for(let i = 0; i < countApplauses; i++) {
+                sketch.image(img, sketch.windowWidth/4+imgW*(i%10), 50+imgH*Math.floor(i/10), imgW, imgH);
+            }
+        }
+    }
 
+    sketch.createCanvasAndTitle = function() {
+        imgW = sketch.windowWidth/20;
+        imgH = imgW;
+
+        canvas = sketch.createCanvas(sketch.windowWidth, 50+imgH*Math.ceil(countApplauses/10));
+        canvas.parent('most_applauses');
+
+        sketch.textFont("Courier");
+        sketch.textStyle(sketch.BOLD);
+        sketch.textSize(24);
+        sketch.textAlign(sketch.CENTER, sketch.CENTER);
+        sketch.text("Največ aplavzov na seji", 0, 0, sketch.windowWidth, 30);
+
+        sketch.textStyle(sketch.NORMAL);
+        sketch.textSize(16);
+        sketch.text(seja, 0, 30, sketch.windowWidth, 20);
+    }
+
+    sketch.windowResized = function() {
+        sketch.createCanvasAndTitle();
+        sketch.drawHands();
     }
 
 }

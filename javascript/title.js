@@ -11,6 +11,7 @@ const s1 = ( sketch ) => {
 
     sketch.setup = function() {
         w = sketch.windowWidth;
+        if(w > 1000) w /= 2;
         h = (w*1332)/3000;
 
         canvas = sketch.createCanvas(w, h);
@@ -38,9 +39,10 @@ const s1 = ( sketch ) => {
     }
 
     sketch.windowResized = function() {
-        sketch.resizeCanvas(sketch.windowWidth, sketch.windowHeight);
         w = sketch.windowWidth;
+        if(w > 1000) w /= 2;
         h = (w*1332)/3000;
+        sketch.resizeCanvas(w, h);
         sketch.text("Slovenski parlament med letoma 1990 in 1992", w/4, h/4, w/2, h/2);
     }
 };

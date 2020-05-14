@@ -8,6 +8,9 @@ const s2 = ( sketch ) => {
     var average;
     var averageSentence;
     var countSentences;
+    var textBoxHeight1;
+    var textBoxHeight2;
+    var width;
 
     sketch.preload = function() {
         longestSentences = sketch.loadTable("parsed_data/longest_sentences.csv");
@@ -15,8 +18,12 @@ const s2 = ( sketch ) => {
     }
 
     sketch.setup = function() {
-        canvas = sketch.createCanvas(sketch.windowWidth, 600);
-        canvas.parent('longest_sentence');
+        width = sketch.windowWidth;
+        //textBoxHeight1 = (Math.floor((24000/sketch.windowWidth)/16)+1)*16;
+        //textBoxHeight2 = (Math.floor((600000/sketch.windowWidth)/16)+1)*16;
+
+        //canvas = sketch.createCanvas(sketch.windowWidth, 70+textBoxHeight1+textBoxHeight2);
+        //canvas.parent('longest_sentence');
 
         //var children = xml.getChild("text").getChild("body").getChildren("div");
         var longestSentence = "test";
@@ -68,37 +75,38 @@ const s2 = ( sketch ) => {
         sketch.textAlign(sketch.CENTER, sketch.UP);
         sketch.background("#FFFFFF");
         sketch.writeText();
-
     }
 
     sketch.writeText = function() {
+        width = sketch.windowWidth;
+        if(width > 1000) width /= 2;
+
+        textBoxHeight1 = (Math.floor((24000/width)/16)+1)*16;
+        textBoxHeight2 = (Math.floor((600000/width)/16)+1)*16;
+
+        canvas = sketch.createCanvas(width, 70+textBoxHeight1+textBoxHeight2);
+        canvas.parent('longest_sentence');
+
         sketch.textFont("Courier");
         sketch.textAlign(sketch.CENTER, sketch.UP);
         sketch.fill("#000000");
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(24);
-        sketch.text("Najdaljši stavek", 0, 0, sketch.windowWidth, 30);
+        sketch.text("Najdaljši stavek", 0, 0, width, 30);
         sketch.textSize(16);
         sketch.textStyle(sketch.NORMAL);
-        sketch.text("Dolžina povprečnega stavka: " + average + " besed", 0, 30, sketch.windowWidth, 20);
-        if (averageSentence !== null) {
-            sketch.textStyle(sketch.ITALIC);
-            sketch.fill("#555555");
-            sketch.text("\" " + averageSentence + " \"", 10, 60, sketch.windowWidth-20, 340);
-            sketch.textStyle(sketch.NORMAL);
-            sketch.fill("#000000");
-            sketch.text("Dolžina najdaljšega stavka: " + len + " besed", 0, 120, sketch.windowWidth, 20);
-            sketch.textStyle(sketch.ITALIC);
-            sketch.fill("#555555");
-            sketch.text("\" " + sentence + " \"", 10, 150, sketch.windowWidth - 20, 450);
 
-        }
-        else {
-            sketch.text("Dolžina najdaljšega stavka: " + len + " besed", 0, 55, sketch.windowWidth, 20);
-            sketch.textStyle(sketch.ITALIC);
-            sketch.fill("#555555");
-            sketch.text("\" " + sentence + " \"", 10, 85, sketch.windowWidth - 20, 515);
-        }
+        sketch.text("Dolžina povprečnega stavka: " + average + " besed", 0, 30, width, 20);
+        sketch.textStyle(sketch.ITALIC);
+        sketch.fill("#555555");
+        sketch.text("\" " + averageSentence + " \"", 10, 60, width-20, 60+textBoxHeight1);
+        sketch.textStyle(sketch.NORMAL);
+        sketch.fill("#000000");
+
+        sketch.text("Dolžina najdaljšega stavka: " + len + " besed", 0, textBoxHeight1+70, width, textBoxHeight1+90);
+        sketch.textStyle(sketch.ITALIC);
+        sketch.fill("#555555");
+        sketch.text("\" " + sentence + " \"", 10, textBoxHeight1+100, width - 20, textBoxHeight1+textBoxHeight2+100);
     }
 
     sketch.findAverageAndLongestSentence = function() {
@@ -121,7 +129,7 @@ const s2 = ( sketch ) => {
         }
     }
 
-    sketch.findAverageSentence = function() {
+    /*sketch.findAverageSentence = function() {
         var children = xml.getChild("text").getChild("body").getChildren("div");
 
         for(var i = 0; i < children.length; i++) {
@@ -150,7 +158,7 @@ const s2 = ( sketch ) => {
                 }
             }
         }
-    }
+    }*/
 };
 
 new p5(s2);
