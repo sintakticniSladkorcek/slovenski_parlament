@@ -1,6 +1,6 @@
 events_per_session.csv:
 	session_name | applauses | laughter | votings | incidents
-list_of_all_different_events:
+list_of_all_different_events.csv:
 	list of all events and how many times they happened 
 	throughout all the sessions together
 	event | how many times it happened
