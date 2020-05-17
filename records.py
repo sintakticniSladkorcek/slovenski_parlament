@@ -5,6 +5,7 @@ from xml.dom import minidom
 import xml.dom
 import csv
 from collections import Counter, defaultdict
+import re
 
 class GetRecords():
     def __init__(self):
@@ -201,42 +202,166 @@ class GetRecords():
 
         # INCIDENTS
         # LIST OF ALL DIFFERENT INCIDENTS
-        with open("parsed_data/events/list_of_all_different_events.csv", "a", newline="", encoding="utf-8") as event_list_csv:
-            writer = csv.writer(event_list_csv)
-            i = 1
-            dict_all_events = {}
-            for session_file in self.session_files:
-                # if session_file != "data\\seja.xml":
-                #     continue
-                print("Finding incidents in session {} / {}".format(i, len(self.session_files)))
-                i += 1
-                root = minidom.parse(session_file)
-                all_events = root.getElementsByTagName('incident')
-                for event in all_events:
-                    contents = event.childNodes
-                    for content in contents:
-                        if content.nodeName != "desc":
-                            continue
-                        actual_event = content.firstChild.nodeValue
-                        if actual_event not in dict_all_events:
-                            dict_all_events[actual_event] = 1
-                        else:
-                            dict_all_events[actual_event] += 1
+        # with open("parsed_data/events/list_of_all_different_events.csv", "a", newline="", encoding="utf-8") as event_list_csv:
+        #     writer = csv.writer(event_list_csv)
+        #     i = 1
+        #     dict_all_events = {}
+        #     for session_file in self.session_files:
+        #         # if session_file != "data\\seja.xml":
+        #         #     continue
+        #         print("Finding incidents in session {} / {}".format(i, len(self.session_files)))
+        #         i += 1
+        #         root = minidom.parse(session_file)
+        #         all_events = root.getElementsByTagName('desc')
+        #         for event in all_events:
+
+        #             actual_event = event.firstChild.nodeValue
+        #             if actual_event not in dict_all_events:
+        #                 dict_all_events[actual_event] = 1
+        #             else:
+        #                 dict_all_events[actual_event] += 1
             
-            sorted_events = sorted(dict_all_events)
-            for key in sorted_events:
-                writer.writerow([key, dict_all_events[key]])
+        #     sorted_events = sorted(dict_all_events)
+        #     for key in sorted_events:
+        #         writer.writerow([key, dict_all_events[key]])
+
+        
+        # # DURATIONS
+        # with open("parsed_data/session_duration/session_duration.csv", "a", newline="", encoding="utf-8") as durations_csv:
+        #     writer = csv.writer(durations_csv)
+        #     i = 1
+        #     for session_file in self.session_files:
+        #         print("Finding duration of session {} / {}".format(i, len(self.session_files)))
+        #         i += 1
+        #         session_duration_in_seconds = 0
+        #         session_name = session_file[5:-4]
+        #         root = minidom.parse(session_file)
+        #         all_parts = root.getElementsByTagName('when')
+        #         for part in all_parts:
+        #             interval = part.getAttribute("interval")
+        #             if interval != "":
+        #                 session_duration_in_seconds += int(interval)
+                
+        #         session_duration_in_hours = session_duration_in_seconds / 3600
+        #         writer.writerow([session_name, session_duration_in_seconds, session_duration_in_hours])
 
 
+        # # VOTES
+        # with open("parsed_data/events/votings.csv", "a", newline="", encoding="utf-8") as votings_csv:
+        #     writer = csv.writer(votings_csv)
+        #     i = 1
+        #     for session_file in self.session_files:
+        #         print("Finding votings in session {} / {}".format(i, len(self.session_files)))
+        #         i += 1
+        #         number_of_votes = 0
+        #         session_name = session_file[5:-4]
+        #         root = minidom.parse(session_file)
+        #         all_notes = root.getElementsByTagName('note')
+        #         for note in all_notes:
+        #             note_type = note.getAttribute("type")
+        #             if note_type != "vote":
+        #                 continue
+        #             number_of_votes += 1
+                
+        #         writer.writerow([session_name, number_of_votes])
 
+        # # PRESIDENTS
+        # with open("parsed_data/presidents/presidents.csv", "a", newline="", encoding="utf-8") as presidents_csv:
+        #     writer = csv.writer(presidents_csv)
+        #     i = 1
+        #     for session_file in self.session_files:
+        #         print("Finding president in session {} / {}".format(i, len(self.session_files)))
+        #         i += 1
+        #         presidents = []
+        #         session_name = session_file[5:-4]
+        #         root = minidom.parse(session_file)
+        #         persons = root.getElementsByTagName('person')
+        #         for person in persons:
+        #             if person.getAttribute("role") != "president":
+        #                 continue
+        #             person = person.getAttribute("sameAs")
+        #             president = person[1:-4]
+        #             names = re.findall('[A-Z][^A-Z]*', president)
+        #             name_and_surname = ""
+        #             for name in names:
+        #                 name_and_surname += name
+        #                 name_and_surname += " "
+        #             president = name_and_surname.strip()
+        #             presidents.append(president)
 
+        #         writer.writerow([session_name, presidents])
 
+        # # SPEAKER AGES
+        # with open("parsed_data/speakers/ages_of_speakers.csv", "a", newline="", encoding="utf-8") as ages_csv:
+        #     writer = csv.writer(ages_csv)
+        #     i = 1
+        #     for session_file in self.session_files:
+        #         print("Finding speakers in session {} / {}".format(i, len(self.session_files)))
+        #         i += 1
+        #         session_name = session_file[5:-4]
+        #         birth_years = {}
+        #         list_birth_years = []
+        #         list_no_birth_years = []
+        #         youngest = []
+        #         oldest = []
+        #         root = minidom.parse(session_file)
+        #         speaker_data = root.getElementsByTagName('u')
+        #         for data in speaker_data:
+        #             who = data.getAttribute("who")
+        #             # morejo bit zadnje 4 cifre, sicer dodaj v posebi list in na koncu zdruzi
+        #             if self.hasNumbers(who):
+        #                 person = who[1:-4]
+        #                 birth_year = who[-4:]
+        #             else:
+        #                 person = who
+        #                 birth_year = None
+        #             names = re.findall('[A-Z][^A-Z]*', person)
+        #             name_and_surname = ""
+        #             for name in names:
+        #                 name_and_surname += name
+        #                 name_and_surname += " "
+        #             person = name_and_surname.strip()
 
-        # Speakers
+        #             if person not in birth_years:
+        #                 birth_years[person] = birth_year
+
+        #         for key in birth_years.keys():
+        #             value = birth_years[key]
+        #             if value == None:
+        #                 list_no_birth_years.append([key, "unknown"])
+        #             else:
+        #                 list_birth_years.append([key, value])
+                
+        #         sorted_list_of_birthyears = sorted(list_birth_years, key=lambda x: x[1])
+
+        #         oldest_year = sorted_list_of_birthyears[0][1]
+        #         youngest_year = sorted_list_of_birthyears[-1][1]
+        #         found_oldest = False
+        #         found_youngest = False
+        #         length = len(sorted_list_of_birthyears)
+        #         for j in range(0, length):
+        #             if sorted_list_of_birthyears[j][1] == oldest_year:
+        #                 oldest.append(sorted_list_of_birthyears[j][0])
+        #             else:
+        #                 found_oldest = True
+        #             if sorted_list_of_birthyears[length - j - 1][1] == youngest_year:
+        #                 youngest.append(sorted_list_of_birthyears[length - j - 1][0])
+        #             else:
+        #                 found_youngest = True
+        #             if found_oldest and found_youngest:
+        #                 break
+                
+        #         for pair in list_no_birth_years:
+        #             sorted_list_of_birthyears.append(pair)
+
+        #         writer.writerow([session_name, oldest, youngest, sorted_list_of_birthyears])
+                
+
+        # SPEAKERS
 
         # Total number of speeches + their length + session name + predsedujoči/ne
-        # Total number of words
-        # Total number of people in session
+        # Total number of words for a speaker
+        # Total number of session for a speaker
 
 
     def hasNumbers(self, inputString):
