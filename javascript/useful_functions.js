@@ -18,6 +18,18 @@ function sessionNameFormating(string) {
     else if(who === "ZbZdruDel") who = "Zbora združenega dela";
     else if(who === "VsiZbor") who = "Vseh zborov Skupščine";
 
-    console.log(number + ". " + what + " " + who + "-" + part+".del, " + day + "." + month + "." + year);
+    //console.log(number + ". " + what + " " + who + "-" + part+".del, " + day + "." + month + "." + year);
     return (number + ". " + what + " " + who + " - " + part+".del, " + day + "." + month + "." + year);
+}
+
+function stringToArray(string) {
+    let strings = string.split('\'');
+    let array = [];
+    for(let i = 0; i < strings.length; i++) {
+        if(!strings[i].includes("\[") && !strings[i].includes("\]") && !strings[i].includes("\,")) {
+            //console.log(strings[i]);
+            array.push(strings[i]);
+        }
+    }
+    return array;
 }
