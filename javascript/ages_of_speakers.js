@@ -12,7 +12,7 @@ const s6 = ( sketch ) => {
     sketch.setup = function() {
         youngest = [0, 100];
         oldest = [0, 0];
-        console.log(oldest, youngest);
+        //console.log(oldest, youngest);
         for(let i = 0; i < table.getRowCount(); i++) {
             let currentOldest = sketch.findMatch(table.getString(i, 3), table.getString(i, 1));
             let currentYoungest = sketch.findMatch(table.getString(i, 3), table.getString(i, 2));
@@ -25,7 +25,7 @@ const s6 = ( sketch ) => {
                 youngest[1] = parseInt(currentYoungest[1]);
             }
         }
-        console.log(oldest, youngest);
+        //console.log(oldest, youngest);
 
         sketch.createCanvasAndWriteSpeakers();
 
@@ -36,7 +36,7 @@ const s6 = ( sketch ) => {
     }
 
     sketch.createCanvasAndWriteSpeakers = function() {
-        canvas = sketch.createCanvas(sketch.windowWidth, 400);
+        canvas = sketch.createCanvas(sketch.windowWidth, 50);
         canvas.parent("ages_of_speakers");
 
         sketch.textFont("Courier");
@@ -47,7 +47,7 @@ const s6 = ( sketch ) => {
     }
 
     sketch.findMatch = function(array, match) {
-        console.log(array, match);
+        //console.log(array, match);
         for(let i = 0; i < array.length; i++) {
             if(array[i] === match[0]) return array[i];
         }
