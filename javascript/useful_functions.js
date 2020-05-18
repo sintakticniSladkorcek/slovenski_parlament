@@ -12,6 +12,7 @@ function sessionNameFormating(string) {
     if(what === "s") what = "Seja";
     else if(what === "z") what = "Zasedanje";
     else if(what === "d") what = "Delovna seja";
+    else if(what === "l") { what = "Slavnostna seja"; who = who.substring(0, who.length-1)}
 
     if(who === "ZbObc") who = "Zbora občin";
     else if(who === "DruzPolZb") who = "Družbeno političnega zbora";

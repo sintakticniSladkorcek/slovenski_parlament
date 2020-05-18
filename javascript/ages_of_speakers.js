@@ -16,7 +16,7 @@ const s6 = ( sketch ) => {
         for(let i = 0; i < table.getRowCount(); i++) {
             let currentOldest = sketch.findMatch(stringToArray(table.getString(i, 3)), stringToArray(table.getString(i, 1)));
             let currentYoungest = sketch.findMatch(stringToArray(table.getString(i, 3)), stringToArray(table.getString(i, 2)));
-            console.log(currentYoungest);
+            //console.log(currentYoungest);
             if(parseInt(currentOldest[1]) < oldest[1]) {
                 oldest[0] = currentOldest[0];
                 oldest[1] = parseInt(currentOldest[1]);
@@ -26,7 +26,7 @@ const s6 = ( sketch ) => {
                 youngest[1] = parseInt(currentYoungest[1]);
             }
         }
-        console.log(oldest, youngest);
+        //console.log(oldest, youngest);
 
         sketch.createCanvasAndWriteSpeakers();
 

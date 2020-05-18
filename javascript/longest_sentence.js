@@ -84,7 +84,7 @@ const s2 = ( sketch ) => {
         textBoxHeight1 = (Math.floor((24000/width)/16)+1)*16;
         textBoxHeight2 = (Math.floor((600000/width)/16)+1)*16;
 
-        canvas = sketch.createCanvas(width, 70+textBoxHeight1+textBoxHeight2);
+        canvas = sketch.createCanvas(width, 90+textBoxHeight1+textBoxHeight2);
         canvas.parent('longest_sentence');
 
         sketch.textFont("Courier");
@@ -92,21 +92,21 @@ const s2 = ( sketch ) => {
         sketch.fill("#000000");
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(24);
-        sketch.text("Najdaljši stavek", 0, 0, width, 30);
+        sketch.text("Najdaljša poved", 0, 0, width, 30);
         sketch.textSize(16);
         sketch.textStyle(sketch.NORMAL);
 
-        sketch.text("Dolžina povprečnega stavka: " + average + " besed", 0, 30, width, 20);
+        sketch.text("Dolžina povprečne povedi: " + average + " besed", 0, 30, width, 20);
         sketch.textStyle(sketch.ITALIC);
         sketch.fill("#555555");
         sketch.text("\" " + averageSentence + " \"", 10, 60, width-20, 60+textBoxHeight1);
         sketch.textStyle(sketch.NORMAL);
         sketch.fill("#000000");
 
-        sketch.text("Dolžina najdaljšega stavka: " + len + " besed", 0, textBoxHeight1+70, width, textBoxHeight1+90);
+        sketch.text("Dolžina najdaljše povedi: " + len + " besed", 0, textBoxHeight1+90, width, textBoxHeight1+100);
         sketch.textStyle(sketch.ITALIC);
         sketch.fill("#555555");
-        sketch.text("\" " + sentence + " \"", 10, textBoxHeight1+100, width - 20, textBoxHeight1+textBoxHeight2+100);
+        sketch.text("\" " + sentence + " \"", 10, textBoxHeight1+120, width - 20, textBoxHeight1+textBoxHeight2+100);
     }
 
     sketch.findAverageAndLongestSentence = function() {
