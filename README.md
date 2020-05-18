@@ -47,3 +47,6 @@ Basic functions for conversion to `instance mode` for working with more canvases
 - sparsaj podatke za najbolj smešno sejo
 - sparsaj podatke za najbolj vljudno sejo
 - (dodaj še število pojavitev k besedam v session_timeline - maybe)
+- zamenjaj sliko stopničk z vektorsko
+- naredi gumb za klik za incident (oziroma nekako označi, kam naj se klikne)
+- za vsako sejo prikaži neke osnovne podatke (tam pri session_timeline), recimo trajanje, število govorov, najpogostejše besede, najdaljša poved, ...
