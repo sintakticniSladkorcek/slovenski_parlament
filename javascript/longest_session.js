@@ -14,6 +14,7 @@ const s3 = ( sketch ) => {
     var shownLongest;
     var shortestSession;
     var longestSession;
+    var inRow;
 
     sketch.preload = function() {
         // 116x164 images
@@ -33,6 +34,8 @@ const s3 = ( sketch ) => {
                 time += parseInt(when[i].getString("interval"));
             }
         }*/
+        inRow = 12;
+
         shortestSession = [0, 100];
         longestSession = [0, 0];
         for(let i = 0; i < table.getRows().length; i++) {
@@ -46,11 +49,12 @@ const s3 = ( sketch ) => {
                 longestSession[1] = current;
             }
         }
-
-        rowsShortest = [Math.ceil(shortestSession[1]), Math.ceil(shortestSession[1]*10)%10];
-        rowsLongest = [Math.ceil(longestSession[1]), Math.ceil(longestSession[1]*10)%10];
-        if (rowsShortest[1] === 0) rowsShortest[1] = 10;
-        if (rowsLongest[1] === 0) rowsLongest[1] = 10;
+        let minutes = Math.ceil(parseInt(table.getString(shortestSession[0], 1))/300);
+        rowsShortest = [Math.ceil(minutes/inRow), Math.ceil(minutes%inRow)];
+        minutes = Math.ceil(parseInt(table.getString(longestSession[0], 1))/300);
+        rowsLongest = [Math.ceil(minutes/inRow), Math.ceil(minutes%inRow)];
+        if (rowsShortest[1] === 0) rowsShortest[1] = inRow;
+        if (rowsLongest[1] === 0) rowsLongest[1] = inRow;
 
         /*canvas = sketch.createCanvas(sketch.windowWidth, rows*hourglassH+30);
         canvas.parent("longest_session");
@@ -79,40 +83,40 @@ const s3 = ( sketch ) => {
         sketch.frameRate(20);
         for(let i = 0; i < rowsShortest[0]; i++) {
             if (i*hourglassH < sketch.mouseY) {
-                shownShortest = (i+1)*10;
+                shownShortest = (i+1)*inRow;
             }
         }
-        if (counterShortest < Math.min(shownShortest, (rowsShortest[0]-1)*10+rowsShortest[1])) {
-            sketch.image(full, sketch.windowWidth/4+hourglassW*(counterShortest%10),
-                30+hourglassH*Math.floor(counterShortest/10), hourglassW, hourglassH);
+        if (counterShortest < Math.min(shownShortest, (rowsShortest[0]-1)*inRow+rowsShortest[1])) {
+            sketch.image(full, sketch.windowWidth/4+hourglassW*(counterShortest%inRow),
+                30+hourglassH*Math.floor(counterShortest/inRow), hourglassW, hourglassH);
             counterShortest++;
         }
         for(let i = 0; i < rowsLongest[0]; i++) {
             if (i*hourglassH < sketch.mouseY) {
-                shownLongest = (i+1)*10;
+                shownLongest = (i+1)*inRow;
             }
         }
-        if (counterLongest < Math.min(shownLongest, (rowsLongest[0]-1)*10+rowsLongest[1])) {
-            sketch.image(full, sketch.windowWidth/4+hourglassW*(counterLongest%10),
-                (hourglassH*rowsShortest[0]+80)+hourglassH*Math.floor(counterLongest/10), hourglassW, hourglassH);
+        if (counterLongest < Math.min(shownLongest, (rowsLongest[0]-1)*inRow+rowsLongest[1])) {
+            sketch.image(full, sketch.windowWidth/4+hourglassW*(counterLongest%inRow),
+                (hourglassH*rowsShortest[0]+80)+hourglassH*Math.floor(counterLongest/inRow), hourglassW, hourglassH);
             counterLongest++;
         }
     }
 
     sketch.createCanvasAndDrawHourglasses = function() {
-        hourglassW = sketch.windowWidth/20;
+        hourglassW = sketch.windowWidth/(2*inRow);
         hourglassH = hourglassW*164/116;
 
         canvas = sketch.createCanvas(sketch.windowWidth, (rowsShortest[0]+rowsLongest[0])*hourglassH+80);
         canvas.parent("longest_session");
 
         for(let i = 0; i < rowsShortest[0]; i++) {
-            for(let j = 0; j < 10; j++) {
+            for(let j = 0; j < inRow; j++) {
                 sketch.image(empty, sketch.windowWidth/4+hourglassW*j, 30+hourglassH*i, hourglassW, hourglassH);
             }
         }
         for(let i = 0; i < rowsLongest[0]; i++) {
-            for(let j = 0; j < 10; j++) {
+            for(let j = 0; j < inRow; j++) {
                 sketch.image(empty, sketch.windowWidth/4+hourglassW*j,
                     (hourglassH*rowsShortest[0]+80)+hourglassH*i, hourglassW, hourglassH);
             }
@@ -128,16 +132,16 @@ const s3 = ( sketch ) => {
 
     sketch.windowResized = function() {
         sketch.createCanvasAndDrawHourglasses();
-        if(counterShortest === (rowsShortest[0]-1)*10+rowsShortest[1]) {
-            for(let i = 0; i < (rowsShortest[0]-1)*10+rowsShortest[1]; i++) {
-                sketch.image(full, sketch.windowWidth/4+hourglassW*(i%10),
-                    30+hourglassH*Math.floor(i/10), hourglassW, hourglassH);
+        if(counterShortest === (rowsShortest[0]-1)*inRow+rowsShortest[1]) {
+            for(let i = 0; i < (rowsShortest[0]-1)*inRow+rowsShortest[1]; i++) {
+                sketch.image(full, sketch.windowWidth/4+hourglassW*(i%inRow),
+                    30+hourglassH*Math.floor(i/inRow), hourglassW, hourglassH);
             }
         }
-        if(counterLongest === (rowsLongest[0]-1)*10+rowsLongest[1]) {
-            for(let i = 0; i < (rowsLongest[0]-1)*10+rowsLongest[1]; i++) {
-                sketch.image(full, sketch.windowWidth/4+hourglassW*(i%10),
-                    (hourglassH*rowsShortest[0]+80)+hourglassH*Math.floor(i/10), hourglassW, hourglassH);
+        if(counterLongest === (rowsLongest[0]-1)*inRow+rowsLongest[1]) {
+            for(let i = 0; i < (rowsLongest[0]-1)*inRow+rowsLongest[1]; i++) {
+                sketch.image(full, sketch.windowWidth/4+hourglassW*(i%inRow),
+                    (hourglassH*rowsShortest[0]+80)+hourglassH*Math.floor(i/inRow), hourglassW, hourglassH);
             }
         }
     }

@@ -40,7 +40,7 @@ const s9 = ( sketch ) => {
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(24);
         sketch.textAlign(sketch.CENTER, sketch.CENTER);
-        sketch.text("Klikni za incident", 0, 0, w, 50);
+        sketch.text("Klikni za incident!", 0, 0, w, 50);
     }
 
 };
