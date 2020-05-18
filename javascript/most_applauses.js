@@ -1,6 +1,6 @@
 const s4 = ( sketch ) => {
 
-    var table;
+    var xml;
     var countApplauses;
     var canvas;
     var mouse;
@@ -9,7 +9,7 @@ const s4 = ( sketch ) => {
     var seja;
 
     sketch.preload = function() {
-        table = sketch.loadTable("data/seja.xml");
+        xml = sketch.loadXML("data/seja.xml");
         img = sketch.loadImage("pictures/applause.jpg");
     }
 

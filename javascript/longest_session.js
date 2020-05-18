@@ -35,7 +35,6 @@ const s3 = ( sketch ) => {
         }*/
         shortestSession = [0, 100];
         longestSession = [0, 0];
-        console.log(table.getRows().length);
         for(let i = 0; i < table.getRows().length; i++) {
             let current = table.getString(i, 2);
             if(current < shortestSession[1] && current > 0) {
@@ -52,8 +51,6 @@ const s3 = ( sketch ) => {
         rowsLongest = [Math.ceil(longestSession[1]), Math.ceil(longestSession[1]*10)%10];
         if (rowsShortest[1] === 0) rowsShortest[1] = 10;
         if (rowsLongest[1] === 0) rowsLongest[1] = 10;
-        console.log(table.getString(shortestSession[0], 2), rowsShortest[0], rowsShortest[1],
-            table.getString(longestSession[0], 2),rowsLongest[0], rowsLongest[1]);
 
         /*canvas = sketch.createCanvas(sketch.windowWidth, rows*hourglassH+30);
         canvas.parent("longest_session");
