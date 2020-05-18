@@ -16,11 +16,14 @@ const s9 = ( sketch ) => {
     sketch.draw = function() { }
 
     sketch.mouseClicked = function() {
-        sketch.background("#FFFFFF");
-        sketch.textStyle(sketch.NORMAL);
-        sketch.textSize(20);
-        let random = Math.floor(Math.random() * table.getRowCount());
-        sketch.text(table.getString(random, 0), 0, 0, w, 50);
+        if(0 < sketch.mouseX && sketch.mouseX < w && 0 < sketch.mouseY && sketch.mouseY < 50) {
+            sketch.background("#FFFFFF");
+            sketch.textStyle(sketch.NORMAL);
+            sketch.textSize(20);
+            let random = Math.floor(Math.random() * table.getRowCount());
+            sketch.text(table.getString(random, 0), 0, 0, w, 50);
+        }
+
     }
 
     sketch.windowResized = function() {
