@@ -8,9 +8,13 @@ const s5 = ( sketch ) => {
     var position;
     var speaker;
     var width;
+    var table;
+    var sessions;
 
     sketch.preload = function() {
         xml = sketch.loadXML("data/seja.xml");
+        table = sketch.loadTable("parsed_data/events/votings.csv");
+        sessions = table.getColumn(0);
     }
 
     sketch.setup = function() {
@@ -22,16 +26,23 @@ const s5 = ( sketch ) => {
         sketch.fill("#000000");
         sketch.textFont("Courier");
         sketch.textStyle(sketch.BOLD);
-        sketch.textSize(18);
+        sketch.textSize(24);
         sketch.textAlign(sketch.CENTER, sketch.CENTER);
-        sketch.text(sketch.sessionName(), 0, 0, width-30, 50);
+        sketch.text("Časovnica seje", 0, 0, width-30, 50);
 
-        /*let seja = sketch.sessionName();
         selectMenu = sketch.createSelect();
-        selectMenu.position(10, 10);
-        selectMenu.option(seja);
-        selectMenu.selected(seja);
-        selectMenu.changed(sketch.mySelectEvent);*/
+        selectMenu.parent("select_menu");
+        selectMenu.position(10, 10, "relative");
+        let vseSeje = "Vse seje";
+        selectMenu.option(vseSeje);
+        selectMenu.selected(vseSeje);
+        //console.log(table);
+        for(let i = 0; i < sessions.length; i++) {
+            let seja = sessionNameFormating(sessions[i]);
+            selectMenu.option(seja);
+            //console.log(seja);
+        }
+        selectMenu.changed(sketch.mySelectEvent);
 
         let c = width*3/8;
         center = [c, 300];
@@ -107,7 +118,7 @@ const s5 = ( sketch ) => {
         sketch.fill(255);
         sketch.noStroke();
         sketch.rect(width*3/4, 50,width/4, 500);
-        sketch.rect(0, 30, width*3/4, 80);
+        sketch.rect(0, 40, width*3/4, 80);
         sketch.fill(0);
         sketch.stroke(0);
         sketch.textStyle(sketch.NORMAL);
