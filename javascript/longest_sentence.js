@@ -13,8 +13,8 @@ const s2 = ( sketch ) => {
     var width;
 
     sketch.preload = function() {
-        longestSentences = sketch.loadTable("parsed_data/longest_sentences.csv");
-        averageSentences = sketch.loadTable("parsed_data/average_sentences.csv");
+        longestSentences = sketch.loadTable("parsed_data/sentences/longest_sentences.csv");
+        averageSentences = sketch.loadTable("parsed_data/sentences/average_sentences.csv");
     }
 
     sketch.setup = function() {

@@ -6,7 +6,7 @@ const s1 = ( sketch ) => {
     var img;
 
     sketch.preload = function() {
-        img = sketch.loadImage("parlament2.jpg");
+        img = sketch.loadImage("pictures/parlament2.jpg");
     }
 
     sketch.setup = function() {
