@@ -36,10 +36,6 @@ Basic functions for conversion to `instance mode` for working with more canvases
     ```
     Spodaj si lahko ogledaš, kako je potekala posamezna seja. Sejo lahko izbereš v spustnem seznamu. Na vrhu boš videl, kdo je govoril, na desni strani pa lahko spremljaš, kako so se spreminjale ključne besede seje z njenim potekom. Najvišje je beseda, ki se je pojavila največkrat, sledi ji drugouvrščena in tako dalje. Tudi vsi podatki nižje se bodo nanašali na to sejo.
     ```
-- dodaj opis v `longest_session.js`
-    ```
-    Tu lahko vidiš, kako dolga je bila najdaljša izmed sej v primerjavi z najkrajšo. Ena peščena ura predstavlja 5 minut.
-    ```
 - popravi pot do filov v popular_speakers.js
 - prefiltriraj podatke incidentov (na novo sparsaj)
 - v `most_votings.js` dodaj poleg imena seje, ki se prikaže, še število glasovanj

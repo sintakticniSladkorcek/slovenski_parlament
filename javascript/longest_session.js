@@ -88,7 +88,7 @@ const s3 = ( sketch ) => {
         }
         if (counterShortest < Math.min(shownShortest, (rowsShortest[0]-1)*inRow+rowsShortest[1])) {
             sketch.image(full, sketch.windowWidth/4+hourglassW*(counterShortest%inRow),
-                30+hourglassH*Math.floor(counterShortest/inRow), hourglassW, hourglassH);
+                90+hourglassH*Math.floor(counterShortest/inRow), hourglassW, hourglassH);
             counterShortest++;
         }
         for(let i = 0; i < rowsLongest[0]; i++) {
@@ -98,7 +98,7 @@ const s3 = ( sketch ) => {
         }
         if (counterLongest < Math.min(shownLongest, (rowsLongest[0]-1)*inRow+rowsLongest[1])) {
             sketch.image(full, sketch.windowWidth/4+hourglassW*(counterLongest%inRow),
-                (hourglassH*rowsShortest[0]+80)+hourglassH*Math.floor(counterLongest/inRow), hourglassW, hourglassH);
+                (hourglassH*rowsShortest[0]+140)+hourglassH*Math.floor(counterLongest/inRow), hourglassW, hourglassH);
             counterLongest++;
         }
     }
@@ -112,25 +112,25 @@ const s3 = ( sketch ) => {
 
         for(let i = 0; i < rowsShortest[0]; i++) {
             for(let j = 0; j < inRow; j++) {
-                sketch.image(empty, sketch.windowWidth/4+hourglassW*j, 30+hourglassH*i, hourglassW, hourglassH);
+                sketch.image(empty, sketch.windowWidth/4+hourglassW*j, 90+hourglassH*i, hourglassW, hourglassH);
             }
         }
         for(let i = 0; i < rowsLongest[0]; i++) {
             for(let j = 0; j < inRow; j++) {
                 sketch.image(empty, sketch.windowWidth/4+hourglassW*j,
-                    (hourglassH*rowsShortest[0]+80)+hourglassH*i, hourglassW, hourglassH);
+                    (hourglassH*rowsShortest[0]+140)+hourglassH*i, hourglassW, hourglassH);
             }
         }
 
         sketch.textFont("Courier");
         sketch.textSize(18);
         sketch.textAlign(sketch.CENTER, sketch.CENTER);
-        sketch.text("Tu lahko vidiš, kako dolga je bila najdaljša izmed sej v primerjavi z najkrajšo. Ena peščena ura predstavlja 5 minut.", 0, 0, sketch.windowWidth, 30);
+        sketch.text("Tu lahko vidiš, kako dolga je bila najdaljša izmed sej v primerjavi z najkrajšo. Ena peščena ura predstavlja 5 minut.", 0, 0, sketch.windowWidth, 60);
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(24);
         sketch.textAlign(sketch.CENTER, sketch.CENTER);
-        sketch.text("Najkrajša seja", 0, 30, sketch.windowWidth, 30);
-        sketch.text("Najdaljša seja", 0, hourglassH*rowsShortest[0]+50 + 30, sketch.windowWidth, 30);
+        sketch.text("Najkrajša seja", 0, 60, sketch.windowWidth, 30);
+        sketch.text("Najdaljša seja", 0, hourglassH*rowsShortest[0]+50 + 60, sketch.windowWidth, 30);
     }
 
     sketch.windowResized = function() {
@@ -138,13 +138,13 @@ const s3 = ( sketch ) => {
         if(counterShortest === (rowsShortest[0]-1)*inRow+rowsShortest[1]) {
             for(let i = 0; i < (rowsShortest[0]-1)*inRow+rowsShortest[1]; i++) {
                 sketch.image(full, sketch.windowWidth/4+hourglassW*(i%inRow),
-                    30+hourglassH*Math.floor(i/inRow), hourglassW, hourglassH);
+                    90+hourglassH*Math.floor(i/inRow), hourglassW, hourglassH);
             }
         }
         if(counterLongest === (rowsLongest[0]-1)*inRow+rowsLongest[1]) {
             for(let i = 0; i < (rowsLongest[0]-1)*inRow+rowsLongest[1]; i++) {
                 sketch.image(full, sketch.windowWidth/4+hourglassW*(i%inRow),
-                    (hourglassH*rowsShortest[0]+80)+hourglassH*Math.floor(i/inRow), hourglassW, hourglassH);
+                    (hourglassH*rowsShortest[0]+140)+hourglassH*Math.floor(i/inRow), hourglassW, hourglassH);
             }
         }
     }
