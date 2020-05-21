@@ -123,11 +123,14 @@ const s3 = ( sketch ) => {
         }
 
         sketch.textFont("Courier");
+        sketch.textSize(18);
+        sketch.textAlign(sketch.CENTER, sketch.CENTER);
+        sketch.text("Tu lahko vidiš, kako dolga je bila najdaljša izmed sej v primerjavi z najkrajšo. Ena peščena ura predstavlja 5 minut.", 0, 0, sketch.windowWidth, 30);
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(24);
         sketch.textAlign(sketch.CENTER, sketch.CENTER);
-        sketch.text("Najkrajša seja", 0, 0, sketch.windowWidth, 30);
-        sketch.text("Najdaljša seja", 0, hourglassH*rowsShortest[0]+50, sketch.windowWidth, 30);
+        sketch.text("Najkrajša seja", 0, 30, sketch.windowWidth, 30);
+        sketch.text("Najdaljša seja", 0, hourglassH*rowsShortest[0]+50 + 30, sketch.windowWidth, 30);
     }
 
     sketch.windowResized = function() {
