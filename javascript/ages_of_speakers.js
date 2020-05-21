@@ -51,8 +51,8 @@ const s6 = ( sketch ) => {
 
         sketch.textStyle(sketch.NORMAL);
         sketch.textSize(18);
-        sketch.text(oldest[0] + ", " + (1991-oldest[1]), 0, 40, w, 25);
-        sketch.text(youngest[0] + ", " + (1991-youngest[1]), 0, 65, w, 25);
+        sketch.text(oldest[0] + ", " + (1991-oldest[1]) + " let", 0, 40, w, 25);
+        sketch.text(youngest[0] + ", " + (1991-youngest[1]) + " let", 0, 65, w, 25);
     }
 
     sketch.findMatch = function(array, match) {
