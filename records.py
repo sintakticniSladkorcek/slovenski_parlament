@@ -202,28 +202,78 @@ class GetRecords():
 
         # INCIDENTS
         # LIST OF ALL DIFFERENT INCIDENTS
-        # with open("parsed_data/events/list_of_all_different_events.csv", "a", newline="", encoding="utf-8") as event_list_csv:
-        #     writer = csv.writer(event_list_csv)
-        #     i = 1
-        #     dict_all_events = {}
-        #     for session_file in self.session_files:
-        #         # if session_file != "data\\seja.xml":
-        #         #     continue
-        #         print("Finding incidents in session {} / {}".format(i, len(self.session_files)))
-        #         i += 1
-        #         root = minidom.parse(session_file)
-        #         all_events = root.getElementsByTagName('desc')
-        #         for event in all_events:
+        with open("parsed_data/events/list_of_events_with_tags.csv", "a", newline="", encoding="utf-8") as event_list_csv:
+            writer = csv.writer(event_list_csv)
+            i = 1
+            dict_all_events = {}
+            list_of_events = []
+            for session_file in self.session_files:
+                # if session_file != "data\\seja.xml":
+                #     continue
+                print("Finding incidents in session {} / {}".format(i, len(self.session_files)))
+                i += 1
+                
+                root = minidom.parse(session_file)
+                all_events = root.getElementsByTagName('desc')
+                for event in all_events:
+                    parent = event.parentNode.nodeName
 
-        #             actual_event = event.firstChild.nodeValue
-        #             if actual_event not in dict_all_events:
-        #                 dict_all_events[actual_event] = 1
-        #             else:
-        #                 dict_all_events[actual_event] += 1
+                    actual_event = event.firstChild.nodeValue
+                    if actual_event not in dict_all_events:
+                        dict_all_events[actual_event] = 1
+                    else:
+                        dict_all_events[actual_event] += 1
+                    list_of_events.append([actual_event, parent])
             
-        #     sorted_events = sorted(dict_all_events)
-        #     for key in sorted_events:
-        #         writer.writerow([key, dict_all_events[key]])
+            # sorted_events = sorted(dict_all_events)
+            # for key in sorted_events:
+            #     writer.writerow([key, dict_all_events[key]])
+            sorted_events_list = sorted(list_of_events, key=lambda x: x[1])
+            for idx in range(0, len(sorted_events_list)):
+                writer.writerow([sorted_events_list[idx][1], sorted_events_list[idx][0]])
+
+
+        # # LAUGHING AND APPLAUSES
+        # with open("parsed_data/events/laughter.csv", "a", newline="", encoding="utf-8") as laughs_csv:
+        #     laughs_writer = csv.writer(laughs_csv)
+        #     laughs = ["smeh", "SMEH", "Smeh", "hahaha"]
+            
+        #     with open("parsed_data/events/applauses.csv", "a", newline="", encoding="utf-8") as applauses_csv:
+        #         applauses_writer = csv.writer(applauses_csv)
+        #         applauses = ["aplavz", "ploskanje", "Aplavz", "Ploskanje"]
+                
+        #         i = 1
+        #         for session_file in self.session_files:
+        #             print("Counting laughs and applauses in session {} / {}".format(i, len(self.session_files)))
+        #             i += 1
+        #             session_name = session_file[5:-4]
+        #             root = minidom.parse(session_file)
+        #             all_events = root.getElementsByTagName('desc')
+        #             laugh_counter = 0
+        #             applause_counter = 0
+
+        #             for event in all_events:
+        #                 actual_event = event.firstChild.nodeValue
+
+        #                 # laugh
+        #                 for laugh in laughs:
+        #                     if laugh in actual_event:
+        #                         laugh_counter += 1
+                        
+        #                 # applause
+        #                 for applause in applauses:
+        #                     if applause in actual_event:
+        #                         applause_counter += 1
+                    
+        #             print("appl: {}, laugh: {}".format(applause_counter, laugh_counter))
+        #             laughs_writer.writerow([session_name, laugh_counter])
+        #             applauses_writer.writerow([session_name, applause_counter])
+                        
+
+        
+
+
+
 
         
         # # DURATIONS
@@ -357,109 +407,109 @@ class GetRecords():
         #         writer.writerow([session_name, oldest, youngest, sorted_list_of_birthyears])
                 
 
-        # SPEAKERS
+        # # SPEAKERS
 
-        # Total number of speeches + their length + session name + predsedujoči/ne
-        # Total number of words for a speaker
-        # Total number of session for a speaker
+        # # Total number of speeches + their length + session name + predsedujoči/ne
+        # # Total number of words for a speaker
+        # # Total number of session for a speaker
 
-        speaker_ids = {}
-        sessions_per_speaker = {}
-        speeches_per_speaker = {}
-        words_per_speaker = {}
-        speeches_in_session = []
+        # speaker_ids = {}
+        # sessions_per_speaker = {}
+        # speeches_per_speaker = {}
+        # words_per_speaker = {}
+        # speeches_in_session = []
 
-        with open("parsed_data/speakers/number_of_sessions_per_speaker.csv", "a", newline="", encoding="utf-8") as sessions_csv:
-            writer_session = csv.writer(sessions_csv)
-            with open("parsed_data/speakers/number_of_speeches_per_speaker.csv", "a", newline="", encoding="utf-8") as speeches_csv:
-                writer_speeches = csv.writer(speeches_csv)
-                with open("parsed_data/speakers/number_of_words_per_speaker.csv", "a", newline="", encoding="utf-8") as words_csv:
-                    writer_words = csv.writer(words_csv)
-                    i = 1
-                    for session_file in self.session_files:
-                        # <session_name>_speeches.csv
-                        session_name = session_file[5:-4]
-                        csv_file = "parsed_data/speakers/" + session_name + "_speeches.csv"
-                        with open(csv_file, "a", newline="", encoding="utf-8") as all_speeches_csv:
-                            writer_all_speeches = csv.writer(all_speeches_csv)
-                            print("Finding speeches and words for speakers in session {} / {}".format(i, len(self.session_files)))
-                            i += 1
+        # with open("parsed_data/speakers/number_of_sessions_per_speaker.csv", "a", newline="", encoding="utf-8") as sessions_csv:
+        #     writer_session = csv.writer(sessions_csv)
+        #     with open("parsed_data/speakers/number_of_speeches_per_speaker.csv", "a", newline="", encoding="utf-8") as speeches_csv:
+        #         writer_speeches = csv.writer(speeches_csv)
+        #         with open("parsed_data/speakers/number_of_words_per_speaker.csv", "a", newline="", encoding="utf-8") as words_csv:
+        #             writer_words = csv.writer(words_csv)
+        #             i = 1
+        #             for session_file in self.session_files:
+        #                 # <session_name>_speeches.csv
+        #                 session_name = session_file[5:-4]
+        #                 csv_file = "parsed_data/speakers/" + session_name + "_speeches.csv"
+        #                 with open(csv_file, "a", newline="", encoding="utf-8") as all_speeches_csv:
+        #                     writer_all_speeches = csv.writer(all_speeches_csv)
+        #                     print("Finding speeches and words for speakers in session {} / {}".format(i, len(self.session_files)))
+        #                     i += 1
 
-                            root = minidom.parse(session_file)
-                            speaker_data = root.getElementsByTagName('div')
-                            remove_divs = []
-                            for speaker in speaker_data:
-                                if speaker.getAttribute("type") != "sp":
-                                    remove_divs.append(speaker)
-                            speaker_data = list(set(speaker_data) - set(remove_divs))
+        #                     root = minidom.parse(session_file)
+        #                     speaker_data = root.getElementsByTagName('div')
+        #                     remove_divs = []
+        #                     for speaker in speaker_data:
+        #                         if speaker.getAttribute("type") != "sp":
+        #                             remove_divs.append(speaker)
+        #                     speaker_data = list(set(speaker_data) - set(remove_divs))
 
-                            for speaker in speaker_data:
-                                children = speaker.childNodes
-                                for child in children:
-                                    if child.nodeName == "note" and child.getAttribute("type") == "speaker":
-                                        # print("child: {}, firstChild: {}".format(child, child.firstChild))
-                                        #if child.firstChild.nodeValue != None:
-                                        speaker_name = child.firstChild.nodeValue
+        #                     for speaker in speaker_data:
+        #                         children = speaker.childNodes
+        #                         for child in children:
+        #                             if child.nodeName == "note" and child.getAttribute("type") == "speaker":
+        #                                 # print("child: {}, firstChild: {}".format(child, child.firstChild))
+        #                                 #if child.firstChild.nodeValue != None:
+        #                                 speaker_name = child.firstChild.nodeValue
                                         
-                                    if child.nodeName == "u":
-                                        speaker_id = child.getAttribute("who")
+        #                             if child.nodeName == "u":
+        #                                 speaker_id = child.getAttribute("who")
 
-                                        # Add speaker id - name pair
-                                        if speaker_id not in speaker_ids:
-                                            speaker_ids[speaker_id] = speaker_name
+        #                                 # Add speaker id - name pair
+        #                                 if speaker_id not in speaker_ids:
+        #                                     speaker_ids[speaker_id] = speaker_name
                                         
-                                        # add session to the sessions that speaker spoke in
-                                        if speaker_id not in sessions_per_speaker:
-                                            sessions_per_speaker[speaker_id] = []
-                                        if session_name not in sessions_per_speaker[speaker_id]:
-                                            sessions_per_speaker[speaker_id].append(session_name)
+        #                                 # add session to the sessions that speaker spoke in
+        #                                 if speaker_id not in sessions_per_speaker:
+        #                                     sessions_per_speaker[speaker_id] = []
+        #                                 if session_name not in sessions_per_speaker[speaker_id]:
+        #                                     sessions_per_speaker[speaker_id].append(session_name)
                                         
-                                        # increase speeches counter
-                                        if speaker_id not in speeches_per_speaker:
-                                            speeches_per_speaker[speaker_id] = 1
-                                        else:
-                                            speeches_per_speaker[speaker_id] += 1
+        #                                 # increase speeches counter
+        #                                 if speaker_id not in speeches_per_speaker:
+        #                                     speeches_per_speaker[speaker_id] = 1
+        #                                 else:
+        #                                     speeches_per_speaker[speaker_id] += 1
 
-                                        # add speaker to the dictionary
-                                        if speaker_id not in words_per_speaker:
-                                            words_per_speaker[speaker_id] = 0
+        #                                 # add speaker to the dictionary
+        #                                 if speaker_id not in words_per_speaker:
+        #                                     words_per_speaker[speaker_id] = 0
 
-                                        # count words and compose speech
-                                        speech = ""
-                                        word_count = 0
-                                        sentences = child.childNodes
-                                        for sentence in sentences:
-                                            if sentence.nodeType != 1:
-                                                continue
-                                            if sentence.nodeName != "s":
-                                                speech += sentence.firstChild.nodeValue
-                                            else:
-                                                words = sentence.childNodes
-                                                for word in words:
-                                                    if word.nodeType != 1:
-                                                        continue
-                                                    if word.nodeName != "w":
-                                                        speech += word.firstChild.nodeValue
-                                                    else:
-                                                        word_count += 1
-                                                        speech += word.firstChild.nodeValue
+        #                                 # count words and compose speech
+        #                                 speech = ""
+        #                                 word_count = 0
+        #                                 sentences = child.childNodes
+        #                                 for sentence in sentences:
+        #                                     if sentence.nodeType != 1:
+        #                                         continue
+        #                                     if sentence.nodeName != "s":
+        #                                         speech += sentence.firstChild.nodeValue
+        #                                     else:
+        #                                         words = sentence.childNodes
+        #                                         for word in words:
+        #                                             if word.nodeType != 1:
+        #                                                 continue
+        #                                             if word.nodeName != "w":
+        #                                                 speech += word.firstChild.nodeValue
+        #                                             else:
+        #                                                 word_count += 1
+        #                                                 speech += word.firstChild.nodeValue
 
-                                        # increase word_count for the speaker
-                                        words_per_speaker[speaker_id] += word_count
+        #                                 # increase word_count for the speaker
+        #                                 words_per_speaker[speaker_id] += word_count
 
-                                        # write speech to file
-                                        writer_all_speeches.writerow([word_count, speech])
+        #                                 # write speech to file
+        #                                 writer_all_speeches.writerow([word_count, speech])
 
-                    # write totals
-                    for key in sessions_per_speaker.keys():
-                        speaker = speaker_ids[key]
-                        writer_session.writerow([speaker, len(sessions_per_speaker[key]), sessions_per_speaker[key]])
-                    for key in speeches_per_speaker.keys():
-                        speaker = speaker_ids[key]
-                        writer_speeches.writerow([speaker, speeches_per_speaker[key]])
-                    for key in words_per_speaker.keys():
-                        speaker = speaker_ids[key]
-                        writer_words.writerow([speaker, words_per_speaker[key]])
+        #             # write totals
+        #             for key in sessions_per_speaker.keys():
+        #                 speaker = speaker_ids[key]
+        #                 writer_session.writerow([speaker, len(sessions_per_speaker[key]), sessions_per_speaker[key]])
+        #             for key in speeches_per_speaker.keys():
+        #                 speaker = speaker_ids[key]
+        #                 writer_speeches.writerow([speaker, speeches_per_speaker[key]])
+        #             for key in words_per_speaker.keys():
+        #                 speaker = speaker_ids[key]
+        #                 writer_words.writerow([speaker, words_per_speaker[key]])
 
                                 
 
