@@ -13,7 +13,7 @@ votings.csv
 	<session_name> | number of votings
 
 incidents.csv
-	<session_name> | number of incidents
+	list of incidents
 
 list_of_events_with_tags.csv:
 	helper file - for understanding of incidents
