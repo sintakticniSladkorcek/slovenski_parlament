@@ -4,36 +4,24 @@ const s6 = ( sketch ) => {
     var canvas;
     var youngest;
     var oldest;
+    var currentSessionId;
 
     sketch.preload = function() {
         table = sketch.loadTable("parsed_data/speakers/ages_of_speakers.csv");
     }
 
     sketch.setup = function() {
-        youngest = [0, 1900];
-        oldest = [0, 2000];
-        //console.log(oldest, youngest);
-        for(let i = 0; i < table.getRowCount(); i++) {
-            let currentOldest = sketch.findMatch(stringToArray(table.getString(i, 3)), stringToArray(table.getString(i, 1)));
-            let currentYoungest = sketch.findMatch(stringToArray(table.getString(i, 3)), stringToArray(table.getString(i, 2)));
-            //console.log(currentYoungest);
-            if(parseInt(currentOldest[1]) < oldest[1]) {
-                oldest[0] = currentOldest[0];
-                oldest[1] = parseInt(currentOldest[1]);
-            }
-            if(parseInt(currentYoungest[1]) > youngest[1]) {
-                youngest[0] = currentYoungest[0];
-                youngest[1] = parseInt(currentYoungest[1]);
-            }
-        }
-        //console.log(oldest, youngest);
-
+        currentSessionId = getCurrentSessionId();
+        sketch.findYoungestAndOldest();
         sketch.createCanvasAndWriteSpeakers();
-
     }
 
     sketch.draw = function() {
-
+        if(currentSessionId !== getCurrentSessionId()) {
+            currentSessionId = getCurrentSessionId();
+            sketch.findYoungestAndOldest();
+            sketch.createCanvasAndWriteSpeakers();
+        }
     }
 
     sketch.createCanvasAndWriteSpeakers = function() {
@@ -61,6 +49,35 @@ const s6 = ( sketch ) => {
             if(array[i] === match[0]) return [array[i], array[i+1]];
         }
         return [0, 50];
+    }
+
+    sketch.findYoungestAndOldest = function() {
+        if(currentSessionId == 608) {
+            youngest = [0, 1900];
+            oldest = [0, 2000];
+            //console.log(oldest, youngest);
+            for (let i = 0; i < table.getRowCount(); i++) {
+                let currentOldest = sketch.findMatch(stringToArray(table.getString(i, 3)), stringToArray(table.getString(i, 1)));
+                let currentYoungest = sketch.findMatch(stringToArray(table.getString(i, 3)), stringToArray(table.getString(i, 2)));
+                //console.log(currentYoungest);
+                if (parseInt(currentOldest[1]) < oldest[1]) {
+                    oldest[0] = currentOldest[0];
+                    oldest[1] = parseInt(currentOldest[1]);
+                }
+                if (parseInt(currentYoungest[1]) > youngest[1]) {
+                    youngest[0] = currentYoungest[0];
+                    youngest[1] = parseInt(currentYoungest[1]);
+                }
+            }
+            //console.log(oldest, youngest);
+        } else {
+            let match = stringToArray(table.getString(currentSessionId, 1));
+            let array = stringToArray(table.getString(currentSessionId, 3));
+            oldest = sketch.findMatch(array, match);
+            match = stringToArray(table.getString(currentSessionId, 2));
+            youngest = sketch.findMatch(array, match);
+        }
+        //console.log(oldest, youngest);
     }
 };
 

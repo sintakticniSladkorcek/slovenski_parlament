@@ -3,14 +3,15 @@ const s2 = ( sketch ) => {
     var longestSentences;
     var averageSentences;
     var canvas;
-    var sentence;
-    var len;
-    var average;
+    var longestSentence;
+    var longest;
     var averageSentence;
+    var average;
     var countSentences;
     var textBoxHeight1;
     var textBoxHeight2;
     var width;
+    var currentSessionId;
 
     sketch.preload = function() {
         longestSentences = sketch.loadTable("parsed_data/sentences/longest_sentences.csv");
@@ -18,6 +19,8 @@ const s2 = ( sketch ) => {
     }
 
     sketch.setup = function() {
+        //console.log(longestSentences);
+
         width = sketch.windowWidth;
         //textBoxHeight1 = (Math.floor((24000/sketch.windowWidth)/16)+1)*16;
         //textBoxHeight2 = (Math.floor((600000/sketch.windowWidth)/16)+1)*16;
@@ -27,7 +30,7 @@ const s2 = ( sketch ) => {
 
         //var children = xml.getChild("text").getChild("body").getChildren("div");
         var longestSentence = "test";
-        len = 0;
+        longest = 0;
 
         var actual_words = [];
         countSentences = 0;
@@ -64,11 +67,18 @@ const s2 = ( sketch ) => {
             //sentence += " "
         }
         averageSentence = sketch.findAverageSentence();*/
+
+        currentSessionId = getCurrentSessionId();
         sketch.findAverageAndLongestSentence();
         sketch.writeText();
     }
 
     sketch.draw = function() {
+        if(currentSessionId !== getCurrentSessionId()) {
+            currentSessionId = getCurrentSessionId();
+            sketch.findAverageAndLongestSentence();
+            sketch.writeText();
+        }
     }
 
     sketch.windowResized = function() {
@@ -103,30 +113,39 @@ const s2 = ( sketch ) => {
         sketch.textStyle(sketch.NORMAL);
         sketch.fill("#000000");
 
-        sketch.text("Dolžina najdaljše povedi: " + len + " besed", 0, textBoxHeight1+90, width, textBoxHeight1+100);
+        sketch.text("Dolžina najdaljše povedi: " + longest + " besed", 0, textBoxHeight1+90, width, textBoxHeight1+100);
         sketch.textStyle(sketch.ITALIC);
         sketch.fill("#555555");
-        sketch.text("\" " + sentence + " \"", 10, textBoxHeight1+120, width - 20, textBoxHeight1+textBoxHeight2+100);
+        sketch.text("\" " + longestSentence + " \"", 10, textBoxHeight1+120, width - 20, textBoxHeight1+textBoxHeight2+100);
     }
 
     sketch.findAverageAndLongestSentence = function() {
-        average = 0;
-        len = 0;
-        for(let i = 0; i < longestSentences.getRowCount(); i++) {
-            average += parseFloat(averageSentences.getString(i, 1));
-            let l = parseInt(longestSentences.getString(i, 1));
-            if(len < l && l < 500) {
-                len = l;
-                sentence = longestSentences.getString(i, 2);
+        if(currentSessionId == 608) {
+            average = 0;
+            longest = 0;
+            for(let i = 0; i < longestSentences.getRowCount(); i++) {
+                average += parseFloat(averageSentences.getString(i, 1));
+                let l = parseInt(longestSentences.getString(i, 1));
+                if(longest < l && l < 500) {
+                    longest = l;
+                    longestSentence = longestSentences.getString(i, 2);
+                }
             }
-        }
-        average = Math.round(average/longestSentences.getRowCount());
-        for(let i = 0; i < averageSentences.getRowCount(); i++) {
-            if(average == Math.round(averageSentences.getString(i, 1))) {
-                averageSentence = averageSentences.getString(i, 2);
-                return;
+            average = Math.round(average/longestSentences.getRowCount());
+            for(let i = 0; i < averageSentences.getRowCount(); i++) {
+                if(average === Math.round(averageSentences.getString(i, 1))) {
+                    averageSentence = averageSentences.getString(i, 2);
+                    return;
+                }
             }
+        } else {
+            //console.log(currentSessionId);
+            average = parseInt(averageSentences.getString(currentSessionId, 1));
+            averageSentence = averageSentences.getString(currentSessionId, 2);
+            longest = longestSentences.getString(currentSessionId, 1);
+            longestSentence = longestSentences.getString(currentSessionId, 2);
         }
+
     }
 
     /*sketch.findAverageSentence = function() {
