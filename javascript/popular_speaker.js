@@ -80,9 +80,9 @@ const s7 = ( sketch ) => {
         sketch.rectMode(sketch.CORNER);*/
     }
 
-    sketch.mouseClicked = function() {
+    /*sketch.mouseClicked = function() {
         console.log(sketch.mouseX, sketch.mouseY);
-    }
+    }*/
 
     sketch.windowResized = function() {
         //sketch.createCanvasAndDraw();
@@ -92,7 +92,7 @@ const s7 = ( sketch ) => {
         let height2 = 143*(data[1]/data[0]);
         let height3 = 143*(data[2]/data[0]);
         sketch.fill("#000000");
-        console.log(data, data[1]/data[0], data[2]/data[0]);
+        //console.log(data, data[1]/data[0], data[2]/data[0]);
         sketch.rect(offsetX, offsetY+310, 380, 20);
         sketch.rect(offsetX+245.5, offsetY+307-height3, 105, height3);
         sketch.rect(offsetX+245.5, offsetY+292-height3, 113, 12);

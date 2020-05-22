@@ -28,20 +28,8 @@ Basic functions for conversion to `instance mode` for working with more canvases
 
 ## TODO
 
-- oznake na slajderju v `session_timeline.js` za vsako menjavo govorca
-- oblikuj dropdown meni za izbiro seje (default ni lep)
-- dodaj številčni opis trajanja sej (napiši v urah in minutah)
-- dodaj opis v `session_timeline.js`
-    ```
-    Spodaj si lahko ogledaš, kako je potekala posamezna seja. Sejo lahko izbereš v spustnem seznamu. Na vrhu boš videl, kdo je govoril, na desni strani pa lahko spremljaš, kako so se spreminjale ključne besede seje z njenim potekom. Najvišje je beseda, ki se je pojavila največkrat, sledi ji drugouvrščena in tako dalje. Tudi vsi podatki nižje se bodo nanašali na to sejo.
-    ```
-- popravi pot do filov v popular_speakers.js
-- prefiltriraj podatke incidentov (na novo sparsaj)
-- v `most_votings.js` dodaj poleg imena seje, ki se prikaže, še število glasovanj
-- dodaj opis pri glasovanjih, ki razloži, da je to prikaz števila glasovanj v posamezni seji
 - sparsaj podatke za najbolj vljudno sejo
 - (dodaj še število pojavitev k besedam v session_timeline - maybe)
-- zamenjaj sliko stopničk z vektorsko
 - naredi gumb za klik za incident (oziroma nekako označi, kam naj se klikne)
 - za vsako sejo prikaži neke osnovne podatke (tam pri session_timeline), recimo trajanje, število govorov, najpogostejše besede, najdaljša poved, ...
 - dodaj opis k starosti, da bi lahka bil eden oče/dedek drugemu

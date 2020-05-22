@@ -10,21 +10,42 @@ const s5 = ( sketch ) => {
     var width;
     var table;
     var session;
-    var children;
+    //var children;
     var ages_of_speakers;
     var presidents;
-    var currentSession;
+    var currentSessionId;
+
+
+
+    sketch.execute = function() {
+        ages_of_speakers = sketch.loadTable("parsed_data/speakers/ages_of_speakers.csv");
+        presidents = sketch.loadTable("parsed_data/presidents/presidents.csv", sketch.successCallback());
+        wordFrequenciesAll = sketch.loadTable("parsed_data/word_frequencies/word_frequencies_altogether.csv");
+        return presidents;
+    }
+
+    sketch.successCallback = function() {
+        console.log(presidents);
+        xml = [];
+        for(let i = 0; i < 608; i++) {
+            session = presidents.getString(i, 0);
+            xml.push(sketch.loadXML("data/"+session+".xml"));
+        }
+    }
 
     sketch.preload = function() {
-        ages_of_speakers = sketch.loadTable("parsed_data/speakers/ages_of_speakers.csv");
-        presidents = sketch.loadTable("parsed_data/presidents/presidents.csv");
-        wordFrequenciesAll = sketch.loadTable("parsed_data/word_frequencies/word_frequencies_altogether.csv");
         //wordFrequencies = sketch.loadTable("parsed_data/word_frequencies/word_frequencies_by_session.csv");
         //table = sketch.loadTable("parsed_data/events/votings.csv");
         //sessions = table.getColumn(0);
+        sketch.execute();
     }
 
     sketch.setup = function() {
+        /*xml = [];
+        for(let i = 0; i < 608; i++) {
+            session = ages_of_speakers.getString(i, 0);
+            xml.push(sketch.loadXML("data/"+session+".xml"));
+        }*/
         //presidents = getPresidents();
         //ages_of_speakers = getSpeakers();
         //console.log("Presidents", presidents);
@@ -47,7 +68,7 @@ const s5 = ( sketch ) => {
         center = [c, 300];
         zamik = [10, -10, -10, 10, 10, 10, -10, -10];
 
-        currentSession = getCurrentSession();
+        currentSessionId = getCurrentSessionId();
         //console.log(currentSession);
         sketch.drawSeats();
 
@@ -63,9 +84,9 @@ const s5 = ( sketch ) => {
 
     //
     sketch.draw = function() {
-        if(currentSession !== getCurrentSession()) {
-            currentSession = getCurrentSession();
-            console.log(currentSession);
+        if(currentSessionId !== getCurrentSessionId()) {
+            currentSessionId = getCurrentSessionId();
+            console.log(currentSessionId);
             /*if(currentSession !== "Vse seje") {
                 xml = sketch.loadXML("/data/"+currentSession+".xml");
                 children = xml.getChild("text").getChild("body").getChildren("div");
@@ -179,7 +200,7 @@ const s5 = ( sketch ) => {
     }
 
     sketch.countWords = function(time) {
-        if(currentSession == "Vse seje") {
+        if(currentSessionId == 608) {
             topWords = ["", "", "", "", "", "", "", "", "", ""];
             for(let i = 0; i < 10; i++) {
                 topWords[i] = wordFrequenciesAll.getString(i, 1);
@@ -197,11 +218,15 @@ const s5 = ( sketch ) => {
             let countTop = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
             speaker = "";
 
-            xml = sketch.loadXML("data/"+currentSession+".xml");
-            console.log("data/"+currentSession+".xml");
-            console.log(xml);
-            console.log(xml.getChildren());
-            children = xml.getChild("text").getChild("body").getChildren("div");
+            //xml = sketch.loadXML("data/"+currentSession+".xml");
+
+            //console.log("data/"+currentSession+".xml");
+            //console.log(xml[currentSessionId]);[currentSessionId]
+            //console.log(xml[currentSessionId].getChildren());
+            session = ages_of_speakers.getString(currentSessionId, 0);
+            let xmll = sketch.loadXML("data/"+session+".xml");
+            console.log(xmll);
+            let children = xmll.getChild("text").getChild("body").getChildren("div");
 
             for (let i = 0; i < children.length*time; i++) {
                 var type = children[i].getString("type");
@@ -284,7 +309,7 @@ const s5 = ( sketch ) => {
     }
 
     sketch.drawLabels = function() {
-        if(currentSession !== "Vse seje") {
+        if(currentSessionId !== 608) {
             speaker = "";
             for (let i = 0; i < children.length; i++) {
                 var type = children[i].getString("type");

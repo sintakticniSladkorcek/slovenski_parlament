@@ -14,8 +14,11 @@ const s10 = ( sketch ) => {
     }
 
     sketch.setup = function() {
+
         w = sketch.windowWidth;
         if(w > 1000) w /= 2;
+
+        sketch.description();
 
         canvas = sketch.createCanvas(w, 260);
         canvas.parent("most_votings");
@@ -51,7 +54,6 @@ const s10 = ( sketch ) => {
                 session = table.getString(i, 0);
             }
         }
-
     }
 
     sketch.draw = function() {
@@ -95,6 +97,17 @@ const s10 = ( sketch ) => {
             sketch.circle(w/rows*i, 230-number/4, 5);
             sketch.line(w/rows*i, 230-number/4, w/rows*(i-1), previous);
         }
+    }
+
+    sketch.description = function() {
+        let c = sketch.createCanvas(50, w);
+        c.parent("votings_description");
+
+        sketch.textFont("Courier");
+        sketch.textSize(16);
+        sketch.textAlign(sketch.CENTER, sketch.CENTER);
+        sketch.text("Postavi se na krogec in poglej pri kateri seji je bilo toliko glasovanj. Pri sejah z več kot 500 glasovanji se bo prikazalo tudi točno število.",
+            0, 0, w, 50);
     }
 
 };
