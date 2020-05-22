@@ -15,25 +15,18 @@ const s3 = ( sketch ) => {
     var shortestSession;
     var longestSession;
     var inRow;
+    var startOfGraph;
+    var scale;
 
     sketch.preload = function() {
         // 116x164 images
         full = sketch.loadImage("pictures/hourglass.png");
         empty = sketch.loadImage("pictures/hourglass1.png");
+        scale = sketch.loadImage("pictures/scale.png");
         table = sketch.loadTable("parsed_data/session_duration/session_duration.csv");
     }
 
     sketch.setup = function() {
-        /*hourglassW = sketch.windowWidth/20;
-        hourglassH = hourglassW*164/116;*/
-
-        /*time = 0;
-        let when = xml.getChild("text").getChild("body").getChild("timeline").getChildren("when");
-        for(let i = 0; i < when.length; i++) {
-            if(when[i].getString("interval") !== null) {
-                time += parseInt(when[i].getString("interval"));
-            }
-        }*/
         inRow = 12;
 
         shortestSession = [0, 100];
@@ -56,21 +49,6 @@ const s3 = ( sketch ) => {
         if (rowsShortest[1] === 0) rowsShortest[1] = inRow;
         if (rowsLongest[1] === 0) rowsLongest[1] = inRow;
 
-        /*canvas = sketch.createCanvas(sketch.windowWidth, rows*hourglassH+30);
-        canvas.parent("longest_session");
-
-        for(let i = 0; i < rows; i++) {
-            for(let j = 0; j < 10; j++) {
-                sketch.image(empty, sketch.windowWidth/4+hourglassW*j, 30+hourglassH*i, hourglassW, hourglassH);
-            }
-        }
-
-        sketch.textFont("Courier");
-        sketch.textStyle(sketch.BOLD);
-        sketch.textSize(24);
-        sketch.textAlign(sketch.CENTER, sketch.CENTER);
-        sketch.text("Najdaljša seja", 0, 0, sketch.windowWidth, 30);*/
-
         sketch.createCanvasAndDrawHourglasses();
 
         counterShortest = 0;
@@ -88,7 +66,7 @@ const s3 = ( sketch ) => {
         }
         if (counterShortest < Math.min(shownShortest, (rowsShortest[0]-1)*inRow+rowsShortest[1])) {
             sketch.image(full, sketch.windowWidth/4+hourglassW*(counterShortest%inRow),
-                30+hourglassH*Math.floor(counterShortest/inRow), hourglassW, hourglassH);
+                30+hourglassH*Math.floor(counterShortest/inRow)+startOfGraph, hourglassW, hourglassH);
             counterShortest++;
         }
         for(let i = 0; i < rowsLongest[0]; i++) {
@@ -98,36 +76,42 @@ const s3 = ( sketch ) => {
         }
         if (counterLongest < Math.min(shownLongest, (rowsLongest[0]-1)*inRow+rowsLongest[1])) {
             sketch.image(full, sketch.windowWidth/4+hourglassW*(counterLongest%inRow),
-                (hourglassH*rowsShortest[0]+80)+hourglassH*Math.floor(counterLongest/inRow), hourglassW, hourglassH);
+                (hourglassH*rowsShortest[0]+80)+hourglassH*Math.floor(counterLongest/inRow)+startOfGraph, hourglassW, hourglassH);
             counterLongest++;
         }
     }
 
     sketch.createCanvasAndDrawHourglasses = function() {
+        startOfGraph = 90;
         hourglassW = sketch.windowWidth/(2*inRow);
         hourglassH = hourglassW*164/116;
 
-        canvas = sketch.createCanvas(sketch.windowWidth, (rowsShortest[0]+rowsLongest[0])*hourglassH+80);
+        canvas = sketch.createCanvas(sketch.windowWidth, (rowsShortest[0]+rowsLongest[0])*hourglassH+80+startOfGraph);
         canvas.parent("longest_session");
 
         for(let i = 0; i < rowsShortest[0]; i++) {
             for(let j = 0; j < inRow; j++) {
-                sketch.image(empty, sketch.windowWidth/4+hourglassW*j, 30+hourglassH*i, hourglassW, hourglassH);
+                sketch.image(empty, sketch.windowWidth/4+hourglassW*j, 30+hourglassH*i+startOfGraph, hourglassW, hourglassH);
             }
         }
         for(let i = 0; i < rowsLongest[0]; i++) {
             for(let j = 0; j < inRow; j++) {
                 sketch.image(empty, sketch.windowWidth/4+hourglassW*j,
-                    (hourglassH*rowsShortest[0]+80)+hourglassH*i, hourglassW, hourglassH);
+                    (hourglassH*rowsShortest[0]+80)+hourglassH*i+startOfGraph, hourglassW, hourglassH);
             }
         }
 
         sketch.textFont("Courier");
+        sketch.textStyle(sketch.NORMAL);
+        sketch.textSize(14);
+        sketch.textAlign(sketch.CENTER, sketch.CENTER);
+        sketch.text("Tu lahko vidiš, kako dolga je bila najdaljša izmed sej v primerjavi z najkrajšo.",
+            sketch.windowWidth/4, 0, sketch.windowWidth/2, 50);
+        sketch.image(scale, sketch.windowWidth/2-15*392/164, 50, 30*392/164, 30);
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(24);
-        sketch.textAlign(sketch.CENTER, sketch.CENTER);
-        sketch.text("Najkrajša seja", 0, 0, sketch.windowWidth, 30);
-        sketch.text("Najdaljša seja", 0, hourglassH*rowsShortest[0]+50, sketch.windowWidth, 30);
+        sketch.text("Najkrajša seja", 0, startOfGraph, sketch.windowWidth, 30);
+        sketch.text("Najdaljša seja", 0, hourglassH*rowsShortest[0]+50+startOfGraph, sketch.windowWidth, 30);
     }
 
     sketch.windowResized = function() {
@@ -135,17 +119,20 @@ const s3 = ( sketch ) => {
         if(counterShortest === (rowsShortest[0]-1)*inRow+rowsShortest[1]) {
             for(let i = 0; i < (rowsShortest[0]-1)*inRow+rowsShortest[1]; i++) {
                 sketch.image(full, sketch.windowWidth/4+hourglassW*(i%inRow),
-                    30+hourglassH*Math.floor(i/inRow), hourglassW, hourglassH);
+                    30+hourglassH*Math.floor(i/inRow)+startOfGraph, hourglassW, hourglassH);
             }
         }
         if(counterLongest === (rowsLongest[0]-1)*inRow+rowsLongest[1]) {
             for(let i = 0; i < (rowsLongest[0]-1)*inRow+rowsLongest[1]; i++) {
                 sketch.image(full, sketch.windowWidth/4+hourglassW*(i%inRow),
-                    (hourglassH*rowsShortest[0]+80)+hourglassH*Math.floor(i/inRow), hourglassW, hourglassH);
+                    (hourglassH*rowsShortest[0]+80)+hourglassH*Math.floor(i/inRow)+startOfGraph, hourglassW, hourglassH);
             }
         }
     }
 
+    sketch.mouseClicked = function() {
+        console.log(sketch.mouseX, sketch.mouseY);
+    }
 };
 
 new p5(s3);
