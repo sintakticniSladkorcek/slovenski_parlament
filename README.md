@@ -28,9 +28,12 @@ Basic functions for conversion to `instance mode` for working with more canvases
 
 ## TODO
 
+- dodaj številčni opis trajanja sej (napiši v urah in minutah)
+- popravi pot do filov v popular_speakers.js
+- v `most_votings.js` dodaj poleg imena seje, ki se prikaže, še število glasovanj
 - sparsaj podatke za najbolj vljudno sejo
 - (dodaj še število pojavitev k besedam v session_timeline - maybe)
 - naredi gumb za klik za incident (oziroma nekako označi, kam naj se klikne)
 - za vsako sejo prikaži neke osnovne podatke (tam pri session_timeline), recimo trajanje, število govorov, najpogostejše besede, najdaljša poved, ...
 - dodaj opis k starosti, da bi lahka bil eden oče/dedek drugemu
-- dodaj legendo za applavze
+- dodaj legendo za aplavze
