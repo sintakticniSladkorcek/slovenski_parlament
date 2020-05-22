@@ -131,7 +131,7 @@ const s3 = ( sketch ) => {
     }
 
     sketch.mouseClicked = function() {
-        console.log(sketch.mouseX, sketch.mouseY);
+        //console.log(sketch.mouseX, sketch.mouseY);
     }
 };
 

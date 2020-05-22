@@ -28,7 +28,6 @@ Basic functions for conversion to `instance mode` for working with more canvases
 
 ## TODO
 
-- legenda pri trajanju sej (slikica ue = 5min)
 - oznake na slajderju v `session_timeline.js` za vsako menjavo govorca
 - oblikuj dropdown meni za izbiro seje (default ni lep)
 - dodaj številčni opis trajanja sej (napiši v urah in minutah)

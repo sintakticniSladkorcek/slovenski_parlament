@@ -10,6 +10,7 @@ const s5 = ( sketch ) => {
     var width;
     var table;
     var sessions;
+    var children;
 
     sketch.preload = function() {
         xml = sketch.loadXML("data/seja.xml");
@@ -18,6 +19,8 @@ const s5 = ( sketch ) => {
     }
 
     sketch.setup = function() {
+        children = xml.getChild("text").getChild("body").getChildren("div");
+
         width = sketch.windowWidth;
         if(width > 1000) width /= 2;
         let canvas = sketch.createCanvas(width, 550);
@@ -57,6 +60,7 @@ const s5 = ( sketch ) => {
         topWords = ["", "", "", "", "", "", "", "", "", ""];
         sketch.countWords(1);
         sketch.drawWords();
+        //sketch.drawLabels();
     }
 
     sketch.draw = function() {
@@ -79,6 +83,7 @@ const s5 = ( sketch ) => {
             sketch.ellipse(width*3/4-30, 530, 10, 10);
             position = 1;
         }
+        //sketch.drawLabels();
     }
 
     sketch.mousePressed = function() {
@@ -134,8 +139,7 @@ const s5 = ( sketch ) => {
         let countWords = [];
         let index = 0;
         let countTop = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
-        let children = xml.getChild("text").getChild("body").getChildren("div");
+        speaker = "";
 
         for (let i = 0; i < children.length*time; i++) {
             var type = children[i].getString("type");
@@ -188,7 +192,6 @@ const s5 = ( sketch ) => {
 
     sketch.sessionName = function() {
         let seja = "";
-        let children = xml.getChild("text").getChild("body").getChildren("div");
 
         for(let i = 0; i < children.length; i++) {
             if (children[i].getString("type") === "preface") {
@@ -219,6 +222,26 @@ const s5 = ( sketch ) => {
 
     sketch.windowResized = function() {
 
+    }
+
+    sketch.drawLabels = function() {
+        speaker = "";
+
+        for (let i = 0; i < children.length; i++) {
+            var type = children[i].getString("type");
+
+            if (type == "sp") {
+                var sp = children[i];
+
+                if(speaker !== sp.getChildren()[0].getContent()) {
+                    // line: 30, 530, width*3/4-30, 530
+                    let labelX = (i/children.length)*(width*3/4-60)+30;
+                    sketch.line(labelX, 527, labelX, 533);
+                }
+
+                speaker = sp.getChildren()[0].getContent();
+            }
+        }
     }
 }
 
