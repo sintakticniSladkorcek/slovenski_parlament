@@ -92,7 +92,7 @@ const s2 = ( sketch ) => {
         if(width > 1000) width /= 2;
 
         textBoxHeight1 = (Math.floor((24000/width)/16)+1)*16;
-        textBoxHeight2 = (Math.floor((600000/width)/16)+1)*16;
+        textBoxHeight2 = parseInt(longest)*2+40;
 
         canvas = sketch.createCanvas(width, 90+textBoxHeight1+textBoxHeight2);
         canvas.parent('longest_sentence');

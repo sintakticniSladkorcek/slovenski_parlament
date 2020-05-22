@@ -19,7 +19,7 @@ const s7 = ( sketch ) => {
 
     sketch.createCanvasAndDraw = function() {
         imgW = 380;
-        imgH = imgW;
+        imgH = 330;
 
         canvas = sketch.createCanvas(imgW, 130+3*imgH);
         canvas.parent("popular_speaker");
@@ -93,30 +93,30 @@ const s7 = ( sketch ) => {
         let height3 = 143*(data[2]/data[0]);
         sketch.fill("#000000");
         console.log(data, data[1]/data[0], data[2]/data[0]);
-        sketch.rect(offsetX, offsetY+360, 380, 20);
-        sketch.rect(offsetX+245.5, offsetY+357-height3, 105, height3);
-        sketch.rect(offsetX+245.5, offsetY+342-height3, 113, 12);
-        sketch.rect(offsetX+29.5, offsetY+357-height2, 105, height2);
-        sketch.rect(offsetX+21.5, offsetY+342-height2, 113, 12);
-        sketch.rect(offsetX+137.5, offsetY+214, 105, 143);
-        sketch.rect(offsetX+129.5, offsetY+199, 121, 12);
+        sketch.rect(offsetX, offsetY+310, 380, 20);
+        sketch.rect(offsetX+245.5, offsetY+307-height3, 105, height3);
+        sketch.rect(offsetX+245.5, offsetY+292-height3, 113, 12);
+        sketch.rect(offsetX+29.5, offsetY+307-height2, 105, height2);
+        sketch.rect(offsetX+21.5, offsetY+292-height2, 113, 12);
+        sketch.rect(offsetX+137.5, offsetY+164, 105, 143);
+        sketch.rect(offsetX+129.5, offsetY+149, 121, 12);
         sketch.fill("#FFFFFF");
-        sketch.circle(offsetX+190, offsetY+285.5, 50);
-        sketch.circle(offsetX+82, offsetY+357-height2/2, 50);
-        sketch.circle(offsetX+298, offsetY+357-height3/2, 50);
+        sketch.circle(offsetX+190, offsetY+235.5, 50);
+        sketch.circle(offsetX+82, offsetY+307-height2/2, 50);
+        sketch.circle(offsetX+298, offsetY+307-height3/2, 50);
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(30);
         sketch.fill("#000000");
         sketch.textAlign(sketch.CENTER, sketch.CENTER);
-        sketch.text(" 1", offsetX+137.5, offsetY+214, 105, 143);
-        sketch.text(" 2", offsetX+29.5, offsetY+357-height2, 105, height2);
-        sketch.text(" 3", offsetX+245.5, offsetY+357-height3, 105, height3);
+        sketch.text(" 1", offsetX+137.5, offsetY+164, 105, 143);
+        sketch.text(" 2", offsetX+29.5, offsetY+307-height2, 105, height2);
+        sketch.text(" 3", offsetX+245.5, offsetY+307-height3, 105, height3);
         sketch.textStyle(sketch.NORMAL);
         sketch.textSize(16);
         sketch.rectMode(sketch.CENTER);
-        sketch.text(text[1] + data[1], offsetX+82, offsetY+292-height2, 105, 100);
-        sketch.text(text[0] + data[0], offsetX+190, offsetY+139, 105, 100);
-        sketch.text(text[2] + data[2], offsetX+298, offsetY+292-height3, 105, 100);
+        sketch.text(text[1] + data[1], offsetX+82, offsetY+242-height2, 105, 100);
+        sketch.text(text[0] + data[0], offsetX+190, offsetY+89, 105, 100);
+        sketch.text(text[2] + data[2], offsetX+298, offsetY+242-height3, 105, 100);
         sketch.rectMode(sketch.CORNER);
     }
 

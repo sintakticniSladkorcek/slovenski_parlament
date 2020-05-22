@@ -67,6 +67,9 @@ const s10 = ( sketch ) => {
                 else if(x > w-275) x = w-275;
                 //console.log(circles[2 * i], x);
                 sketch.text(sessionNameFormating(table.getString(i, 0)), x, 250, 600, 16);
+                if(parseInt(table.getString(i, 1)) > 500) {
+                    sketch.text(table.getString(i, 1), circles[2*i]-17, circles[2*i+1]+8, 10, 10);
+                }
             }
         }
     }

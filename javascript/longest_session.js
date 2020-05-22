@@ -82,9 +82,9 @@ const s3 = ( sketch ) => {
     }
 
     sketch.createCanvasAndDrawHourglasses = function() {
-        startOfGraph = 90;
         hourglassW = sketch.windowWidth/(2*inRow);
         hourglassH = hourglassW*164/116;
+        startOfGraph = 70+hourglassH/2;
 
         canvas = sketch.createCanvas(sketch.windowWidth, (rowsShortest[0]+rowsLongest[0])*hourglassH+80+startOfGraph);
         canvas.parent("longest_session");
@@ -107,7 +107,7 @@ const s3 = ( sketch ) => {
         sketch.textAlign(sketch.CENTER, sketch.CENTER);
         sketch.text("Tu lahko vidiš, kako dolga je bila najdaljša izmed sej v primerjavi z najkrajšo.",
             sketch.windowWidth/4, 0, sketch.windowWidth/2, 50);
-        sketch.image(scale, sketch.windowWidth/2-15*392/164, 50, 30*392/164, 30);
+        sketch.image(scale, sketch.windowWidth/2-hourglassH*392/656, 50, hourglassH*392/328, hourglassH/2);
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(24);
         sketch.text("Najkrajša seja", 0, startOfGraph, sketch.windowWidth, 30);

@@ -1,7 +1,7 @@
 const s5 = ( sketch ) => {
 
+    var wordFrequenciesAll;
     var xml;
-    var selectMenu;
     var center;
     var zamik;
     var topWords;
@@ -9,17 +9,27 @@ const s5 = ( sketch ) => {
     var speaker;
     var width;
     var table;
-    var sessions;
+    var session;
     var children;
+    var ages_of_speakers;
+    var presidents;
+    var currentSession;
 
     sketch.preload = function() {
-        xml = sketch.loadXML("data/seja.xml");
-        table = sketch.loadTable("parsed_data/events/votings.csv");
-        sessions = table.getColumn(0);
+        ages_of_speakers = sketch.loadTable("parsed_data/speakers/ages_of_speakers.csv");
+        presidents = sketch.loadTable("parsed_data/presidents/presidents.csv");
+        wordFrequenciesAll = sketch.loadTable("parsed_data/word_frequencies/word_frequencies_altogether.csv");
+        //wordFrequencies = sketch.loadTable("parsed_data/word_frequencies/word_frequencies_by_session.csv");
+        //table = sketch.loadTable("parsed_data/events/votings.csv");
+        //sessions = table.getColumn(0);
     }
 
     sketch.setup = function() {
-        children = xml.getChild("text").getChild("body").getChildren("div");
+        //presidents = getPresidents();
+        //ages_of_speakers = getSpeakers();
+        //console.log("Presidents", presidents);
+        //console.log("Speakers", ages_of_speakers);
+        //console.log("WordFrequenciesAll", wordFrequenciesAll);
 
         width = sketch.windowWidth;
         if(width > 1000) width /= 2;
@@ -33,38 +43,44 @@ const s5 = ( sketch ) => {
         sketch.textAlign(sketch.CENTER, sketch.CENTER);
         sketch.text("Časovnica seje", 0, 0, width-30, 50);
 
-        selectMenu = sketch.createSelect();
-        selectMenu.parent("select_menu");
-        selectMenu.position(10, 10, "relative");
-        let vseSeje = "Vse seje";
-        selectMenu.option(vseSeje);
-        selectMenu.selected(vseSeje);
-        //console.log(table);
-        for(let i = 0; i < sessions.length; i++) {
-            let seja = sessionNameFormating(sessions[i]);
-            selectMenu.option(seja);
-            //console.log(seja);
-        }
-        selectMenu.changed(sketch.mySelectEvent);
-
         let c = width*3/8;
         center = [c, 300];
         zamik = [10, -10, -10, 10, 10, 10, -10, -10];
 
-        sketch.drawSeats(80);
+        currentSession = getCurrentSession();
+        //console.log(currentSession);
+        sketch.drawSeats();
 
         sketch.fill(0);
         sketch.line(30, 530, width*3/4-30, 530);
         sketch.ellipse(30, 530, 10, 10);
-        sketch.noLoop();
+        //sketch.noLoop();
         topWords = ["", "", "", "", "", "", "", "", "", ""];
         sketch.countWords(1);
         sketch.drawWords();
         //sketch.drawLabels();
     }
 
+    //
     sketch.draw = function() {
-        sketch.frameRate(10);
+        if(currentSession !== getCurrentSession()) {
+            currentSession = getCurrentSession();
+            console.log(currentSession);
+            /*if(currentSession !== "Vse seje") {
+                xml = sketch.loadXML("/data/"+currentSession+".xml");
+                children = xml.getChild("text").getChild("body").getChildren("div");
+                console.log("data/"+currentSession+".xml");
+            }*/
+            //console.log(xml);
+            sketch.drawSeats();
+            sketch.fill(0);
+            sketch.line(30, 530, width*3/4-30, 530);
+            sketch.ellipse(30, 530, 10, 10);
+            sketch.countWords(1);
+            sketch.drawWords();
+            //sketch.noLoop();
+        }
+        /*sketch.frameRate(10);
         sketch.fill(255);
         sketch.noStroke();
         sketch.rect(0, 500,width*3/4, 50);
@@ -82,24 +98,50 @@ const s5 = ( sketch ) => {
         else {
             sketch.ellipse(width*3/4-30, 530, 10, 10);
             position = 1;
-        }
+        }*/
         //sketch.drawLabels();
     }
 
     sketch.mousePressed = function() {
         if (520 < sketch.mouseY && sketch.mouseY < 540) {
-            sketch.loop();
+            //sketch.loop();
         }
     }
 
     sketch.mouseReleased = function() {
-        sketch.noLoop();
-        sketch.countWords(position);
-        sketch.drawWords();
+        if (520 < sketch.mouseY && sketch.mouseY < 540) {
+            sketch.frameRate(10);
+            sketch.fill("#FFFFFF");
+            sketch.noStroke();
+            sketch.rect(0, 500,width*3/4, 50);
+            sketch.fill("#000000");
+            sketch.stroke("#000000");
+            sketch.line(30, 530, width*3/4-30, 530);
+            position = 0;
+            if(sketch.mouseX > 30 && sketch.mouseX <width*3/4-30) {
+                sketch.ellipse(sketch.mouseX, 530, 10, 10);
+                position = (sketch.mouseX-30)/(width*3/4-60);
+            }
+            else if (sketch.mouseX < 30){
+                sketch.ellipse(30, 530, 10, 10);
+                position = 0;
+            }
+            else {
+                sketch.ellipse(width*3/4-30, 530, 10, 10);
+                position = 1;
+            }
+            //sketch.noLoop();
+            sketch.countWords(position);
+            sketch.drawWords();
+        }
     }
 
-    sketch.drawSeats = function(number) {
+    sketch.drawSeats = function() {
+        //let rows = ages_of_speakers.findRows(currentSession, 0);
+        //let number = stringToArray(rows[0][2]).length/2;
+        number = 80;
         number = sketch.colorSeats(number);
+
         sketch.circle(center[0], center[1], 20);
         for(let j = 0; j < 4; j++) {
             for (let i = 0; i < 87; i++) {
@@ -120,6 +162,7 @@ const s5 = ( sketch ) => {
     }
 
     sketch.drawWords = function() {
+        //console.log("draw words", topWords, speaker);
         sketch.fill(255);
         sketch.noStroke();
         sketch.rect(width*3/4, 50,width/4, 500);
@@ -131,60 +174,80 @@ const s5 = ( sketch ) => {
         for(let i = 0; i < 10; i++) {
             sketch.text(topWords[i], width*3/4, i*30+150, width/4, 20);
         }
-        sketch.text(speaker.substring(0, speaker.length-1), 0, 30, width*3/4, 80);
+        speaker = speaker.replace(":", "");
+        sketch.text(speaker, 0, 30, width*3/4, 80);
     }
 
     sketch.countWords = function(time) {
-        let words = [];
-        let countWords = [];
-        let index = 0;
-        let countTop = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        speaker = "";
+        if(currentSession == "Vse seje") {
+            topWords = ["", "", "", "", "", "", "", "", "", ""];
+            for(let i = 0; i < 10; i++) {
+                topWords[i] = wordFrequenciesAll.getString(i, 1);
+            }
+            let index = Math.round(time*607);
+            //console.log(topWords);
+            //console.log("speaker1", index);
+            speaker = stringToArray(presidents.getString(index, 1))[0];
+            //console.log("speaker2", speaker);
+        } else {
+            //console.log(currentSession);
+            let words = [];
+            let countWords = [];
+            let index = 0;
+            let countTop = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            speaker = "";
 
-        for (let i = 0; i < children.length*time; i++) {
-            var type = children[i].getString("type");
+            xml = sketch.loadXML("data/"+currentSession+".xml");
+            console.log("data/"+currentSession+".xml");
+            console.log(xml);
+            console.log(xml.getChildren());
+            children = xml.getChild("text").getChild("body").getChildren("div");
 
-            if (type == "sp") {
-                var sp = children[i];
-                speaker = sp.getChildren()[0].getContent();
-                var utterance = sp.getChildren("u");
+            for (let i = 0; i < children.length*time; i++) {
+                var type = children[i].getString("type");
 
-                for (var j = 0; j < utterance.length; j++) {
-                    var sentences = utterance[j].getChildren("s");
+                if (type == "sp") {
+                    var sp = children[i];
+                    speaker = sp.getChildren()[0].getContent();
+                    var utterance = sp.getChildren("u");
 
-                    for(var k = 0; k < sentences.length; k++) {
-                        let sentenceWords = sentences[k].getChildren("w");
+                    for (var j = 0; j < utterance.length; j++) {
+                        var sentences = utterance[j].getChildren("s");
 
-                        for(var l = 0; l < sentenceWords.length; l++) {
-                            let lemma = sentenceWords[l].getString("lemma");
-                            if(lemma.length > 3 && lemma != "biti") {
-                                if (words.includes(sentenceWords[l].getString("lemma"))) {
-                                    countWords[words.indexOf(sentenceWords[l].getString("lemma"))]++;
-                                }
-                                else {
-                                    //console.log(sentenceWords[l], sentenceWords[l].getString("lemma"));
-                                    words[index] = sentenceWords[l].getString("lemma");
-                                    countWords[index] = 1;
-                                    index++;
+                        for(var k = 0; k < sentences.length; k++) {
+                            let sentenceWords = sentences[k].getChildren("w");
+
+                            for(var l = 0; l < sentenceWords.length; l++) {
+                                let lemma = sentenceWords[l].getString("lemma");
+                                if(lemma.length > 3 && lemma != "biti") {
+                                    if (words.includes(sentenceWords[l].getString("lemma"))) {
+                                        countWords[words.indexOf(sentenceWords[l].getString("lemma"))]++;
+                                    }
+                                    else {
+                                        //console.log(sentenceWords[l], sentenceWords[l].getString("lemma"));
+                                        words[index] = sentenceWords[l].getString("lemma");
+                                        countWords[index] = 1;
+                                        index++;
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-        }
-        for (let i = 0; i < words.length; i++) {
-            if(countTop[9] < countWords[i]) {
-                topWords[9] = words[i];
-                countTop[9] = countWords[i];
-                let j = 9;
-                while(j > 0 && countTop[j] > countTop[j-1]) {
-                    temp = [countTop[j], topWords[j]];
-                    countTop[j] = countTop[j-1];
-                    topWords[j] = topWords[j-1];
-                    countTop[j-1] = temp[0];
-                    topWords[j-1] = temp[1];
-                    j--;
+            for (let i = 0; i < words.length; i++) {
+                if(countTop[9] < countWords[i]) {
+                    topWords[9] = words[i];
+                    countTop[9] = countWords[i];
+                    let j = 9;
+                    while(j > 0 && countTop[j] > countTop[j-1]) {
+                        temp = [countTop[j], topWords[j]];
+                        countTop[j] = countTop[j-1];
+                        topWords[j] = topWords[j-1];
+                        countTop[j-1] = temp[0];
+                        topWords[j-1] = temp[1];
+                        j--;
+                    }
                 }
             }
         }
@@ -205,10 +268,6 @@ const s5 = ( sketch ) => {
         return "";
     }
 
-    sketch.mySelectEvent = function() {
-
-    }
-
     sketch.colorSeats = function(x) {
         sketch.noStroke();
         if(x > 0) {
@@ -225,24 +284,33 @@ const s5 = ( sketch ) => {
     }
 
     sketch.drawLabels = function() {
-        speaker = "";
+        if(currentSession !== "Vse seje") {
+            speaker = "";
+            for (let i = 0; i < children.length; i++) {
+                var type = children[i].getString("type");
 
-        for (let i = 0; i < children.length; i++) {
-            var type = children[i].getString("type");
+                if (type == "sp") {
+                    var sp = children[i];
 
-            if (type == "sp") {
-                var sp = children[i];
-
-                if(speaker !== sp.getChildren()[0].getContent()) {
-                    // line: 30, 530, width*3/4-30, 530
-                    let labelX = (i/children.length)*(width*3/4-60)+30;
-                    sketch.line(labelX, 527, labelX, 533);
+                    if(speaker !== sp.getChildren()[0].getContent()) {
+                        // line: 30, 530, width*3/4-30, 530
+                        let labelX = (i/children.length)*(width*3/4-60)+30;
+                        sketch.line(labelX, 527, labelX, 533);
+                    }
+                    speaker = sp.getChildren()[0].getContent();
                 }
-
-                speaker = sp.getChildren()[0].getContent();
             }
         }
+
     }
 }
 
 new p5(s5);
+
+/*function refreshTimeline(session) {
+    if (session === "Vse seje") {
+    } else {
+        let xml = loadXML("data/"+session);
+    }
+
+}*/

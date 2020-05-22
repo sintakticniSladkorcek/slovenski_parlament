@@ -34,3 +34,22 @@ function stringToArray(string) {
     }
     return array;
 }
+
+var currentSession = "Vse seje";
+var currentSessionId = 608;
+function setCurrentSession(session) {currentSession = session}
+function getCurrentSession() {return currentSession}
+function setCurrentSessionId(id) {currentSessionId = id}
+function getCurrentSessionId() {return currentSessionId}
+
+
+var ages_of_speakers;
+var presidents;
+
+function preload() {
+    ages_of_speakers = loadTable("parsed_data/speakers/ages_of_speakers.csv");
+    presidents = loadTable("parsed_data/presidents/presidents.csv");
+}
+
+function getSpeakers() {return ages_of_speakers}
+function getPresidents() {return presidents}

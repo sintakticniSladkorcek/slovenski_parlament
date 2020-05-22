@@ -7,10 +7,12 @@ const s4 = ( sketch ) => {
     var shown;
     var img;
     var seja;
+    var table;
 
     sketch.preload = function() {
-        xml = sketch.loadXML("data/seja.xml");
+        //xml = sketch.loadXML("data/seja.xml");
         img = sketch.loadImage("pictures/applause.jpg");
+        table = sketch.loadTable("parsed_data/events/applauses.csv");
     }
 
     sketch.setup = function() {
@@ -20,7 +22,7 @@ const s4 = ( sketch ) => {
         canvas = sketch.createCanvas(sketch.windowWidth, imgH+30);
         canvas.parent('most_applauses');*/
 
-        countApplauses = 0;
+        /*countApplauses = 0;
         seja = "";
         let children = xml.getChild("text").getChild("body").getChildren("div");
 
@@ -37,8 +39,16 @@ const s4 = ( sketch ) => {
                     countApplauses++;
                 }
             }
+        }*/
+        countApplauses = 0;
+        for(let i = 0; i < table.getRowCount(); i++) {
+            if(countApplauses < table.get(i, 1)) {
+                countApplauses = table.get(i, 1);
+                seja = table.get(i, 0);
+            }
         }
-
+        seja = sessionNameFormating(seja);
+        //console.log(countApplauses, seja);
 
         /*sketch.textFont("Courier");
         sketch.textStyle(sketch.BOLD);
@@ -70,6 +80,7 @@ const s4 = ( sketch ) => {
 
     sketch.drawHands = function() {
         if(shown === countApplauses) {
+            //console.log("draw again");
             for(let i = 0; i < countApplauses; i++) {
                 sketch.image(img, sketch.windowWidth/4+imgW*(i%10), 50+imgH*Math.floor(i/10), imgW, imgH);
             }
@@ -79,6 +90,7 @@ const s4 = ( sketch ) => {
     sketch.createCanvasAndTitle = function() {
         imgW = sketch.windowWidth/20;
         imgH = imgW;
+        //console.log(imgW, imgH);
 
         canvas = sketch.createCanvas(sketch.windowWidth, 50+imgH*Math.ceil(countApplauses/10));
         canvas.parent('most_applauses');
