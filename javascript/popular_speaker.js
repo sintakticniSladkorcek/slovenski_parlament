@@ -105,9 +105,9 @@ const s7 = ( sketch ) => {
         sketch.textStyle(sketch.NORMAL);
         sketch.textSize(16);
         sketch.rectMode(sketch.CENTER);
-        sketch.text(text[1] + data[1], offsetX+82, offsetY+242-height2, 105, 100);
-        sketch.text(text[0] + data[0], offsetX+190, offsetY+89, 105, 100);
-        sketch.text(text[2] + data[2], offsetX+298, offsetY+242-height3, 105, 100);
+        sketch.text(text[1] + " " + data[1], offsetX+82, offsetY+242-height2, 105, 100);
+        sketch.text(text[0] + " " + + data[0], offsetX+190, offsetY+89, 105, 100);
+        sketch.text(text[2] + " " + + data[2], offsetX+298, offsetY+242-height3, 105, 100);
         sketch.rectMode(sketch.CORNER);
     }
 
