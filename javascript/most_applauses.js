@@ -1,6 +1,5 @@
 const s4 = ( sketch ) => {
 
-    var xml;
     var countApplauses;
     var canvas;
     var mouse;
@@ -62,7 +61,8 @@ const s4 = ( sketch ) => {
 
         sketch.textStyle(sketch.NORMAL);
         sketch.textSize(16);
-        sketch.text(seja, 0, 30, sketch.windowWidth, 20);
+        my_string = seja + ": " + countApplauses + " aplavzov"
+        sketch.text(my_string, 0, 30, sketch.windowWidth, 20);
     }
 
     sketch.windowResized = function() {
