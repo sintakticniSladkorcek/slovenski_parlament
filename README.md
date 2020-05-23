@@ -28,7 +28,6 @@ Basic functions for conversion to `instance mode` for working with more canvases
 
 ## TODO
 
-- poveži incidente na pravi file
 - poveži aplavze na dejanske podatke
 - aplavzi : podoben prikaz kot za peščene ure?
 - dodaj legendo za aplavze

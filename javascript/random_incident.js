@@ -5,7 +5,7 @@ const s9 = ( sketch ) => {
     var w;
 
     sketch.preload = function() {
-        table = sketch.loadTable("parsed_data/events/list_of_all_different_events.csv");
+        table = sketch.loadTable("parsed_data/events/incidents.csv");
     }
 
     sketch.setup = function() {
@@ -21,7 +21,8 @@ const s9 = ( sketch ) => {
             sketch.textStyle(sketch.NORMAL);
             sketch.textSize(20);
             let random = Math.floor(Math.random() * table.getRowCount());
-            sketch.text(table.getString(random, 0), 0, 0, w, 50);
+            
+            sketch.text(table.rows[random].arr.join(), 0, 0, w, 50);
         }
 
     }
