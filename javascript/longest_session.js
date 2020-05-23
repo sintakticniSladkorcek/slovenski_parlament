@@ -13,7 +13,11 @@ const s3 = ( sketch ) => {
     var counterLongest;
     var shownLongest;
     var shortestSession;
+    var shortestSessionHours;
+    var shortestSessionMinutes;
     var longestSession;
+    var longestSessionHours;
+    var longestSessionMinutes;
     var inRow;
     var startOfGraph;
     var scale;
@@ -48,6 +52,18 @@ const s3 = ( sketch ) => {
         rowsLongest = [Math.ceil(minutes/inRow), Math.ceil(minutes%inRow)];
         if (rowsShortest[1] === 0) rowsShortest[1] = inRow;
         if (rowsLongest[1] === 0) rowsLongest[1] = inRow;
+        
+        // shortest session length in hours and minutes
+        let seconds = parseInt(table.getString(shortestSession[0], 1))
+        shortestSessionHours = Math.floor(seconds / 3600);
+        let remainder = seconds - (shortestSessionHours * 3600)
+        shortestSessionMinutes = remainder / 60;
+
+        // longest session length in hours and minutes
+        seconds = parseInt(table.getString(longestSession[0], 1))
+        longestSessionHours = Math.floor(seconds / 3600);
+        remainder = seconds - (longestSessionHours * 3600)
+        longestSessionMinutes = remainder / 60;
 
         sketch.createCanvasAndDrawHourglasses();
 
@@ -76,7 +92,7 @@ const s3 = ( sketch ) => {
         }
         if (counterLongest < Math.min(shownLongest, (rowsLongest[0]-1)*inRow+rowsLongest[1])) {
             sketch.image(full, sketch.windowWidth/4+hourglassW*(counterLongest%inRow),
-                (hourglassH*rowsShortest[0]+80)+hourglassH*Math.floor(counterLongest/inRow)+startOfGraph, hourglassW, hourglassH);
+                (hourglassH*rowsShortest[0]+100)+hourglassH*Math.floor(counterLongest/inRow)+startOfGraph, hourglassW, hourglassH);
             counterLongest++;
         }
     }
@@ -84,9 +100,9 @@ const s3 = ( sketch ) => {
     sketch.createCanvasAndDrawHourglasses = function() {
         hourglassW = sketch.windowWidth/(2*inRow);
         hourglassH = hourglassW*164/116;
-        startOfGraph = 70+hourglassH/2;
+        startOfGraph = 90+hourglassH/2;
 
-        canvas = sketch.createCanvas(sketch.windowWidth, (rowsShortest[0]+rowsLongest[0])*hourglassH+80+startOfGraph);
+        canvas = sketch.createCanvas(sketch.windowWidth, (rowsShortest[0]+rowsLongest[0])*hourglassH+100+startOfGraph);
         canvas.parent("longest_session");
 
         for(let i = 0; i < rowsShortest[0]; i++) {
@@ -97,7 +113,7 @@ const s3 = ( sketch ) => {
         for(let i = 0; i < rowsLongest[0]; i++) {
             for(let j = 0; j < inRow; j++) {
                 sketch.image(empty, sketch.windowWidth/4+hourglassW*j,
-                    (hourglassH*rowsShortest[0]+80)+hourglassH*i+startOfGraph, hourglassW, hourglassH);
+                    (hourglassH*rowsShortest[0]+100)+hourglassH*i+startOfGraph, hourglassW, hourglassH);
             }
         }
 
@@ -105,13 +121,43 @@ const s3 = ( sketch ) => {
         sketch.textStyle(sketch.NORMAL);
         sketch.textSize(14);
         sketch.textAlign(sketch.CENTER, sketch.CENTER);
-        sketch.text("Tu lahko vidiš, kako dolga je bila najdaljša izmed sej v primerjavi z najkrajšo.",
-            sketch.windowWidth/4, 0, sketch.windowWidth/2, 50);
-        sketch.image(scale, sketch.windowWidth/2-hourglassH*392/656, 50, hourglassH*392/328, hourglassH/2);
+        let helper_string = "minut";
+        let my_string = "Tu lahko vidiš, kako dolga je bila najdaljša izmed sej v primerjavi z najkrajšo. Najdaljša izmed vseh sej je trajala ";
+        if(longestSessionHours > 0){
+            my_string += longestSessionHours;
+            my_string += " ur in ";
+        }
+        my_string += longestSessionMinutes;
+        if(longestSessionMinutes == 1){
+            helper_string += "o";
+        } else if(longestSessionMinutes == 2){
+            helper_string += "i";
+        } else if(longestSessionMinutes == 3 || longestSessionMinutes == 4){
+            helper_string += "e";
+        }
+        my_string += " " + helper_string + ", najkrajša pa ";
+
+        helper_string = "minut";
+        if(shortestSessionHours > 0){
+            my_string += shortestSessionHours;
+            my_string += " ur in ";
+        }
+        my_string += shortestSessionMinutes;
+        if(shortestSessionMinutes == 1){
+            helper_string += "o";
+        } else if(shortestSessionMinutes == 2){
+            helper_string += "i";
+        } else if(shortestSessionMinutes == 3 || shortestSessionMinutes == 4){
+            helper_string += "e";
+        }
+        my_string += " " + helper_string + ".";
+
+        sketch.text(my_string, sketch.windowWidth/4, 0, sketch.windowWidth/2, 70);
+        sketch.image(scale, sketch.windowWidth/2-hourglassH*392/656, 70, hourglassH*392/328, hourglassH/2);
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(24);
         sketch.text("Najkrajša seja", 0, startOfGraph, sketch.windowWidth, 30);
-        sketch.text("Najdaljša seja", 0, hourglassH*rowsShortest[0]+50+startOfGraph, sketch.windowWidth, 30);
+        sketch.text("Najdaljša seja", 0, hourglassH*rowsShortest[0]+70+startOfGraph, sketch.windowWidth, 30);
     }
 
     sketch.windowResized = function() {
@@ -125,7 +171,7 @@ const s3 = ( sketch ) => {
         if(counterLongest === (rowsLongest[0]-1)*inRow+rowsLongest[1]) {
             for(let i = 0; i < (rowsLongest[0]-1)*inRow+rowsLongest[1]; i++) {
                 sketch.image(full, sketch.windowWidth/4+hourglassW*(i%inRow),
-                    (hourglassH*rowsShortest[0]+80)+hourglassH*Math.floor(i/inRow)+startOfGraph, hourglassW, hourglassH);
+                    (hourglassH*rowsShortest[0]+100)+hourglassH*Math.floor(i/inRow)+startOfGraph, hourglassW, hourglassH);
             }
         }
     }
