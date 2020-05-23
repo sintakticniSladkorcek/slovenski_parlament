@@ -28,13 +28,10 @@ Basic functions for conversion to `instance mode` for working with more canvases
 
 ## TODO
 
-- dodaj legendo za aplavze
 - popravi prikaz imen na stopničkah
 - kateri na stopničkah so hkrati predsedniki?
 - stopničke za ne-predsednike
 - opomba, zakaj predsedniki več govorijo
-- poupdataj naslove za posamezno sejo
-- prikaz za najbolj vljudno sejo
 - število vseh sej bi blo smiselno nekam dat
 - (dodaj še število pojavitev k besedam v session_timeline - maybe)
 - za vsako sejo prikaži neke osnovne podatke (tam pri session_timeline), recimo trajanje, število govorov, najpogostejše besede, najdaljša poved, ...

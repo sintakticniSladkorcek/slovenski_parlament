@@ -1,32 +1,31 @@
 const s11 = ( sketch ) => {
 
     var table;
-    var tables;
     var w;
-    var sessions;
+    var seja;
+    var politeness;
 
     sketch.preload = function() {
-        table = sketch.loadTable("parsed_data/word_frequencies/word_frequencies_by_session.csv");
-        sessions = table.getColumn(0);
-        tables = [];
-        for(let i = 0; i < sessions.length; i++) {
-            table[i] = sketch.loadTable("parsed_data/word_frequencies/" + sessions[i] + ".csv");
-        }
+        table = sketch.loadTable("parsed_data/politeness/polite_sessions.csv");
     }
 
     sketch.setup = function() {
-        sketch.createCanvasAndTitle();
+        seja = table.get(0, 0);
+        seja = sessionNameFormating(seja);
+        politeness = table.get(0, 1);
+
+        sketch.createCanvasAndWriteTitle();
     }
 
     sketch.draw = function() {
     }
 
 
-    sketch.createCanvasAndTitle = function() {
+    sketch.createCanvasAndWriteTitle = function() {
         w = sketch.windowWidth;
-        if(w > 1000) w /= 2;
+        if(w > 1000) w = w/2;
 
-        canvas = sketch.createCanvas(w, 100);
+        canvas = sketch.createCanvas(w, 80);
         canvas.parent('most_polite_session');
 
         sketch.textFont("Courier");
@@ -34,10 +33,17 @@ const s11 = ( sketch ) => {
         sketch.textSize(24);
         sketch.textAlign(sketch.CENTER, sketch.CENTER);
         sketch.text("Najbolj vljudna seja", 0, 0, sketch.windowWidth, 30);
+
+        sketch.textStyle(sketch.NORMAL);
+        sketch.textSize(16);
+        sketch.text(seja, 0, 30, sketch.windowWidth, 20);
+
+        my_string = "ŠTEVILO VLJUDNIH BESED: " + politeness;
+        sketch.text(my_string, 0, 55, sketch.windowWidth, 20);
     }
 
     sketch.windowResized = function() {
-        sketch.createCanvasAndTitle();
+        sketch.createCanvasAndWriteTitle();
     }
 
 }
