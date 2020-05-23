@@ -21,14 +21,17 @@ const s7 = ( sketch ) => {
         imgW = 380;
         imgH = 330;
 
-        canvas = sketch.createCanvas(imgW, 130+3*imgH);
+        w = sketch.windowWidth;
+        if(w > 1000) w /= 2;
+
+        canvas = sketch.createCanvas(imgW, 240+3*imgH);
         canvas.parent("popular_speaker");
 
         sketch.textFont("Courier");
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(24);
         sketch.textAlign(sketch.CENTER, sketch.CENTER);
-        sketch.text("Največ sej", 0, 0, imgW, 30);
+        sketch.text("Govorci na največ sejah", 0, 0, imgW, 30);
         let text = ["", "", ""];
         let data = [0, 0, 0];
         for(let i = 0; i < 3; i++) {
@@ -39,21 +42,25 @@ const s7 = ( sketch ) => {
 
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(24);
-        sketch.text("Največ govorov", 0, 50+imgH, imgW, 30);
+        sketch.text("Govorci z največ govori", 0, 50+imgH, imgW, 30);
         for(let i = 0; i < 3; i++) {
             text[i] = speachesPerSpeaker.get(i, 0);
             data[i] = parseInt(speachesPerSpeaker.get(i, 1));
         }
-        sketch.drawPodium(text, data, 0, 20+imgH);
+        sketch.drawPodium(text, data, 0, 30+20+imgH);
 
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(24);
-        sketch.text("Največ besed", 0, 100+2*imgH, imgW, 30);
+        sketch.text("Govorci z največ izgovorjenimi besedami", 0, 100+2*imgH, imgW, 30);
         for(let i = 0; i < 3; i++) {
             text[i] = wordsPerSpeaker.get(i, 0);
             data[i] = parseInt(wordsPerSpeaker.get(i, 1));
         }
-        sketch.drawPodium(text, data, 0, 70+2*imgH);
+        sketch.drawPodium(text, data, 0, 60+40+2*imgH);
+
+        sketch.textStyle(sketch.NORMAL);
+        sketch.textSize(16);
+        sketch.text("OPOMBA: Govorci na stopničkah so bili tudi predsedujoči na večih sejah. Ker predsedujoči vodi sejo, pride do besede občutno večkrat kot ostali govorci na seji.", 0, 150+3*imgH, imgW, 70);
         /*sketch.textStyle(sketch.NORMAL);
         sketch.textSize(16);
         sketch.image(podium, 0, 130+2*imgH, imgW, imgH);
