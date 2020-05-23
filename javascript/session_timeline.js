@@ -14,31 +14,35 @@ const s5 = ( sketch ) => {
     var ages_of_speakers;
     var presidents;
     var currentSessionId;
-
-
-
-    sketch.execute = function() {
-        ages_of_speakers = sketch.loadTable("parsed_data/speakers/ages_of_speakers.csv");
-        presidents = sketch.loadTable("parsed_data/presidents/presidents.csv", sketch.successCallback());
-        wordFrequenciesAll = sketch.loadTable("parsed_data/word_frequencies/word_frequencies_altogether.csv");
-        return presidents;
-    }
-
-    sketch.successCallback = function() {
-        console.log(presidents);
-        xml = [];
-        for(let i = 0; i < 608; i++) {
-            session = presidents.getString(i, 0);
-            xml.push(sketch.loadXML("data/"+session+".xml"));
-        }
-    }
+    var myPromise;
 
     sketch.preload = function() {
         //wordFrequencies = sketch.loadTable("parsed_data/word_frequencies/word_frequencies_by_session.csv");
         //table = sketch.loadTable("parsed_data/events/votings.csv");
         //sessions = table.getColumn(0);
-        sketch.execute();
+        ages_of_speakers = sketch.loadTable("parsed_data/speakers/ages_of_speakers.csv");
+        presidents = sketch.loadTable("parsed_data/presidents/presidents.csv");
+        wordFrequenciesAll = sketch.loadTable("parsed_data/word_frequencies/word_frequencies_altogether.csv");
     }
+
+    /*sketch.resolve = async function() {
+        await myPromise;
+        //console.log(presidents);
+        xml = [];
+        for(let i = 0; i < 608; i++) {
+            session = presidents.getString(i, 0);
+            xml.push(sketch.loadXML("data/" + session + ".xml"));
+        }
+    }
+    sketch.execute = function() {
+        ages_of_speakers = sketch.loadTable("parsed_data/speakers/ages_of_speakers.csv");
+        presidents = sketch.loadTable("parsed_data/presidents/presidents.csv");
+        wordFrequenciesAll = sketch.loadTable("parsed_data/word_frequencies/word_frequencies_altogether.csv");
+    }
+    sketch.loadFile = function(id) {
+        session = presidents.getString(i, 0);
+        xml = sketch.loadXML("data/" + session + ".xml");
+    }*/
 
     sketch.setup = function() {
         /*xml = [];
@@ -69,24 +73,21 @@ const s5 = ( sketch ) => {
         zamik = [10, -10, -10, 10, 10, 10, -10, -10];
 
         currentSessionId = getCurrentSessionId();
-        //console.log(currentSession);
         sketch.drawSeats();
 
         sketch.fill(0);
         sketch.line(30, 530, width*3/4-30, 530);
         sketch.ellipse(30, 530, 10, 10);
-        //sketch.noLoop();
         topWords = ["", "", "", "", "", "", "", "", "", ""];
         sketch.countWords(1);
-        sketch.drawWords();
-        //sketch.drawLabels();
+        //sketch.drawWords();
     }
 
     //
     sketch.draw = function() {
         if(currentSessionId !== getCurrentSessionId()) {
             currentSessionId = getCurrentSessionId();
-            console.log(currentSessionId);
+            //console.log(currentSessionId);
             /*if(currentSession !== "Vse seje") {
                 xml = sketch.loadXML("/data/"+currentSession+".xml");
                 children = xml.getChild("text").getChild("body").getChildren("div");
@@ -94,11 +95,15 @@ const s5 = ( sketch ) => {
             }*/
             //console.log(xml);
             sketch.drawSeats();
-            sketch.fill(0);
+            sketch.fill("#FFFFFF");
+            sketch.noStroke();
+            sketch.rect(0, 500,width*3/4, 50);
+            sketch.fill("#000000");
+            sketch.stroke("#000000");
             sketch.line(30, 530, width*3/4-30, 530);
             sketch.ellipse(30, 530, 10, 10);
             sketch.countWords(1);
-            sketch.drawWords();
+            //sketch.drawWords();
             //sketch.noLoop();
         }
         /*sketch.frameRate(10);
@@ -131,7 +136,6 @@ const s5 = ( sketch ) => {
 
     sketch.mouseReleased = function() {
         if (520 < sketch.mouseY && sketch.mouseY < 540) {
-            sketch.frameRate(10);
             sketch.fill("#FFFFFF");
             sketch.noStroke();
             sketch.rect(0, 500,width*3/4, 50);
@@ -153,7 +157,7 @@ const s5 = ( sketch ) => {
             }
             //sketch.noLoop();
             sketch.countWords(position);
-            sketch.drawWords();
+            //sketch.drawWords();
         }
     }
 
@@ -182,8 +186,8 @@ const s5 = ( sketch ) => {
         }
     }
 
-    sketch.drawWords = function() {
-        //console.log("draw words", topWords, speaker);
+    sketch.drawWords = async function() {
+        console.log("draw words", topWords, speaker);
         sketch.fill(255);
         sketch.noStroke();
         sketch.rect(width*3/4, 50,width/4, 500);
@@ -210,71 +214,21 @@ const s5 = ( sketch ) => {
             //console.log("speaker1", index);
             speaker = stringToArray(presidents.getString(index, 1))[0];
             //console.log("speaker2", speaker);
+            sketch.drawWords(time);
         } else {
             //console.log(currentSession);
-            let words = [];
-            let countWords = [];
-            let index = 0;
-            let countTop = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-            speaker = "";
 
             //xml = sketch.loadXML("data/"+currentSession+".xml");
 
             //console.log("data/"+currentSession+".xml");
             //console.log(xml[currentSessionId]);[currentSessionId]
             //console.log(xml[currentSessionId].getChildren());
-            session = ages_of_speakers.getString(currentSessionId, 0);
-            let xmll = sketch.loadXML("data/"+session+".xml");
-            console.log(xmll);
-            let children = xmll.getChild("text").getChild("body").getChildren("div");
-
-            for (let i = 0; i < children.length*time; i++) {
-                var type = children[i].getString("type");
-
-                if (type == "sp") {
-                    var sp = children[i];
-                    speaker = sp.getChildren()[0].getContent();
-                    var utterance = sp.getChildren("u");
-
-                    for (var j = 0; j < utterance.length; j++) {
-                        var sentences = utterance[j].getChildren("s");
-
-                        for(var k = 0; k < sentences.length; k++) {
-                            let sentenceWords = sentences[k].getChildren("w");
-
-                            for(var l = 0; l < sentenceWords.length; l++) {
-                                let lemma = sentenceWords[l].getString("lemma");
-                                if(lemma.length > 3 && lemma != "biti") {
-                                    if (words.includes(sentenceWords[l].getString("lemma"))) {
-                                        countWords[words.indexOf(sentenceWords[l].getString("lemma"))]++;
-                                    }
-                                    else {
-                                        //console.log(sentenceWords[l], sentenceWords[l].getString("lemma"));
-                                        words[index] = sentenceWords[l].getString("lemma");
-                                        countWords[index] = 1;
-                                        index++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            for (let i = 0; i < words.length; i++) {
-                if(countTop[9] < countWords[i]) {
-                    topWords[9] = words[i];
-                    countTop[9] = countWords[i];
-                    let j = 9;
-                    while(j > 0 && countTop[j] > countTop[j-1]) {
-                        temp = [countTop[j], topWords[j]];
-                        countTop[j] = countTop[j-1];
-                        topWords[j] = topWords[j-1];
-                        countTop[j-1] = temp[0];
-                        topWords[j-1] = temp[1];
-                        j--;
-                    }
-                }
-            }
+            myPromise = new Promise(function(resolve, reject){
+                session = presidents.getString(currentSessionId, 0);
+                xml = sketch.loadXML("data/"+session+".xml");
+                setTimeout(resolve, 200);
+            });
+            sketch.countWordsOnload(time);
         }
     }
 
@@ -326,7 +280,69 @@ const s5 = ( sketch ) => {
                 }
             }
         }
+    }
 
+    sketch.countWordsOnload = async function(time) {
+        await myPromise;
+
+        let words = [];
+        let countWords = [];
+        let index = 0;
+        let countTop = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        speaker = "";
+
+        let children = xml.getChild("text").getChild("body").getChildren("div");
+
+        for (let i = 0; i < children.length*time; i++) {
+            var type = children[i].getString("type");
+
+            if (type == "sp") {
+                var sp = children[i];
+                speaker = sp.getChildren()[0].getContent();
+                var utterance = sp.getChildren("u");
+
+                for (var j = 0; j < utterance.length; j++) {
+                    var sentences = utterance[j].getChildren("s");
+
+                    for(var k = 0; k < sentences.length; k++) {
+                        let sentenceWords = sentences[k].getChildren("w");
+
+                        for(var l = 0; l < sentenceWords.length; l++) {
+                            let lemma = sentenceWords[l].getString("lemma");
+                            if(lemma.length > 3 && lemma != "biti") {
+                                if (words.includes(sentenceWords[l].getString("lemma"))) {
+                                    countWords[words.indexOf(sentenceWords[l].getString("lemma"))]++;
+                                }
+                                else {
+                                    //console.log(sentenceWords[l], sentenceWords[l].getString("lemma"));
+                                    words[index] = sentenceWords[l].getString("lemma");
+                                    countWords[index] = 1;
+                                    index++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        for (let i = 0; i < words.length; i++) {
+            if(countTop[9] < countWords[i]) {
+                topWords[9] = words[i];
+                countTop[9] = countWords[i];
+                let j = 9;
+                while(j > 0 && countTop[j] > countTop[j-1]) {
+                    temp = [countTop[j], topWords[j]];
+                    countTop[j] = countTop[j-1];
+                    topWords[j] = topWords[j-1];
+                    countTop[j-1] = temp[0];
+                    topWords[j-1] = temp[1];
+                    j--;
+                }
+            }
+        }
+        //console.log("count words", speaker, topWords);
+
+        sketch.drawWords(time);
     }
 }
 

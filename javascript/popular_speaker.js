@@ -28,7 +28,7 @@ const s7 = ( sketch ) => {
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(24);
         sketch.textAlign(sketch.CENTER, sketch.CENTER);
-        sketch.text("Največ sej", 0, 0, sketch.windowWidth/2, 30);
+        sketch.text("Največ sej", 0, 0, imgW, 30);
         let text = ["", "", ""];
         let data = [0, 0, 0];
         for(let i = 0; i < 3; i++) {
@@ -36,35 +36,19 @@ const s7 = ( sketch ) => {
             data[i] = parseInt(sessionsPerSpeaker.get(i, 1));
         }
         sketch.drawPodium(text, data, 0, 0);
-        /*sketch.textStyle(sketch.NORMAL);
-        sketch.textSize(16);
-        sketch.image(podium, 0, 30, imgW, imgH);
-        sketch.rectMode(sketch.CENTER);
-        sketch.text(sessionsPerSpeaker.get(0, 0) + ", " + sessionsPerSpeaker.get(0, 1), 85, 130, 110, 100);
-        sketch.text(sessionsPerSpeaker.get(1, 0) + ", " + sessionsPerSpeaker.get(1, 1), 195, 105, 110, 100);
-        sketch.text(sessionsPerSpeaker.get(2, 0) + ", " + sessionsPerSpeaker.get(2, 1), 312, 168, 110, 100);
-        sketch.rectMode(sketch.CORNER);*/
 
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(24);
-        sketch.text("Največ govorov", 0, 50+imgH, sketch.windowWidth/2, 30);
+        sketch.text("Največ govorov", 0, 50+imgH, imgW, 30);
         for(let i = 0; i < 3; i++) {
             text[i] = speachesPerSpeaker.get(i, 0);
             data[i] = parseInt(speachesPerSpeaker.get(i, 1));
         }
         sketch.drawPodium(text, data, 0, 20+imgH);
-        /*sketch.textStyle(sketch.NORMAL);
-        sketch.textSize(16);
-        sketch.image(podium, 0, 80+imgH, imgW, imgH);
-        sketch.rectMode(sketch.CENTER);
-        sketch.text(speachesPerSpeaker.get(0, 0) + ", " + speachesPerSpeaker.get(0, 1), 85, 130+50+imgH, 110, 100);
-        sketch.text(speachesPerSpeaker.get(1, 0) + ", " + speachesPerSpeaker.get(1, 1), 195, 100+50+imgH, 110, 100);
-        sketch.text(speachesPerSpeaker.get(2, 0) + ", " + speachesPerSpeaker.get(2, 1), 312, 168+50+imgH, 110, 100);
-        sketch.rectMode(sketch.CORNER);*/
 
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(24);
-        sketch.text("Največ besed", 0, 100+2*imgH, sketch.windowWidth/2, 30);
+        sketch.text("Največ besed", 0, 100+2*imgH, imgW, 30);
         for(let i = 0; i < 3; i++) {
             text[i] = wordsPerSpeaker.get(i, 0);
             data[i] = parseInt(wordsPerSpeaker.get(i, 1));
