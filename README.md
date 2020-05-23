@@ -28,7 +28,15 @@ Basic functions for conversion to `instance mode` for working with more canvases
 
 ## TODO
 
-- popravi pot do filov v popular_speakers.js
+- poveži incidente na pravi file
+- poveži aplavze na dejanske podatke
+- aplavzi : podoben prikaz kot za peščene ure?
+- dodaj legendo za aplavze
+- popravi prikaz imen na stopničkah
+- kateri na stopničkah so hkrati predsedniki?
+- stopničke za ne-predsednike
+- opomba, zakaj predsedniki več govorijo
+- poupdataj naslove za posamezno sejo
+- prikaz za najbolj vljudno sejo
 - (dodaj še število pojavitev k besedam v session_timeline - maybe)
 - za vsako sejo prikaži neke osnovne podatke (tam pri session_timeline), recimo trajanje, število govorov, najpogostejše besede, najdaljša poved, ...
-- dodaj legendo za aplavze
