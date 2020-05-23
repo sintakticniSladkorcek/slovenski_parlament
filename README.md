@@ -28,8 +28,6 @@ Basic functions for conversion to `instance mode` for working with more canvases
 
 ## TODO
 
-- poveži aplavze na dejanske podatke
-- aplavzi : podoben prikaz kot za peščene ure?
 - dodaj legendo za aplavze
 - popravi prikaz imen na stopničkah
 - kateri na stopničkah so hkrati predsedniki?

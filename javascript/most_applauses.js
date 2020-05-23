@@ -16,49 +16,10 @@ const s4 = ( sketch ) => {
     }
 
     sketch.setup = function() {
-        /*imgW = sketch.windowWidth/20;
-        imgH = imgW;
 
-        canvas = sketch.createCanvas(sketch.windowWidth, imgH+30);
-        canvas.parent('most_applauses');*/
-
-        /*countApplauses = 0;
-        seja = "";
-        let children = xml.getChild("text").getChild("body").getChildren("div");
-
-        for(let i = 0; i < children.length; i++) {
-            if(children[i].getString("type") === "preface") {
-                let heads = children[i].getChildren("head");
-                seja = heads[0].getContent().toString() + ": ";
-                seja += heads[1].getContent().toString();
-            }
-            let incidents = children[i].getChildren("incident");
-
-            for(let j = 0; j < incidents.length; j++) {
-                if((incidents[j].getContent()).includes("Aplavz")) {
-                    countApplauses++;
-                }
-            }
-        }*/
-        countApplauses = 0;
-        for(let i = 0; i < table.getRowCount(); i++) {
-            if(countApplauses < table.get(i, 1)) {
-                countApplauses = table.get(i, 1);
-                seja = table.get(i, 0);
-            }
-        }
+        seja = table.get(0, 0);
+        countApplauses = table.get(0, 1);
         seja = sessionNameFormating(seja);
-        //console.log(countApplauses, seja);
-
-        /*sketch.textFont("Courier");
-        sketch.textStyle(sketch.BOLD);
-        sketch.textSize(24);
-        sketch.textAlign(sketch.CENTER, sketch.CENTER);
-        sketch.text("Največ aplavzov na seji", 0, 0, sketch.windowWidth, 30);
-
-        sketch.textStyle(sketch.NORMAL);
-        sketch.textSize(16);
-        sketch.text(seja, 0, 30, sketch.windowWidth, 20);*/
 
         sketch.createCanvasAndTitle();
         mouse = 0;
@@ -80,7 +41,6 @@ const s4 = ( sketch ) => {
 
     sketch.drawHands = function() {
         if(shown === countApplauses) {
-            //console.log("draw again");
             for(let i = 0; i < countApplauses; i++) {
                 sketch.image(img, sketch.windowWidth/4+imgW*(i%10), 50+imgH*Math.floor(i/10), imgW, imgH);
             }
@@ -90,7 +50,6 @@ const s4 = ( sketch ) => {
     sketch.createCanvasAndTitle = function() {
         imgW = sketch.windowWidth/20;
         imgH = imgW;
-        //console.log(imgW, imgH);
 
         canvas = sketch.createCanvas(sketch.windowWidth, 50+imgH*Math.ceil(countApplauses/10));
         canvas.parent('most_applauses');
