@@ -32,14 +32,14 @@ const s11 = ( sketch ) => {
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(24);
         sketch.textAlign(sketch.CENTER, sketch.CENTER);
-        sketch.text("Najbolj vljudna seja", 0, 0, sketch.windowWidth, 30);
+        sketch.text("Najbolj vljudna seja", 0, 0, w, 30);
 
         sketch.textStyle(sketch.NORMAL);
         sketch.textSize(16);
-        sketch.text(seja, 0, 30, sketch.windowWidth, 20);
+        sketch.text(seja, 0, 30, w, 20);
 
         my_string = "ŠTEVILO VLJUDNIH BESED: " + politeness;
-        sketch.text(my_string, 0, 55, sketch.windowWidth, 20);
+        sketch.text(my_string, 0, 55, w, 20);
     }
 
     sketch.windowResized = function() {
