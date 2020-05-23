@@ -199,48 +199,77 @@ class GetRecords():
 
         #     print("Done.")
 
+        # POLITE SESSION
+        polite_words = ["hvala", "prositi", "spoštovan", "cenjen"]
 
-        # INCIDENTS
-        # LIST OF ALL DIFFERENT INCIDENTS
-        with open("parsed_data/events/list_of_events_with_tags.csv", "a", newline="", encoding="utf-8") as event_list_csv:
-            writer = csv.writer(event_list_csv)
+        with open("parsed_data/politeness/polite_sessions.csv", "a", newline="", encoding="utf-8") as polite_csv:
+            polite_writer = csv.writer(polite_csv)
             i = 1
-            dict_all_events = {}
-            list_of_events = []
+            list_of_sessions = []
+
             for session_file in self.session_files:
-                # if session_file != "data\\seja.xml":
-                #     continue
-                print("Finding incidents in session {} / {}".format(i, len(self.session_files)))
+                print("Finding word frequencies in session {} / {}".format(i, len(self.session_files)))
                 i += 1
-                
+
+                session_name = session_file[5:-4]
+                polite_words_counter = 0
                 root = minidom.parse(session_file)
-                all_events = root.getElementsByTagName('desc')
-                for event in all_events:
-                    parent = event.parentNode.nodeName
-
-                    actual_event = event.firstChild.nodeValue
-                    if actual_event not in dict_all_events:
-                        dict_all_events[actual_event] = 1
-                    else:
-                        dict_all_events[actual_event] += 1
-                    list_of_events.append([actual_event, parent])
+                all_words = root.getElementsByTagName("w")
+                for word in all_words:
+                    actual_word = word.getAttribute("lemma")
+                    if actual_word in polite_words:
+                        polite_words_counter += 1
+                
+                list_of_sessions.append([session_name, polite_words_counter])
             
-            # sorted_events = sorted(dict_all_events)
-            # for key in sorted_events:
-            #     writer.writerow([key, dict_all_events[key]])
-            sorted_events_list = sorted(list_of_events, key=lambda x: x[1])
-            for idx in range(0, len(sorted_events_list)):
-                writer.writerow([sorted_events_list[idx][1], sorted_events_list[idx][0]])
+            sorted_list_of_sessions = sorted(list_of_sessions, key=lambda x: x[1])
+            polite_writer.writerows(sorted_list_of_sessions)
 
-        isSingleIncident = ["žvižg", "kašlja", "zadržuje", "splošen smeh", "posmeh", "Nemir v dvorani in razpravljalec", "Ugovori Emila", "Ugovori Mirana", "Ugovor delegata Magajne", "ugovor predsednika Zupančiča", "Ugovor gospoda Kocipra", "zelo glasen smeh", "odhaja", "tolče", "gong", "pride z zamudo", "Potočnik gre", "trka", "molče", "naknadno", "Pozvoni", "Protest g. Golije", "signalizacija", "mnenja", "Jože Smole iz klopi", "12. členu", "Jaša Zlobec", "šepetaje: Kako", "Šepet gospe", "POZSONEC: iz klopi", "dr. Vencelj", "Ne sprejme", "Gros govori", "Pintar", "vzklik", "Nismo sklepčni", "Ciril Kolešnik", "pojasnjuje", "Starman", "predsedniški", "opravičuje", "podpredsed", "pregovarjanje med drugim", "čaka", "Buser", "Katja", "Smole", "Capuder", "Drame", "Tomažiča", "Zlobec", "Kolešnik", "49. seja", "Glavič", "Tomažič", "Školč", "Schwarzbartl", "gospod Mak", "Viljem Mak", "Muren", "Gros ", "proceduralno vprašanje", "glasovanja", "zaradi razprave", "Bučar", "zapuščajo", "Potrč", "Klic iz dvorane: Bravo. Aplavz", "Vmešavanje", "Tomše", "amandmajih", "Razdevšek", "Dogovarjanje in razčiščevanje v delovnem predsedstvu", "Valentinčič", "Govorjenje v dvorani glede nadaljnjega dela zbora", "Delovno predsedstvo se tiho posvetuje med seboj", "Klic", "Kopač", "Pritožbe", "Moge", "Nekdo potiho govori. Govorijo tudi v dvorani", "Zlobca", "Intervencija oziroma vprašanje iz dvorane", "Intervencija iz klopi glede", "pojasnilo predsednika zbora", "362", "Ugotavljajo, ali je notri ali ni", "Židanik", "Toplak", "Jakič", "Šter", "Osterman", "Lippai", "Jazbinšek", "54. člen", "Erce", "predsedujoči ga prekine", "Umek", "predsednik ga prekinja", "Atelšek", "Brglez", "Lovrenčič", "Bebler", "Neidentificiran", "Ribičič", "gospod minister", "Senčurja", "pomotoma", "Kranjec", "Rogina", "Pivec", "Semolič", "Tomšič", "Kocijančič", "Protestirajo iz dvorane", "protesti", "razburjenje"
-        ]
+
+        # # INCIDENTS
+        # # LIST OF ALL DIFFERENT INCIDENTS
+        # with open("parsed_data/events/list_of_events_with_tags.csv", "a", newline="", encoding="utf-8") as event_list_csv:
+        #     writer = csv.writer(event_list_csv)
+        #     i = 1
+        #     dict_all_events = {}
+        #     list_of_events = []
+        #     for session_file in self.session_files:
+        #         # if session_file != "data\\seja.xml":
+        #         #     continue
+        #         print("Finding incidents in session {} / {}".format(i, len(self.session_files)))
+        #         i += 1
+                
+        #         root = minidom.parse(session_file)
+        #         all_events = root.getElementsByTagName('desc')
+        #         for event in all_events:
+        #             parent = event.parentNode.nodeName
+
+        #             actual_event = event.firstChild.nodeValue
+        #             if actual_event not in dict_all_events:
+        #                 dict_all_events[actual_event] = 1
+        #             else:
+        #                 dict_all_events[actual_event] += 1
+        #             list_of_events.append([actual_event, parent])
+            
+        #     # sorted_events = sorted(dict_all_events)
+        #     # for key in sorted_events:
+        #     #     writer.writerow([key, dict_all_events[key]])
+        #     sorted_events_list = sorted(list_of_events, key=lambda x: x[1])
+        #     for idx in range(0, len(sorted_events_list)):
+        #         writer.writerow([sorted_events_list[idx][1], sorted_events_list[idx][0]])
+
+        isSingleIncident = ["žvižg", "kašlja", "zadržuje", "splošen smeh", "posmeh", "Nemir v dvorani in razpravljalec", "Ugovori Emila", "Ugovori Mirana", "Ugovor delegata Magajne", "ugovor predsednika Zupančiča", "Ugovor gospoda Kocipra", "zelo glasen smeh", "odhaja", "tolče", "gong", "pride z zamudo", "Potočnik gre", "trka", "molče", "naknadno", "Pozvoni", "Protest g. Golije", "signalizacija", "mnenja", "Jože Smole iz klopi", "12. členu", "Jaša Zlobec", "šepetaje: Kako", "Šepet gospe", "POZSONEC: iz klopi", "dr. Vencelj", "Ne sprejme", "Gros govori", "Pintar", "vzklik", "Nismo sklepčni", "Ciril Kolešnik", "pojasnjuje", "Starman", "predsedniški", "opravičuje", "podpredsed", "pregovarjanje med drugim", "čaka", "Buser", "Katja", "Smole", "Capuder", "Drame", "Tomažiča", "Zlobec", "Kolešnik", "49. seja", "Glavič", "Tomažič", "Školč", "Schwarzbartl", "gospod Mak", "Viljem Mak", "Muren", "Gros ", "proceduralno vprašanje", "glasovanja", "zaradi razprave", "Bučar", "zapuščajo", "Potrč", "Klic iz dvorane: Bravo. Aplavz", "Vmešavanje", "Tomše", "amandmajih", "Razdevšek", "Dogovarjanje in razčiščevanje v delovnem predsedstvu", "Valentinčič", "Govorjenje v dvorani glede nadaljnjega dela zbora", "Delovno predsedstvo se tiho posvetuje med seboj", "Klic", "Kopač", "Pritožbe", "Moge", "Nekdo potiho govori. Govorijo tudi v dvorani", "Zlobca", "Intervencija oziroma vprašanje iz dvorane", "Intervencija iz klopi glede", "pojasnilo predsednika zbora", "362", "Ugotavljajo, ali je notri ali ni", "Židanik", "Toplak", "Jakič", "Šter", "Osterman", "Lippai", "Jazbinšek", "54. člen", "Erce", "predsedujoči ga prekine", "Umek", "predsednik ga prekinja", "Atelšek", "Brglez", "Lovrenčič", "Bebler", "Neidentificiran", "Ribičič", "gospod minister", "Senčurja", "pomotoma", "Kranjec", "Rogina", "Pivec", "Semolič", "Tomšič", "Kocijančič", "Protestirajo iz dvorane", "protesti", "razburjenje"]
+
         isMultipleIncident = ["pripom", "sme", "nemir", "ugovor", "hrup", "rea", "šepet", "glas ", "glasovi", "medklic", "govorjenje", "Pregovarjanje v delovnem predsedstvu", "pregovarjanje", "govor iz klopi", "govor iz dvorane", "Tiho posvetovanje", "Posvetovanje s sekretarko", "posvetovanje", "Vprašanje iz klopi", "Intervencija iz dvorane", "Protest iz klopi"]
+
         isHelper = ["klop", "dvora", "tiho"]
         #grupiramo: sme + pripom, sme + klop, sme + dvoran, pripom + klop, pripom + dvora, nemir + klop, nemir + dvora, ugovor + klop, ugovor + dvoran, ugovor + rea, hrup + klop, hrup + dvoran, rea + dvor, glas + dvora, glasovi + dvora, glasovi + klop, glas + klop, govorjenje + klop, govorjenje + tiho, govorjenje + dvoran, posvetovanje + tiho
 
         # stripaj " - nerazumljivo", " - se ne sliši", ...
 
-        polite = ["hvala", "prosim", "spoštovan", "cenjen"]
+
+
+        
 
 
         # # LAUGHING AND APPLAUSES
@@ -279,11 +308,6 @@ class GetRecords():
         #             laughs_writer.writerow([session_name, laugh_counter])
         #             applauses_writer.writerow([session_name, applause_counter])
                         
-
-        
-
-
-
 
         
         # # DURATIONS
