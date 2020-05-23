@@ -306,24 +306,24 @@ class GetRecords():
                         
 
         
-        # DURATIONS
-        with open("parsed_data/session_duration/session_duration.csv", "a", newline="", encoding="utf-8") as durations_csv:
-            writer = csv.writer(durations_csv)
-            i = 1
-            for session_file in self.session_files:
-                print("Finding duration of session {} / {}".format(i, len(self.session_files)))
-                i += 1
-                session_duration_in_seconds = 0
-                session_name = session_file[5:-4]
-                root = minidom.parse(session_file)
-                all_parts = root.getElementsByTagName('when')
-                for part in all_parts:
-                    interval = part.getAttribute("interval")
-                    if interval != "":
-                        session_duration_in_seconds += abs(int(interval))
+        # # DURATIONS
+        # with open("parsed_data/session_duration/session_duration.csv", "a", newline="", encoding="utf-8") as durations_csv:
+        #     writer = csv.writer(durations_csv)
+        #     i = 1
+        #     for session_file in self.session_files:
+        #         print("Finding duration of session {} / {}".format(i, len(self.session_files)))
+        #         i += 1
+        #         session_duration_in_seconds = 0
+        #         session_name = session_file[5:-4]
+        #         root = minidom.parse(session_file)
+        #         all_parts = root.getElementsByTagName('when')
+        #         for part in all_parts:
+        #             interval = part.getAttribute("interval")
+        #             if interval != "":
+        #                 session_duration_in_seconds += abs(int(interval))
                 
-                session_duration_in_hours = session_duration_in_seconds / 3600
-                writer.writerow([session_name, session_duration_in_seconds, session_duration_in_hours])
+        #         session_duration_in_hours = session_duration_in_seconds / 3600
+        #         writer.writerow([session_name, session_duration_in_seconds, session_duration_in_hours])
 
 
         # # VOTES
@@ -370,6 +370,40 @@ class GetRecords():
         #             presidents.append(president)
 
         #         writer.writerow([session_name, presidents])
+
+        # ALL PRESIDENTS
+        with open("parsed_data/presidents/all_presidents.csv", "a", newline="", encoding="utf-8") as presidents_csv:
+            writer = csv.writer(presidents_csv)
+            i = 1
+            presidents = {}
+            for session_file in self.session_files:
+                print("Finding president in session {} / {}".format(i, len(self.session_files)))
+                i += 1
+                root = minidom.parse(session_file)
+                persons = root.getElementsByTagName('person')
+                for person in persons:
+                    if person.getAttribute("role") != "president":
+                        continue
+                    person = person.getAttribute("sameAs")
+                    if self.hasNumbers(person):
+                        person = person[1:-4]
+                    else:
+                        person = person
+                    names = re.findall('[A-Z][^A-Z]*', person)
+                    name_and_surname = ""
+                    for name in names:
+                        name_and_surname += name
+                        name_and_surname += " "
+                    president = name_and_surname.strip()
+                    
+                    if president not in presidents:
+                        presidents[president] = 1
+                    else:
+                        presidents[president] += 1
+
+            list_of_presidents = [(k,v) for k,v in presidents.items()]
+            sorted_list = sorted(list_of_presidents, key=lambda x: x[1])
+            writer.writerows(sorted_list)
 
         # # SPEAKER AGES
         # with open("parsed_data/speakers/ages_of_speakers.csv", "a", newline="", encoding="utf-8") as ages_csv:
