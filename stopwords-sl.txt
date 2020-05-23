@@ -4,22 +4,8 @@ april
 avgust
 b
 bi
-bil
-bila
-bile
-bili
-bilo
 biti
 blizu
-bo
-bodo
-bojo
-bolj
-bom
-bomo
-boste
-bova
-boš
 brez
 c
 cel
@@ -78,6 +64,7 @@ gospa
 gospod
 h
 halo
+hvala
 i
 idr.
 ii
@@ -295,6 +282,7 @@ primer
 pripravljen
 pripravljena
 pripravljeni
+prositi
 proti
 prva
 prvi
@@ -424,6 +412,7 @@ zakaj
 zaprta
 zaprti
 zaprto
+zato
 zdaj
 zelo
 zunaj
@@ -437,6 +426,7 @@ zunaj
 čez
 čigav
 š
+še
 šest
 šesta
 šesti

@@ -110,94 +110,98 @@ class GetRecords():
         # write current scores to file for this session 
         # (produce wordcloud for that list and save image to folder)
         # write final results (counters) to a specific file for all sessions together
-        # with open('stopwords-sl.txt', mode='r', encoding='utf-8') as f:
-        #     stopwords = set(f.read().splitlines())
+        with open('stopwords-sl.txt', mode='r', encoding='utf-8') as f:
+            stopwords = set(f.read().splitlines())
+            word_counter = 0
 
-        #     with open("parsed_data/word_frequencies/word_frequencies_by_session.csv", "a", newline="", encoding="utf-8") as session_total_csv:
-        #         writer_session_total = csv.writer(session_total_csv)
-        #         with open("parsed_data/word_frequencies/word_frequencies_altogether.csv", "a", newline="", encoding="utf-8") as global_frequencies_csv:
-        #             writer_global = csv.writer(global_frequencies_csv)
-        #             global_list = []
-        #             i = 1
+            with open("parsed_data/word_frequencies_1/word_frequencies_by_session.csv", "a", newline="", encoding="utf-8") as session_total_csv:
+                writer_session_total = csv.writer(session_total_csv)
+                with open("parsed_data/word_frequencies_1/word_frequencies_altogether.csv", "a", newline="", encoding="utf-8") as global_frequencies_csv:
+                    writer_global = csv.writer(global_frequencies_csv)
+                    global_list = []
+                    i = 1
 
-        #             global_dict_of_words = {}
-        #             for session_file in self.session_files:
-        #                 print("Finding word frequencies in session {} / {}".format(i, len(self.session_files)))
-        #                 i += 1
-        #                 session_name = session_file[5:-4]
-        #                 csv_file_name = "parsed_data\word_frequencies\\" + session_name + "_word_frequencies_timeline.csv"
+                    global_dict_of_words = {}
+                    for session_file in self.session_files:
+                        print("Finding word frequencies in session {} / {}".format(i, len(self.session_files)))
+                        i += 1
+                        session_name = session_file[5:-4]
+                        csv_file_name = "parsed_data\word_frequencies_1\\" + session_name + "_word_frequencies_timeline.csv"
                         
-        #                 global_list_of_frequencies = []
-        #                 list_of_frequencies = []
-        #                 dict_of_words = {}
+                        global_list_of_frequencies = []
+                        list_of_frequencies = []
+                        dict_of_words = {}
                         
-        #                 with open(csv_file_name, "a", newline="", encoding="utf-8") as session_timeline_csv:
-        #                     wirter_timeline = csv.writer(session_timeline_csv)
+                        with open(csv_file_name, "a", newline="", encoding="utf-8") as session_timeline_csv:
+                            wirter_timeline = csv.writer(session_timeline_csv)
 
-        #                     root = minidom.parse(session_file)
-        #                     all_speeches = root.getElementsByTagName('div')
+                            root = minidom.parse(session_file)
+                            all_speeches = root.getElementsByTagName('div')
 
-        #                     for speech in all_speeches:
-        #                         if speech.getAttribute("type") != "sp":
-        #                             all_speeches.remove(speech)
+                            for speech in all_speeches:
+                                if speech.getAttribute("type") != "sp":
+                                    all_speeches.remove(speech)
 
-        #                     for speech in all_speeches:
-        #                         children = speech.childNodes
-        #                         if len(children) < 1:
-        #                             continue
-        #                         # speaker, u
-        #                         for child in children:
-        #                             if child.nodeName == "note":
-        #                                 continue
+                            for speech in all_speeches:
+                                children = speech.childNodes
+                                if len(children) < 1:
+                                    continue
+                                # speaker, u
+                                for child in children:
+                                    if child.nodeName == "note":
+                                        continue
 
-        #                             all_sentences = child.childNodes
-        #                             for sentence in all_sentences:
-        #                                 all_words = sentence.childNodes
+                                    all_sentences = child.childNodes
+                                    for sentence in all_sentences:
+                                        all_words = sentence.childNodes
 
-        #                                 for word in all_words:
-        #                                     if word.nodeType != 1:
-        #                                         continue
-        #                                     if word.nodeName != "w":
-        #                                         continue
+                                        for word in all_words:
+                                            word_counter += 1
+                                            if word.nodeType != 1:
+                                                continue
+                                            if word.nodeName != "w":
+                                                continue
 
-        #                                     actual_word = word.getAttribute("lemma")
+                                            actual_word = word.getAttribute("lemma")
 
-        #                                     # check if important
-        #                                     if actual_word in stopwords:
-        #                                         continue
+                                            # check if important
+                                            if actual_word in stopwords:
+                                                continue
 
-        #                                     if self.hasNumbers(actual_word):
-        #                                         continue
+                                            if self.hasNumbers(actual_word):
+                                                continue
 
-        #                                     if len(actual_word) < 2:
-        #                                         continue
+                                            if len(actual_word) < 2:
+                                                continue
 
-        #                                     if actual_word not in dict_of_words:
-        #                                         dict_of_words[actual_word] = 1
-        #                                     else:
-        #                                         dict_of_words[actual_word] += 1
+                                            if actual_word not in dict_of_words:
+                                                dict_of_words[actual_word] = 1
+                                            else:
+                                                dict_of_words[actual_word] += 1
 
-        #                                     if actual_word not in global_dict_of_words:
-        #                                         global_dict_of_words[actual_word] = 1
-        #                                     else:
-        #                                         global_dict_of_words[actual_word] += 1
+                                            if actual_word not in global_dict_of_words:
+                                                global_dict_of_words[actual_word] = 1
+                                            else:
+                                                global_dict_of_words[actual_word] += 1
                                             
-        #                         # write current stats to session_timeline_csv and to global_timeline_csv
-        #                         list_of_words = [(k, v) for k, v in dict_of_words.items()] 
-        #                         list_of_frequencies = sorted(list_of_words, key=lambda tup: tup[1], reverse=True)
-        #                         if len(list_of_frequencies) > 0:
-        #                             wirter_timeline.writerow([list_of_frequencies])
+                                # write current stats to session_timeline_csv and to global_timeline_csv
+                                list_of_words = [(k, v) for k, v in dict_of_words.items()] 
+                                list_of_frequencies = sorted(list_of_words, key=lambda tup: tup[1], reverse=True)
+                                if len(list_of_frequencies) > 0:
+                                    wirter_timeline.writerow([list_of_frequencies])
                             
-        #                 writer_session_total.writerow([session_name, list_of_frequencies])
-        #                 if i > 607:
-        #                     print("Global words")
-        #                     global_list_of_words = [(k, v) for k, v in global_dict_of_words.items()] 
-        #                     global_list_of_frequencies = sorted(global_list_of_words, key=lambda tup: tup[1], reverse=True)
-        #                     global_list = global_list_of_frequencies                    
-        #             for tuple in global_list:
-        #                 writer_global.writerow([tuple[1], tuple[0]])
+                        writer_session_total.writerow([session_name, list_of_frequencies])
+                        if i > 607:
+                            print("Global words")
+                            global_list_of_words = [(k, v) for k, v in global_dict_of_words.items()] 
+                            global_list_of_frequencies = sorted(global_list_of_words, key=lambda tup: tup[1], reverse=True)
+                            global_list = global_list_of_frequencies                    
+                    for tuple in global_list:
+                        writer_global.writerow([tuple[1], tuple[0]])
+            
+            print("Number of all words: {}".format(word_counter))
 
-        #     print("Done.")
+            print("Done.")
 
         # # POLITE SESSION
         # polite_words = ["hvala", "prositi", "spoštovan", "cenjen"]
@@ -371,39 +375,39 @@ class GetRecords():
 
         #         writer.writerow([session_name, presidents])
 
-        # ALL PRESIDENTS
-        with open("parsed_data/presidents/all_presidents.csv", "a", newline="", encoding="utf-8") as presidents_csv:
-            writer = csv.writer(presidents_csv)
-            i = 1
-            presidents = {}
-            for session_file in self.session_files:
-                print("Finding president in session {} / {}".format(i, len(self.session_files)))
-                i += 1
-                root = minidom.parse(session_file)
-                persons = root.getElementsByTagName('person')
-                for person in persons:
-                    if person.getAttribute("role") != "president":
-                        continue
-                    person = person.getAttribute("sameAs")
-                    if self.hasNumbers(person):
-                        person = person[1:-4]
-                    else:
-                        person = person
-                    names = re.findall('[A-Z][^A-Z]*', person)
-                    name_and_surname = ""
-                    for name in names:
-                        name_and_surname += name
-                        name_and_surname += " "
-                    president = name_and_surname.strip()
+        # # ALL PRESIDENTS
+        # with open("parsed_data/presidents/all_presidents.csv", "a", newline="", encoding="utf-8") as presidents_csv:
+        #     writer = csv.writer(presidents_csv)
+        #     i = 1
+        #     presidents = {}
+        #     for session_file in self.session_files:
+        #         print("Finding president in session {} / {}".format(i, len(self.session_files)))
+        #         i += 1
+        #         root = minidom.parse(session_file)
+        #         persons = root.getElementsByTagName('person')
+        #         for person in persons:
+        #             if person.getAttribute("role") != "president":
+        #                 continue
+        #             person = person.getAttribute("sameAs")
+        #             if self.hasNumbers(person):
+        #                 person = person[1:-4]
+        #             else:
+        #                 person = person
+        #             names = re.findall('[A-Z][^A-Z]*', person)
+        #             name_and_surname = ""
+        #             for name in names:
+        #                 name_and_surname += name
+        #                 name_and_surname += " "
+        #             president = name_and_surname.strip()
                     
-                    if president not in presidents:
-                        presidents[president] = 1
-                    else:
-                        presidents[president] += 1
+        #             if president not in presidents:
+        #                 presidents[president] = 1
+        #             else:
+        #                 presidents[president] += 1
 
-            list_of_presidents = [(k,v) for k,v in presidents.items()]
-            sorted_list = sorted(list_of_presidents, key=lambda x: x[1])
-            writer.writerows(sorted_list)
+        #     list_of_presidents = [(k,v) for k,v in presidents.items()]
+        #     sorted_list = sorted(list_of_presidents, key=lambda x: x[1])
+        #     writer.writerows(sorted_list)
 
         # # SPEAKER AGES
         # with open("parsed_data/speakers/ages_of_speakers.csv", "a", newline="", encoding="utf-8") as ages_csv:
