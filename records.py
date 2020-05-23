@@ -199,31 +199,31 @@ class GetRecords():
 
         #     print("Done.")
 
-        # POLITE SESSION
-        polite_words = ["hvala", "prositi", "spoštovan", "cenjen"]
+        # # POLITE SESSION
+        # polite_words = ["hvala", "prositi", "spoštovan", "cenjen"]
 
-        with open("parsed_data/politeness/polite_sessions.csv", "a", newline="", encoding="utf-8") as polite_csv:
-            polite_writer = csv.writer(polite_csv)
-            i = 1
-            list_of_sessions = []
+        # with open("parsed_data/politeness/polite_sessions.csv", "a", newline="", encoding="utf-8") as polite_csv:
+        #     polite_writer = csv.writer(polite_csv)
+        #     i = 1
+        #     list_of_sessions = []
 
-            for session_file in self.session_files:
-                print("Finding word frequencies in session {} / {}".format(i, len(self.session_files)))
-                i += 1
+        #     for session_file in self.session_files:
+        #         print("Finding polite words in session {} / {}".format(i, len(self.session_files)))
+        #         i += 1
 
-                session_name = session_file[5:-4]
-                polite_words_counter = 0
-                root = minidom.parse(session_file)
-                all_words = root.getElementsByTagName("w")
-                for word in all_words:
-                    actual_word = word.getAttribute("lemma")
-                    if actual_word in polite_words:
-                        polite_words_counter += 1
+        #         session_name = session_file[5:-4]
+        #         polite_words_counter = 0
+        #         root = minidom.parse(session_file)
+        #         all_words = root.getElementsByTagName("w")
+        #         for word in all_words:
+        #             actual_word = word.getAttribute("lemma")
+        #             if actual_word in polite_words:
+        #                 polite_words_counter += 1
                 
-                list_of_sessions.append([session_name, polite_words_counter])
+        #         list_of_sessions.append([session_name, polite_words_counter])
             
-            sorted_list_of_sessions = sorted(list_of_sessions, key=lambda x: x[1])
-            polite_writer.writerows(sorted_list_of_sessions)
+        #     sorted_list_of_sessions = sorted(list_of_sessions, key=lambda x: x[1])
+        #     polite_writer.writerows(sorted_list_of_sessions)
 
 
         # # INCIDENTS
@@ -268,10 +268,6 @@ class GetRecords():
         # stripaj " - nerazumljivo", " - se ne sliši", ...
 
 
-
-        
-
-
         # # LAUGHING AND APPLAUSES
         # with open("parsed_data/events/laughter.csv", "a", newline="", encoding="utf-8") as laughs_csv:
         #     laughs_writer = csv.writer(laughs_csv)
@@ -310,24 +306,24 @@ class GetRecords():
                         
 
         
-        # # DURATIONS
-        # with open("parsed_data/session_duration/session_duration.csv", "a", newline="", encoding="utf-8") as durations_csv:
-        #     writer = csv.writer(durations_csv)
-        #     i = 1
-        #     for session_file in self.session_files:
-        #         print("Finding duration of session {} / {}".format(i, len(self.session_files)))
-        #         i += 1
-        #         session_duration_in_seconds = 0
-        #         session_name = session_file[5:-4]
-        #         root = minidom.parse(session_file)
-        #         all_parts = root.getElementsByTagName('when')
-        #         for part in all_parts:
-        #             interval = part.getAttribute("interval")
-        #             if interval != "":
-        #                 session_duration_in_seconds += int(interval)
+        # DURATIONS
+        with open("parsed_data/session_duration/session_duration.csv", "a", newline="", encoding="utf-8") as durations_csv:
+            writer = csv.writer(durations_csv)
+            i = 1
+            for session_file in self.session_files:
+                print("Finding duration of session {} / {}".format(i, len(self.session_files)))
+                i += 1
+                session_duration_in_seconds = 0
+                session_name = session_file[5:-4]
+                root = minidom.parse(session_file)
+                all_parts = root.getElementsByTagName('when')
+                for part in all_parts:
+                    interval = part.getAttribute("interval")
+                    if interval != "":
+                        session_duration_in_seconds += abs(int(interval))
                 
-        #         session_duration_in_hours = session_duration_in_seconds / 3600
-        #         writer.writerow([session_name, session_duration_in_seconds, session_duration_in_hours])
+                session_duration_in_hours = session_duration_in_seconds / 3600
+                writer.writerow([session_name, session_duration_in_seconds, session_duration_in_hours])
 
 
         # # VOTES

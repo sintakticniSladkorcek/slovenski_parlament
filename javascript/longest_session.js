@@ -2,7 +2,6 @@ const s3 = ( sketch ) => {
     var full;
     var empty;
     var table;
-    var time_h;
     var hourglassW;
     var hourglassH;
     var canvas;
@@ -21,6 +20,7 @@ const s3 = ( sketch ) => {
     var inRow;
     var startOfGraph;
     var scale;
+    var noData;
 
     sketch.preload = function() {
         // 116x164 images
@@ -33,6 +33,7 @@ const s3 = ( sketch ) => {
     sketch.setup = function() {
         inRow = 12;
 
+        noData = 0;
         shortestSession = [0, 100];
         longestSession = [0, 0];
         for(let i = 0; i < table.getRows().length; i++) {
@@ -44,6 +45,9 @@ const s3 = ( sketch ) => {
             else if(current > longestSession[1]) {
                 longestSession[0] = i;
                 longestSession[1] = current;
+            }
+            if(current == 0){
+                noData += 1;
             }
         }
         let minutes = Math.ceil(parseInt(table.getString(shortestSession[0], 1))/300);
@@ -150,7 +154,7 @@ const s3 = ( sketch ) => {
         } else if(shortestSessionMinutes == 3 || shortestSessionMinutes == 4){
             helper_string += "e";
         }
-        my_string += " " + helper_string + ".";
+        my_string += " " + helper_string + ". Za " + noData + " sej ni bilo podatka o njihovem trajanju.";
 
         sketch.text(my_string, sketch.windowWidth/4, 0, sketch.windowWidth/2, 70);
         sketch.image(scale, sketch.windowWidth/2-hourglassH*392/656, 70, hourglassH*392/328, hourglassH/2);
@@ -177,7 +181,6 @@ const s3 = ( sketch ) => {
     }
 
     sketch.mouseClicked = function() {
-        //console.log(sketch.mouseX, sketch.mouseY);
     }
 };
 
