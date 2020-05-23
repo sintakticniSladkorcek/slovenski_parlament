@@ -35,7 +35,7 @@ const s6 = ( sketch ) => {
         sketch.textStyle(sketch.BOLD);
         sketch.textSize(24);
         sketch.textAlign(sketch.CENTER, sketch.CENTER);
-        sketch.text("Najstarejši in najmlajši govorec", 0, 0, w, 30);
+        sketch.text("Najstarejši in najmlajši govorec na seji", 0, 0, w, 30);
 
         sketch.textStyle(sketch.NORMAL);
         sketch.textSize(18);
@@ -44,7 +44,6 @@ const s6 = ( sketch ) => {
     }
 
     sketch.findMatch = function(array, match) {
-        //console.log(array, match);
         for(let i = 0; i < array.length; i++) {
             if(array[i] === match[0]) return [array[i], array[i+1]];
         }
@@ -55,11 +54,9 @@ const s6 = ( sketch ) => {
         if(currentSessionId == 608) {
             youngest = [0, 1900];
             oldest = [0, 2000];
-            //console.log(oldest, youngest);
             for (let i = 0; i < table.getRowCount(); i++) {
                 let currentOldest = sketch.findMatch(stringToArray(table.getString(i, 3)), stringToArray(table.getString(i, 1)));
                 let currentYoungest = sketch.findMatch(stringToArray(table.getString(i, 3)), stringToArray(table.getString(i, 2)));
-                //console.log(currentYoungest);
                 if (parseInt(currentOldest[1]) < oldest[1]) {
                     oldest[0] = currentOldest[0];
                     oldest[1] = parseInt(currentOldest[1]);
@@ -69,7 +66,6 @@ const s6 = ( sketch ) => {
                     youngest[1] = parseInt(currentYoungest[1]);
                 }
             }
-            //console.log(oldest, youngest);
         } else {
             let match = stringToArray(table.getString(currentSessionId, 1));
             let array = stringToArray(table.getString(currentSessionId, 3));
@@ -77,7 +73,6 @@ const s6 = ( sketch ) => {
             match = stringToArray(table.getString(currentSessionId, 2));
             youngest = sketch.findMatch(array, match);
         }
-        //console.log(oldest, youngest);
     }
 };
 
