@@ -26,3 +26,47 @@ h2 {
     height: 30px;
     background-color: green;
 }
+
+/* BUTTONS FOR PODIUMS */
+.my_btn {
+    background-color: white;
+    border: 1px solid black;
+    padding: 8px 15px;
+    cursor: pointer; /* Pointer/hand icon */
+    float: center; /* Float the buttons side by side */
+    color: black; /* text color*/
+    text-align: center;
+    font-size: 16px;
+}
+  
+.btn-group button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+}
+  
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+  
+/* Add a background color on hover */
+.btn-group button:hover {
+    background-color: rgb(219, 219, 219);
+}
+
+.btn-group button:focus {
+    outline: 0;
+}
+
+/*After the button is clicked, change its class to my_btn_clicked (so it remains in darker color)*/
+.clicked {
+    background-color: rgb(219, 219, 219);
+    border: 1px solid black;
+    padding: 8px 15px;
+    cursor: pointer; /* Pointer/hand icon */
+    float: center; /* Float the buttons side by side */
+    color: black; /* text color*/
+    text-align: center;
+    font-size: 16px;
+}

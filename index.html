@@ -31,7 +31,7 @@
 
   </head>
   
-  <body>
+  <body onload="toggleSpeakerMode();">
     <div id="p5_loading" class="loadingclass hidden"> </div>
 
     <div class="container-fluid">
@@ -42,6 +42,10 @@
       <div id="most_applauses"></div>
       <div id="most_polite_session"></div>
       <div id="funniest_session"></div>
+      <div class="btn-group">
+        <button class="my_btn clicked" id="predsedniki">PREDSEDNIKI</button>
+        <button class="my_btn" id="ostali">OSTALI GOVORCI</button>
+      </div>
       <div id="popular_speaker"></div>
       <div id="votings_description"></div>
       <div id="most_votings"></div>
