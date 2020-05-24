@@ -93,7 +93,7 @@ const s15 = ( sketch ) => {
         my_text += speakers;
         my_text += " govorcev in govork imelo ";
         my_text += speeches;
-        my_text += " govorov. Skupno so izrekli ";
+        my_text += " govora. Skupno so izrekli ";
         my_text += words;
         my_text += " besed in si prislužili ";
         my_text += applauses;
