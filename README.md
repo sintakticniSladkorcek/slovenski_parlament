@@ -4,7 +4,9 @@ This is a repository for visualizing transcribed sessions from Slovenian Parliam
 
 ## How to run
 
-1. First, set up a python's built-in server. For python2, run:
+1. Unzip the contents of the `Projekt1.2_Marija_Marolt_Ajda_Frankovič_IŠRM.zip`.
+
+2. Set up a python's built-in server. Move to the folder in which `index.html` is located. For python2, run:
 
     ```cmd
     python -m SimpleHTTPServer
@@ -16,12 +18,4 @@ This is a repository for visualizing transcribed sessions from Slovenian Parliam
     python -m http.server
     ```
 
-2. Paste this link into browser: `http://localhost:8000/index.html`
-
-## Helpful links
-
-Basic functions for working with `xml` in `javascript`: <https://p5js.org/reference/#/p5.XML>  
-
-Basic functions for conversion to `instance mode` for working with more canvases: https://github.com/processing/p5.js/wiki/p5.js-overview#instantiation--namespace
-
-`Markdown` cheatsheet: <https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet>
+3. Paste this link into browser: `http://localhost:8000/index.html`
