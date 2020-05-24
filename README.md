@@ -25,8 +25,3 @@ Basic functions for working with `xml` in `javascript`: <https://p5js.org/refere
 Basic functions for conversion to `instance mode` for working with more canvases: https://github.com/processing/p5.js/wiki/p5.js-overview#instantiation--namespace
 
 `Markdown` cheatsheet: <https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet>
-
-## TODO
-
-- (dodaj še število pojavitev k besedam v session_timeline - maybe)
-- za vsako sejo prikaži neke osnovne podatke (tam pri session_timeline), recimo trajanje, število govorov, najpogostejše besede, najdaljša poved, ...
