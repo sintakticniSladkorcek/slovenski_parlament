@@ -246,7 +246,7 @@ function drawEverything(sketch) {
 
     sketch.textStyle(sketch.NORMAL);
     sketch.textSize(16);
-    sketch.text("OPOMBA: Predsedujoči govorci na stopničkah so ločeni od prostalih, saj močno izstopajo po rezultatih. Ker predsedujoči vodi sejo, pride do besede občutno večkrat kot ostali govorci na seji. Tako ima več govorov in izgovori več besed.", 0, 150+3*imgH, imgW, 100);
+    sketch.text("OPOMBA: Predsedujoči govorci na stopničkah so ločeni od preostalih, saj močno odstopajo po rezultatih. Ker predsedujoči vodi sejo, pride do besede občutno večkrat kot ostali govorci na seji. Tako ima več govorov in izgovori več besed.", 0, 150+3*imgH, imgW, 100);
 
 };
 

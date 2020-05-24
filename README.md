@@ -19,3 +19,5 @@ This is a repository for visualizing transcribed sessions from Slovenian Parliam
     ```
 
 3. Paste this link into browser: `http://localhost:8000/index.html`
+
+4. Wait a few seconds.
