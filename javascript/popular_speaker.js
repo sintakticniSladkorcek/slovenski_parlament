@@ -1,19 +1,19 @@
+var canvas;
+var sessionsPerSpeaker;
+var speechesPerSpeaker;
+var wordsPerSpeaker;
+var podium;
+var presidents;
+var presidents_table;
+
+let speakersSession = [];
+let dataSession = [];
+let speakersSpeech = [];
+let dataSpeech = [];
+let speakersWords = [];
+let dataWords = [];
+
 const s7 = ( sketch ) => {
-
-    var canvas;
-    var sessionsPerSpeaker;
-    var speechesPerSpeaker;
-    var wordsPerSpeaker;
-    var podium;
-    var presidents;
-    var presidents_list;
-
-    let speakersSession = [];
-    let dataSession = [];
-    let speakersSpeech = [];
-    let dataSpeech = [];
-    let speakersWords = [];
-    let dataWords = [];
 
     sketch.preload = function() {
         sessionsPerSpeaker = sketch.loadTable("parsed_data/speakers/number_of_sessions_per_speaker.csv");
@@ -25,136 +25,52 @@ const s7 = ( sketch ) => {
 
     sketch.setup = function() {
 
-        /* Transform the array in a dict */
-        presidents = {};
-        for(var i = 0; i < presidents_table.getRowCount(); i++){
-            presidents[presidents_table.get(i, 0) + ":"]="";
-        } 
-
-        let counter = 0;
-        let index = 0;
-
-        let person;
-        let data;
-        if(getSpeakerMode()){ // display presidents
-            // speakers by number of sessions
-            while(counter < 3){
-                person = sessionsPerSpeaker.get(index, 0);
-                data = sessionsPerSpeaker.get(index, 1);
-
-                if(person in presidents){
-                    speakersSession.push(person);
-                    dataSession.push(data);
-                    counter = counter + 1;
-                }
-                index = index + 1;
-            }
-            // speakers by number of speeches
-            counter = 0;
-            index = 0;
-            while(counter < 3){
-                person = speechesPerSpeaker.get(index, 0);
-                data = speechesPerSpeaker.get(index, 1);
-
-                if(person in presidents){
-                    speakersSpeech.push(person);
-                    dataSpeech.push(data);
-                    counter = counter + 1;
-                }
-                index = index + 1;
-            }
-            // speakers by number of words
-            counter = 0;
-            index = 0;
-            while(counter < 3){
-                person = wordsPerSpeaker.get(index, 0);
-                data = wordsPerSpeaker.get(index, 1);
-
-                if(person in presidents){
-                    speakersWords.push(person);
-                    dataWords.push(data);
-                    counter = counter + 1;
-                }
-                index = index + 1;
-            }
-            
-        } else { // display non-presidents
-            // speakers by number of sessions
-            while(counter < 3){
-                person = sessionsPerSpeaker.get(index, 0);
-                data = sessionsPerSpeaker.get(index, 1);
-
-                if(!(person in presidents)){
-                    speakersSession.push(person);
-                    dataSession.push(data);
-                    counter = counter + 1;
-                }
-                index = index + 1;
-            }
-            // speakers by number of speeches
-            counter = 0;
-            index = 0;
-            while(counter < 3){
-                person = speechesPerSpeaker.get(index, 0);
-                data = speechesPerSpeaker.get(index, 1);
-
-                if(!(person in presidents)){
-                    speakersSpeech.push(person);
-                    dataSpeech.push(data);
-                    counter = counter + 1;
-                }
-                index = index + 1;
-            }
-            // speakers by number of words
-            counter = 0;
-            index = 0;
-            while(counter < 3){
-                person = wordsPerSpeaker.get(index, 0);
-                data = wordsPerSpeaker.get(index, 1);
-
-                if(!(person in presidents)){
-                    speakersWords.push(person);
-                    dataWords.push(data);
-                    counter = counter + 1;
-                }
-                index = index + 1;
-            }
-        }
-
-        sketch.createCanvasAndDraw();
+        setData();
+        sketch.createNewCanvas();
+        drawEverything(sketch);
     }
 
-    sketch.createCanvasAndDraw = function() {
+    sketch.createNewCanvas = function() {
         imgW = 380;
         imgH = 330;
 
-        w = sketch.windowWidth;
-        if(w > 1000) w /= 2;
-
-        canvas = sketch.createCanvas(imgW, 240+3*imgH);
+        canvas = sketch.createCanvas(imgW, 270+3*imgH);
         canvas.parent("popular_speaker");
+    };
 
-        sketch.textFont("Courier");
-        sketch.textStyle(sketch.BOLD);
-        sketch.textSize(24);
-        sketch.textAlign(sketch.CENTER, sketch.CENTER);
-        sketch.text("Govorci na največ sejah", 0, 0, imgW, 30);
-        sketch.drawPodium(speakersSession, dataSession, 0, 0);
+    
 
-        sketch.textStyle(sketch.BOLD);
-        sketch.textSize(24);
-        sketch.text("Govorci z največ govori", 0, 50+imgH, imgW, 30);
-        sketch.drawPodium(speakersSpeech, dataSpeech, 0, 30+20+imgH);
+    // sketch.createCanvasAndDraw = function() {
+    //     imgW = 380;
+    //     imgH = 330;
 
-        sketch.textStyle(sketch.BOLD);
-        sketch.textSize(24);
-        sketch.text("Govorci z največ izgovorjenimi besedami", 0, 100+2*imgH, imgW, 30);
-        sketch.drawPodium(speakersWords, dataWords, 0, 60+40+2*imgH);
+    //     w = sketch.windowWidth;
+    //     if(w > 1000) w /= 2;
 
-        sketch.textStyle(sketch.NORMAL);
-        sketch.textSize(16);
-        sketch.text("OPOMBA: Govorci na stopničkah so bili tudi predsedujoči na večih sejah. Ker predsedujoči vodi sejo, pride do besede občutno večkrat kot ostali govorci na seji.", 0, 150+3*imgH, imgW, 70);
-    }
+    //     canvas = sketch.createCanvas(imgW, 240+3*imgH);
+    //     canvas.parent("popular_speaker");
+
+    //     sketch.textFont("Courier");
+    //     sketch.textStyle(sketch.BOLD);
+    //     sketch.textSize(24);
+    //     sketch.textAlign(sketch.CENTER, sketch.CENTER);
+    //     sketch.text("Govorci na največ sejah", 0, 0, imgW, 30);
+    //     sketch.drawPodium(speakersSession, dataSession, 0, 0);
+
+    //     sketch.textStyle(sketch.BOLD);
+    //     sketch.textSize(24);
+    //     sketch.text("Govorci z največ govori", 0, 50+imgH, imgW, 30);
+    //     sketch.drawPodium(speakersSpeech, dataSpeech, 0, 30+20+imgH);
+
+    //     sketch.textStyle(sketch.BOLD);
+    //     sketch.textSize(24);
+    //     sketch.text("Govorci z največ izgovorjenimi besedami", 0, 100+2*imgH, imgW, 30);
+    //     sketch.drawPodium(speakersWords, dataWords, 0, 60+40+2*imgH);
+
+    //     sketch.textStyle(sketch.NORMAL);
+    //     sketch.textSize(16);
+    //     sketch.text("OPOMBA: Govorci na stopničkah so bili tudi predsedujoči na večih sejah. Ker predsedujoči vodi sejo, pride do besede občutno večkrat kot ostali govorci na seji.", 0, 150+3*imgH, imgW, 70);
+    // }
 
     /*sketch.mouseClicked = function() {
         console.log(sketch.mouseX, sketch.mouseY);
@@ -198,4 +114,140 @@ const s7 = ( sketch ) => {
 
 };
 
-new p5(s7);
+
+
+function setData(){
+    /* Transform the array in a dict */
+    presidents = {};
+    for(var i = 0; i < presidents_table.getRowCount(); i++){
+        presidents[presidents_table.get(i, 0) + ":"]="";
+    } 
+
+    speakersSession = [];
+    dataSession = [];
+    speakersSpeech = [];
+    dataSpeech = [];
+    speakersWords = [];
+    dataWords = [];
+
+    let counter = 0;
+    let index = 0;
+
+    let person;
+    let data;
+    if(getSpeakerMode()){ // display presidents
+        // speakers by number of sessions
+        while(counter < 3){
+            person = sessionsPerSpeaker.get(index, 0);
+            data = sessionsPerSpeaker.get(index, 1);
+
+            if(person in presidents){
+                speakersSession.push(person);
+                dataSession.push(data);
+                counter = counter + 1;
+            }
+            index = index + 1;
+        }
+        // speakers by number of speeches
+        counter = 0;
+        index = 0;
+        while(counter < 3){
+            person = speechesPerSpeaker.get(index, 0);
+            data = speechesPerSpeaker.get(index, 1);
+
+            if(person in presidents){
+                speakersSpeech.push(person);
+                dataSpeech.push(data);
+                counter = counter + 1;
+            }
+            index = index + 1;
+        }
+        // speakers by number of words
+        counter = 0;
+        index = 0;
+        while(counter < 3){
+            person = wordsPerSpeaker.get(index, 0);
+            data = wordsPerSpeaker.get(index, 1);
+
+            if(person in presidents){
+                speakersWords.push(person);
+                dataWords.push(data);
+                counter = counter + 1;
+            }
+            index = index + 1;
+        }
+        
+    } else { // display non-presidents
+        // speakers by number of sessions
+        while(counter < 3){
+            person = sessionsPerSpeaker.get(index, 0);
+            data = sessionsPerSpeaker.get(index, 1);
+
+            if(!(person in presidents)){
+                speakersSession.push(person);
+                dataSession.push(data);
+                counter = counter + 1;
+            }
+            index = index + 1;
+        }
+        // speakers by number of speeches
+        counter = 0;
+        index = 0;
+        while(counter < 3){
+            person = speechesPerSpeaker.get(index, 0);
+            data = speechesPerSpeaker.get(index, 1);
+
+            if(!(person in presidents)){
+                speakersSpeech.push(person);
+                dataSpeech.push(data);
+                counter = counter + 1;
+            }
+            index = index + 1;
+        }
+        // speakers by number of words
+        counter = 0;
+        index = 0;
+        while(counter < 3){
+            person = wordsPerSpeaker.get(index, 0);
+            data = wordsPerSpeaker.get(index, 1);
+
+            if(!(person in presidents)){
+                speakersWords.push(person);
+                dataWords.push(data);
+                counter = counter + 1;
+            }
+            index = index + 1;
+        }
+    }
+}
+
+function drawEverything(sketch) {
+    imgW = 380;
+    imgH = 330;
+
+    w = sketch.windowWidth;
+    if(w > 1000) w /= 2;
+    sketch.textFont("Courier");
+    sketch.textStyle(sketch.BOLD);
+    sketch.textSize(24);
+    sketch.textAlign(sketch.CENTER, sketch.CENTER);
+    sketch.text("Govorci na največ sejah", 0, 0, imgW, 30);
+    sketch.drawPodium(speakersSession, dataSession, 0, 0);
+
+    sketch.textStyle(sketch.BOLD);
+    sketch.textSize(24);
+    sketch.text("Govorci z največ govori", 0, 50+imgH, imgW, 30);
+    sketch.drawPodium(speakersSpeech, dataSpeech, 0, 30+20+imgH);
+
+    sketch.textStyle(sketch.BOLD);
+    sketch.textSize(24);
+    sketch.text("Govorci z največ izgovorjenimi besedami", 0, 100+2*imgH, imgW, 30);
+    sketch.drawPodium(speakersWords, dataWords, 0, 60+40+2*imgH);
+
+    sketch.textStyle(sketch.NORMAL);
+    sketch.textSize(16);
+    sketch.text("OPOMBA: Predsedujoči govorci na stopničkah so ločeni od prostalih, saj močno izstopajo po rezultatih. Ker predsedujoči vodi sejo, pride do besede občutno večkrat kot ostali govorci na seji. Tako ima več govorov in izgovori več besed.", 0, 150+3*imgH, imgW, 100);
+
+};
+
+speakers_sketch = new p5(s7);

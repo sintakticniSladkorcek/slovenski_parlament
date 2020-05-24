@@ -72,37 +72,26 @@ function toggleSpeakerMode() {
         if(button.nodeName == "BUTTON"){
             buttons.push(button);
             button.addEventListener("click", function() {
-                // if(this.className == "my_btn"){
-                //     other = document.getElementsByClassName("my_btn","clicked");
-                //     other.className = "my_btn";
-                //     this.className = "my_btn_clicked";
-                //     president_speakers_mode = !president_speakers_mode;
-                //     new p5(s7);
-                // }
 
-                // NE DELA
-                // var canvas = document.getElementById('canvas_speakers'),
-                // ctx = canvas.getContext('2d');
+                var canvas = document.querySelector("#popular_speaker canvas");
+                var ctx = canvas.getContext('2d');
 
                 if(this.className != "my_btn clicked"){
                     var other = document.getElementsByClassName("my_btn clicked");
                     other[0].className = other[0].className.replace(" clicked", "");
                     this.className += " clicked";
                     president_speakers_mode = !president_speakers_mode;
-                    // new p5(s7); // TODO: change to write to the same canvas
-                    ctx.restore();
-                }
-                            
-                // var ajda = current.className;
-                // // If there's no active class
-                // if (current.className == "my_btn") {
-                //     current[0].className = current[0].className.replace("my_btn", "my_btn_clicked");
-                // } else {
-                //     current[0].className = current[0].className.replace("my_btn_clicked", "my_btn");
-                // }
-            
-                // // Add the active class to the current/clicked button
-                
+                    // ctx.save();
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    // change data
+                    // canvas.preload;
+                    // canvas.setup;
+                    setData();
+                    drawEverything(speakers_sketch);
+                    // let a = new p5(s7);
+                    // ctx = a.getContext('2d');
+                    // ctx.restore();
+                }                
             });
         } 
     }

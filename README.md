@@ -28,6 +28,5 @@ Basic functions for conversion to `instance mode` for working with more canvases
 
 ## TODO
 
-- stopničke za ne-predsednike
 - (dodaj še število pojavitev k besedam v session_timeline - maybe)
 - za vsako sejo prikaži neke osnovne podatke (tam pri session_timeline), recimo trajanje, število govorov, najpogostejše besede, najdaljša poved, ...
