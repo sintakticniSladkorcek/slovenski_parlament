@@ -51,7 +51,7 @@ const s15 = ( sketch ) => {
         votings = sketch.sumTogether(votings_table, 1, 0);
 
         // sentences
-        longestSentence = sketch.findMax(sentence_table, 1);
+        longestSentence = 381  // sketch.findMax(sentence_table, 1);
 
         sketch.createCanvasAndTitle();
     }
@@ -71,8 +71,9 @@ const s15 = ( sketch ) => {
     sketch.findMax = function(table, column) {
         current_max = 0;
         for(let i = 0; i < table.getRowCount(); i++) {
-            if(table.get(i, column) > current_max){
-                current_max = table.get(i, column);
+            if(parseInt(table.get(i, column)) > current_max){
+                current_max = parseInt(table.get(i, column));
+                console.log(current_max);
             }
         }
         return current_max;
@@ -98,7 +99,7 @@ const s15 = ( sketch ) => {
         my_text += " besed in si prislužili ";
         my_text += applauses;
         my_text += " aplavzov. Najdaljša izrečena poved je vsebovala ";
-        my_text += words;
+        my_text += longestSentence;
         my_text += " besed. Skozi vse seje je bilo izvedenih ";
         my_text += votings;
         my_text += " glasovanj.";
