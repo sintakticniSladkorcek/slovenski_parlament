@@ -48,7 +48,7 @@ const s15 = ( sketch ) => {
         applauses = sketch.sumTogether(applauses_table, 1, 0);
 
         // votings
-        votings = sketch.sumTogether(votings_table, 1, 0);
+        votings = sketch.sumTogether(votings_table, 1, 3);
 
         // sentences
         longestSentence = 381  // sketch.findMax(sentence_table, 1);
@@ -61,7 +61,7 @@ const s15 = ( sketch ) => {
         for(let i = 0; i < table.getRowCount(); i++) {
             data = parseInt(table.get(i, column));
             if(divisor > 0){
-                data = data / divisor;
+                data = Math.floor(data / divisor) + (data - (Math.floor(data / divisor) * divisor));
             }
             counter += data;
         }
