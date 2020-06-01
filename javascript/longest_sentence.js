@@ -66,14 +66,20 @@ const s2 = ( sketch ) => {
         sketch.textSize(16);
         sketch.textStyle(sketch.NORMAL);
 
-        sketch.text("Dolžina povprečne povedi te seje: " + average + " besed", 0, 30, width, 20);
+        let string = "Dolžina povprečne povedi ";
+        if(getCurrentSessionId()===608) string = string + "vseh sej: ";
+        else string = string + "te seje: ";
+        sketch.text(string + average + " besed", 0, 30, width, 20);
         sketch.textStyle(sketch.ITALIC);
         sketch.fill("#555555");
         sketch.text("\" " + averageSentence + " \"", 10, 60, width-20, 60+textBoxHeight1);
         sketch.textStyle(sketch.NORMAL);
         sketch.fill("#000000");
 
-        sketch.text("Dolžina najdaljše povedi te seje: " + longest + " besed", 0, textBoxHeight1+90, width, textBoxHeight1+100);
+        string = "Dolžina najdaljše povedi ";
+        if(getCurrentSessionId()===608) string = string + "vseh sej: ";
+        else string = string + "te seje: ";
+        sketch.text(string + longest + " besed", 0, textBoxHeight1+90, width, textBoxHeight1+100);
         sketch.textStyle(sketch.ITALIC);
         sketch.fill("#555555");
         sketch.text("\" " + longestSentence + " \"", 10, textBoxHeight1+120, width - 20, textBoxHeight1+textBoxHeight2+100);

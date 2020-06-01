@@ -70,3 +70,8 @@ h2 {
     text-align: center;
     font-size: 16px;
 }
+
+/* More spacing before this paragraph. */
+#select_menu {
+    padding-top: 50px;
+}

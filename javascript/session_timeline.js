@@ -15,6 +15,7 @@ const s5 = ( sketch ) => {
     var presidents;
     var currentSessionId;
     var myPromise;
+    var div;
 
     sketch.preload = function() {
         //wordFrequencies = sketch.loadTable("parsed_data/word_frequencies/word_frequencies_by_session.csv");
@@ -60,6 +61,7 @@ const s5 = ( sketch ) => {
         if(width > 1000) width /= 2;
         let canvas = sketch.createCanvas(width, 550);
         canvas.parent("session_timeline");
+        div = document.getElementById("session_timeline");
 
         sketch.fill("#000000");
         sketch.textFont("Courier");
@@ -73,8 +75,8 @@ const s5 = ( sketch ) => {
         zamik = [10, -10, -10, 10, 10, 10, -10, -10];
 
         currentSessionId = getCurrentSessionId();
+        if(currentSessionId === 608) div.style.display = "none";
         sketch.drawSeats();
-
         sketch.fill(0);
         sketch.line(30, 530, width*3/4-30, 530);
         sketch.ellipse(30, 530, 10, 10);
@@ -87,12 +89,14 @@ const s5 = ( sketch ) => {
     sketch.draw = function() {
         if(currentSessionId !== getCurrentSessionId()) {
             currentSessionId = getCurrentSessionId();
-            //console.log(currentSessionId);
-            /*if(currentSession !== "Vse seje") {
-                xml = sketch.loadXML("/data/"+currentSession+".xml");
-                children = xml.getChild("text").getChild("body").getChildren("div");
-                console.log("data/"+currentSession+".xml");
-            }*/
+            console.log(currentSessionId);
+            if(currentSessionId === 608) {
+                div.style.display = "none";
+                // xml = sketch.loadXML("/data/"+currentSession+".xml");
+                // children = xml.getChild("text").getChild("body").getChildren("div");
+                // console.log("data/"+currentSession+".xml");
+            }
+            else div.style.display = "block";
             //console.log(xml);
             sketch.drawSeats();
             sketch.fill("#FFFFFF");
@@ -187,7 +191,7 @@ const s5 = ( sketch ) => {
     }
 
     sketch.drawWords = async function() {
-        console.log("draw words", topWords, speaker);
+        //console.log("draw words", topWords, speaker);
         sketch.fill(255);
         sketch.noStroke();
         sketch.rect(width*3/4, 50,width/4, 500);

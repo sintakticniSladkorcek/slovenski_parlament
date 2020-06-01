@@ -44,18 +44,21 @@ const s12 = ( sketch ) => {
 
         selectMenu.position(0, 0, "relative");
         //selectMenu.center('vertical');
-        let canvas = sketch.createCanvas(width, 120);
+        let canvas = sketch.createCanvas(width, 150);
         canvas.parent("timeline_description");
         //canvas = sketch.createCanvas(width, 120);
         canvas.position(0, 0, "relative");
         //canvas.center('vertical');
 
         sketch.textFont("Courier");
+        sketch.textStyle(sketch.BOLD);
+        sketch.textSize(24);
+        sketch.textAlign(sketch.CENTER, sketch.CENTER);
+        sketch.text("^ Izberi sejo ^", 0, 0, width-10, 25);
         sketch.textStyle(sketch.NORMAL);
         sketch.textSize(14);
-        sketch.textAlign(sketch.CENTER, sketch.CENTER);
         sketch.text("Spodaj si lahko ogledaš, kako je potekala posamezna seja. Sejo lahko izbereš v spustnem seznamu. Na vrhu boš videl, kdo je govoril, na desni strani pa lahko spremljaš, kako so se spreminjale ključne besede seje z njenim potekom. Najvišje je beseda, ki se je pojavila največkrat, sledi ji drugouvrščena in tako dalje. Tudi vsi podatki nižje se bodo nanašali na to sejo.",
-            0, 0, width-10, 90);
+            0, 30, width-10, 90);
     }
 
     sketch.mySelectEvent = function() {
